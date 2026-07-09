@@ -1,0 +1,386 @@
+/*
+Theme Name: Bishkek Park
+Theme URI: https://bishkekpark.local
+Description: Custom standalone theme for the Bishkek Park shopping mall site.
+Author: Bishkek Park
+Requires at least: 6.5
+Requires PHP: 7.4
+Version: 1.0.0
+Text Domain: bishkek-park
+*/
+
+/* ==========================================================================
+   Base / tokens
+   ========================================================================== */
+
+:root {
+	--bp-pink: #d60055;
+	--bp-pink-light: #fcd9e4;
+	--bp-navy: #838eae;
+	--bp-navy-dark: #12151c;
+	--bp-lavender: #eaedff;
+	--bp-text: #17181a;
+	--bp-text-muted: #5b5d63;
+	--bp-border: #e4e6ee;
+	--bp-radius-lg: 20px;
+	--bp-radius-md: 14px;
+	--bp-radius-sm: 10px;
+	--bp-container: 1480px;
+	--bp-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.bp-site-header,
+.bp-site-header *,
+.bp-main,
+.bp-main *,
+.bp-site-footer,
+.bp-site-footer * {
+	box-sizing: border-box;
+}
+
+.bp-main {
+	background: #ffffff;
+	color: var(--bp-text);
+	font-family: var(--bp-font-family);
+}
+
+.bp-container {
+	max-width: var(--bp-container);
+	margin-inline: auto;
+	padding-inline: 24px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.bp-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border-radius: 999px;
+	padding: 13px 26px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	border: 1px solid transparent;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.bp-btn--primary {
+	background: var(--bp-pink);
+	color: #fff;
+}
+
+.bp-btn--primary:hover {
+	background: #b8004a;
+	color: #fff;
+}
+
+.bp-btn--outline {
+	background: transparent;
+	border-color: var(--bp-navy-dark);
+	color: var(--bp-navy-dark);
+}
+
+.bp-btn--outline:hover {
+	background: var(--bp-navy-dark);
+	color: #fff;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.bp-site-header {
+	font-family: var(--bp-font-family);
+}
+
+.bp-utility-bar {
+	background: #fff;
+	/* border-bottom: 1px solid var(--bp-border); */
+}
+
+.bp-utility-bar__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 75px;
+}
+
+.bp-menu-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	background: none;
+	border: none;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--bp-text);
+	cursor: pointer;
+}
+
+.bp-logo {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	text-decoration: none;
+	color: #919191;
+}
+
+.bp-logo--footer {
+	color: #ffffff;
+}
+
+.bp-logo__img {
+	display: block;
+	height: 70px;
+	width: auto;
+}
+
+.bp-lang-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: #fff;
+	border: 1px solid var(--bp-border);
+	border-radius: 999px;
+	padding: 8px 14px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--bp-text);
+	cursor: pointer;
+}
+
+.bp-info-bar {
+	background: var(--bp-navy);
+	color: #fff;
+}
+
+.bp-info-bar__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: auto;
+	font-size: 14px;
+	font-weight: 400;
+	padding-block: 24px;
+}
+
+.bp-info-bar__left {
+	display: flex;
+	gap: 24px;
+}
+
+.bp-info-bar__item {
+	display: inline-flex;
+	align-items: center;
+	padding: 17.5px 16px;
+	background: var(--bp-pink);
+	border-radius: 24px;
+	gap: 7px;
+}
+
+.bp-mobile-menu {
+	display: none;
+	background: #fff;
+	border-bottom: 1px solid var(--bp-border);
+}
+
+.bp-mobile-menu.is-open {
+	display: block;
+}
+
+.bp-mobile-menu__list {
+	list-style: none;
+	margin: 0;
+	padding: 16px 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.bp-mobile-menu__list a {
+	text-decoration: none;
+	color: var(--bp-text);
+	font-weight: 600;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.bp-site-footer {
+	font-family: var(--bp-font-family);
+	margin-top: 64px;
+	background: var(--bp-navy);
+	color: #fff;
+}
+
+.bp-site-footer__top {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding: 40px 24px 24px;
+}
+
+.bp-site-footer__address {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.bp-site-footer__phone {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+}
+
+.bp-site-footer__social {
+	display: flex;
+	gap: 12px;
+}
+
+.bp-site-footer__social a {
+	color: #fff;
+	display: inline-flex;
+}
+
+.bp-site-footer__bottom {
+	color: #c7cad6;
+}
+
+.bp-site-footer__bottom-inner {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	justify-content: space-between;
+	padding: 0 24px 40px;
+	font-size: 13px;
+}
+
+.bp-footer-hours__label {
+	display: block;
+	color: #fff;
+	font-weight: 600;
+	margin-bottom: 12px;
+}
+
+.bp-footer-hours {
+	max-width: 100%;
+	overflow-x: auto;
+}
+
+.bp-footer-hours table {
+	border-collapse: collapse;
+}
+
+.bp-footer-hours th {
+	text-align: left;
+	font-weight: 600;
+	color: #fff;
+	padding: 0 14px 8px 0;
+	font-size: 12px;
+}
+
+.bp-footer-hours td {
+	padding-right: 14px;
+	line-height: 1.5;
+	white-space: nowrap;
+}
+
+.bp-footer-links {
+	display: flex;
+	gap: 60px;
+}
+
+.bp-footer-links ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.bp-footer-links a {
+	color: #c7cad6;
+	text-decoration: none;
+}
+
+.bp-footer-links a:hover {
+	color: #fff;
+}
+
+@media (max-width: 782px) {
+	.bp-utility-bar__inner {
+		height: 60px;
+	}
+	.bp-logo__img {
+		height: 50px;
+	}
+	.bp-info-bar__left {
+		gap: 14px;
+	}
+
+	.bp-info-bar__inner {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 8px 16px;
+		height: auto;
+		padding-block: 8px;
+	}
+
+	.bp-site-footer__top {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.bp-site-footer__bottom-inner {
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.bp-footer-links {
+		gap: 40px;
+	}
+}
+
+@media (max-width: 480px) {
+	.bp-container {
+		padding-inline: 16px;
+	}
+
+	.bp-utility-bar__inner {
+		height: 50px;
+		min-height: 60px;
+		flex-wrap: wrap;
+		gap: 10px 0;
+		padding-block: 10px;
+	}
+
+	.bp-logo__img {
+		height: 40px;
+	}
+
+	.bp-menu-toggle span:last-child {
+		display: none;
+	}
+
+	.bp-lang-switch {
+		padding: 6px 10px;
+		font-size: 12px;
+	}
+
+	.bp-footer-links {
+		flex-direction: column;
+		gap: 16px;
+	}
+}
