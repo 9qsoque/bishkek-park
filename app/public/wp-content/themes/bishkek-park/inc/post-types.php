@@ -35,15 +35,15 @@ function bishkek_park_register_shop_post_type() {
 add_action( 'init', 'bishkek_park_register_shop_post_type' );
 
 /**
- * Register the "Movies" post type (Синематека section).
+ * Register the "Movies" post type (Синематика section).
  */
 function bishkek_park_register_movie_post_type() {
 	register_post_type(
 		'bp_movie',
 		array(
-			'label'        => __( 'Синематека', 'bishkek-park' ),
+			'label'        => __( 'Синематика', 'bishkek-park' ),
 			'labels'       => array(
-				'name'          => __( 'Синематека', 'bishkek-park' ),
+				'name'          => __( 'Синематика', 'bishkek-park' ),
 				'singular_name' => __( 'Сеанс', 'bishkek-park' ),
 				'add_new_item'  => __( 'Добавить сеанс', 'bishkek-park' ),
 				'edit_item'     => __( 'Редактировать сеанс', 'bishkek-park' ),

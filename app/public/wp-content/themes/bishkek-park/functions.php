@@ -21,7 +21,7 @@ function bishkek_park_get_logo_svg() {
 	static $svg = null;
 
 	if ( null === $svg ) {
-		$path = BISHKEK_PARK_DIR . '/icons/logo.svg';
+		$path = BISHKEK_PARK_DIR . '/assets/icons/logo.svg';
 		$svg  = file_exists( $path ) ? file_get_contents( $path ) : '';
 		$svg  = preg_replace( '/<\?xml.*?\?>/', '', $svg );
 		$svg  = str_replace( '<svg ', '<svg class="bp-logo__img" ', $svg );
@@ -34,7 +34,7 @@ function bishkek_park_get_logo_svg() {
  * Builds the URL to a theme icon in /icons/.
  */
 function bishkek_park_icon_url( $filename ) {
-	return BISHKEK_PARK_URI . '/icons/' . $filename;
+	return BISHKEK_PARK_URI . '/assets/icons/' . $filename;
 }
 
 /**

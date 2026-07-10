@@ -1,7 +1,7 @@
 <?php
 /**
- * Homepage "Синематека" section, pulled from the bp_movie post type.
- * Edit/add sessions under WP Admin -> Синематека.
+ * Homepage "Синематика" section, pulled from the bp_movie post type.
+ * Edit/add sessions under WP Admin -> Синематика.
  *
  * Shows one row (BISHKEK_PARK_MOVIES_PER_ROW cards) as a static grid.
  * If more sessions are published than that, it becomes a horizontally
@@ -32,7 +32,7 @@ $bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_RO
 ?>
 <section class="bp-container bp-section">
 	<div class="bp-section__header">
-		<h2 class="bp-section__title">Синематека</h2>
+		<h2 class="bp-section__title">Синематика</h2>
 		<?php if ( $bp_movies_is_slider ) : ?>
 			<div class="bp-slider-nav" data-bp-slider-nav="bp-movies-track">
 				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="Предыдущие сеансы">

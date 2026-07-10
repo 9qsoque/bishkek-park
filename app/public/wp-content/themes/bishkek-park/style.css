@@ -22,11 +22,12 @@ Text Domain: bishkek-park
 	--bp-text: #17181a;
 	--bp-text-muted: #5b5d63;
 	--bp-border: #e4e6ee;
-	--bp-radius-lg: 20px;
+	--bp-radius-lg: 48px;
 	--bp-radius-md: 14px;
 	--bp-radius-sm: 10px;
 	--bp-container: 1480px;
-	--bp-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+	--bp-font-family:
+		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .bp-site-header,
