@@ -23,8 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</a>
 
 			<div class="bp-lang-switch">
-				<span>Русский</span>
-				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-chevron-down.svg' ) ); ?>" width="10" height="6" alt="" aria-hidden="true">
+				<img class="bp-lang-switch__icon" src="<?php echo esc_url( bishkek_park_icon_url( 'icon-language.svg' ) ); ?>" width="20" height="14" alt="">
+				<span class="bp-lang-switch__label">Русский</span>
+				<span class="bp-lang-switch__short">RU</span>
+				<img class="bp-lang-switch__chevron" src="<?php echo esc_url( bishkek_park_icon_url( 'icon-chevron-down.svg' ) ); ?>" width="10" height="6" alt="">
 			</div>
 		</div>
 	</div>

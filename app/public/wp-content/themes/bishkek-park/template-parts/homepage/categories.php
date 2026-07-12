@@ -10,23 +10,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 <section class="bp-container bp-categories">
 	<a href="#" class="bp-category-card">
 		<span class="bp-category-card__icon">
-			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-category-shopping.svg' ) ); ?>" width="28" height="28" alt="">
+			<img src="<?php echo esc_url( bishkek_park_image_url( 'shops.png' ) ); ?>" width="110" height="110" alt="">
 		</span>
 		<span class="bp-category-card__title">Магазины</span>
-		<span class="bp-category-card__text">Шопинг и покупки с кешбэком 10%</span>
+		<span class="bp-category-card__text desktop">Шопинг и покупки с кешбэком 10%</span>
+		<span class="bp-category-card__text mobile">Кешбэк 10%</span>
 	</a>
 	<a href="#" class="bp-category-card">
 		<span class="bp-category-card__icon">
-			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-category-cafe.svg' ) ); ?>" width="28" height="28" alt="">
+			<img src="<?php echo esc_url( bishkek_park_image_url( 'cafe.png' ) ); ?>" width="110" height="110" alt="">
 		</span>
-		<span class="bp-category-card__title">Кафе и рестораны</span>
-		<span class="bp-category-card__text">Еда и напитки с кешбэком 10%</span>
+		<span class="bp-category-card__title">Кафе</span>
+		<span class="bp-category-card__text desktop">Еда и напитки с кешбэком 10%</span>
+		<span class="bp-category-card__text mobile">Кешбэк 10%</span>
 	</a>
 	<a href="#" class="bp-category-card">
 		<span class="bp-category-card__icon">
-			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-category-cinema.svg' ) ); ?>" width="28" height="28" alt="">
+			<img src="<?php echo esc_url( bishkek_park_image_url( 'cinema.png' ) ); ?>" width="110" height="110" alt="">
 		</span>
 		<span class="bp-category-card__title">Синематика</span>
-		<span class="bp-category-card__text">Кино и развлечения с кешбэком 10%</span>
+		<span class="bp-category-card__text desktop">Кино и развлечения с кешбэком 10%</span>
+		<span class="bp-category-card__text mobile">Кешбэк 10%</span>
 	</a>
 </section>

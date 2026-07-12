@@ -26,7 +26,9 @@ function bishkek_park_meta_fields( $post_type ) {
 			'_bp_active_time' => array( 'label' => __( 'Выделенное время', 'bishkek-park' ), 'description' => __( 'Должно совпадать с одним из сеансов выше', 'bishkek-park' ) ),
 		),
 		'bp_event' => array(
-			'_bp_subtitle' => array( 'label' => __( 'Подзаголовок', 'bishkek-park' ), 'description' => __( 'Например: 25 октября • Крокус Сити Холл', 'bishkek-park' ) ),
+			'_bp_category'    => array( 'label' => __( 'Категория', 'bishkek-park' ), 'description' => __( 'Например: Концерт', 'bishkek-park' ) ),
+			'_bp_date'        => array( 'label' => __( 'Дата', 'bishkek-park' ), 'description' => __( 'Например: 15 июля 2025', 'bishkek-park' ) ),
+			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Короткое описание мероприятия', 'bishkek-park' ) ),
 		),
 	);
 

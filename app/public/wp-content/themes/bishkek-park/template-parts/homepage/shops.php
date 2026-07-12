@@ -67,7 +67,7 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 						<span class="bp-shop-card__floor"><?php echo esc_html( $floor ); ?></span>
 					<?php endif; ?>
 				</span>
-				<span class="bp-shop-card__name"><?php the_title(); ?></span>
+				<h3 class="bp-shop-card__name"><?php the_title(); ?></h3>
 				<?php if ( $category ) : ?>
 					<span class="bp-shop-card__category"><?php echo esc_html( $category ); ?></span>
 				<?php endif; ?>

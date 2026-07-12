@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<a href="#" class="bp-btn bp-btn--primary">Подробнее</a>
 		</div>
 		<div class="bp-hero__art" aria-hidden="true">
-			<img src="<?php echo esc_url( BISHKEK_PARK_URI . '/assets/images/heroImg.png' ); ?>" width="260" height="235" alt="">
+			<img src="<?php echo esc_url( BISHKEK_PARK_URI . '/assets/images/heroImg.png' ); ?>" width="400" height="200" alt="">
 		</div>
 	</div>
 	<div class="bp-hero__dots">

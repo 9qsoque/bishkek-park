@@ -13,20 +13,71 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php echo bishkek_park_get_logo_svg(); ?>
 		</a>
 
-		<div class="bp-site-footer__address">
-			<span>г. Москва,<br>Кутузовский проспект, д. А</span>
-			<span class="bp-site-footer__phone">
-				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
-				+7 (495) 644-45-44
+		<address class="bp-site-footer__address">
+			<span class="bp-site-footer__address-item">
+				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map-pin.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
+				148В, ул. Киевская<br>720001 Бишкек / Кыргызстан
 			</span>
-		</div>
+			<a class="bp-site-footer__phone" href="tel:+996312312031">
+				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
+				+996 (312) 312 031
+			</a>
+		</address>
 
 		<div class="bp-site-footer__social">
 			<a href="#" aria-label="Instagram">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-instagram.svg' ) ); ?>" width="18" height="18" alt="">
 			</a>
-			<a href="#" aria-label="VK">
-				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-vk.svg' ) ); ?>" width="18" height="18" alt="">
+			<a href="#" aria-label="YouTube">
+				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-youtube.svg' ) ); ?>" width="18" height="18" alt="">
+			</a>
+			<a href="#" aria-label="Telegram">
+				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-telegram.svg' ) ); ?>" width="18" height="18" alt="">
+			</a>
+		</div>
+	</div>
+
+	<div class="bp-container bp-site-footer__mobile">
+		<a class="bp-logo bp-logo--footer bp-site-footer__mobile-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Bishkek Park">
+			<?php echo bishkek_park_get_logo_svg(); ?>
+		</a>
+
+		<div class="bp-site-footer__mobile-group">
+			<span class="bp-site-footer__mobile-title">Наш адрес</span>
+			<address class="bp-site-footer__mobile-text">148В, Kievskaya Str. 720001 Bishkek<br>/ Kyrgyzstan</address>
+		</div>
+
+		<div class="bp-site-footer__mobile-group">
+			<span class="bp-site-footer__mobile-title ">Связаться с нами</span>
+			<a class="bp-site-footer__mobile-text" href="tel:+996312312031">+996 (312) 312 031</a>
+		</div>
+
+		<hr class="bp-site-footer__divider">
+
+		<div class="bp-footer-links bp-site-footer__mobile-links">
+			<ul>
+				<li><a href="#">Шопинг</a></li>
+				<li><a href="#">Синематика</a></li>
+				<li><a href="#">Funcity</a></li>
+			</ul>
+			<ul>
+				<li><a href="#">Кафе и рестораны</a></li>
+				<li><a href="#">Мероприятия</a></li>
+				<li><a href="#">Контакты</a></li>
+			</ul>
+		</div>
+
+		<div class="bp-site-footer__mobile-utility">
+			<a href="#">План молла</a>
+			<a href="#">Парковка</a>
+		</div>
+
+		<div class="bp-site-footer__social bp-site-footer__social--mobile">
+			<a href="#" aria-label="Instagram">
+				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-instagram.svg' ) ); ?>" width="18" height="18" alt="">
+			</a>
+			<a href="#" aria-label="YouTube">
+				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-youtube.svg' ) ); ?>" width="18" height="18" alt="">
 			</a>
 			<a href="#" aria-label="Telegram">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-telegram.svg' ) ); ?>" width="18" height="18" alt="">
@@ -41,7 +92,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<table>
 					<tbody>
 						<tr>
-							<th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th>
+							<th scope="col">Пн</th><th scope="col">Вт</th><th scope="col">Ср</th><th scope="col">Чт</th><th scope="col">Пт</th><th scope="col">Сб</th><th scope="col">Вс</th>
 						</tr>
 						<tr>
 							<td>10:00<br>22:00</td>
@@ -70,4 +121,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</div>
+
+	<?php
+	$bp_structured_data = array(
+		'@context'                  => 'https://schema.org',
+		'@type'                     => 'ShoppingCenter',
+		'name'                      => get_bloginfo( 'name' ),
+		'url'                       => home_url( '/' ),
+		'telephone'                 => '+996312312031',
+		'address'                   => array(
+			'@type'           => 'PostalAddress',
+			'streetAddress'   => '148В, ул. Киевская',
+			'addressLocality' => 'Бишкек',
+			'postalCode'      => '720001',
+			'addressCountry'  => 'KG',
+		),
+		'openingHoursSpecification' => array(
+			array(
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Sunday' ),
+				'opens'     => '10:00',
+				'closes'    => '22:00',
+			),
+			array(
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => array( 'Friday', 'Saturday' ),
+				'opens'     => '10:00',
+				'closes'    => '23:00',
+			),
+		),
+	);
+	?>
+	<script type="application/ld+json"><?php echo wp_json_encode( $bp_structured_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ); ?></script>
 </footer>

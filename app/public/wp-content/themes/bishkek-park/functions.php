@@ -38,6 +38,13 @@ function bishkek_park_icon_url( $filename ) {
 }
 
 /**
+ * Builds the URL to a theme image in /images/.
+ */
+function bishkek_park_image_url( $filename ) {
+	return BISHKEK_PARK_URI . '/assets/images/' . $filename;
+}
+
+/**
  * Basic theme setup: supported features and the mobile nav menu location.
  */
 function bishkek_park_setup() {

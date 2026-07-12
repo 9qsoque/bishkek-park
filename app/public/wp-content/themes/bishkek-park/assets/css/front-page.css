@@ -11,7 +11,7 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
-	margin: 0 0 20px;
+	margin: 0 0 50px;
 }
 
 .bp-section__title {
@@ -60,12 +60,12 @@
 	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	background: var(--bp-lavender);
 	border-radius: var(--bp-radius-lg);
-	padding: 48px 40px;
+	padding: 100px 0 100px 40px;
 	overflow: hidden;
 	gap: 24px;
+	min-height: 260px;
 }
 
 .bp-hero__content {
@@ -102,7 +102,19 @@
 }
 
 .bp-hero__art {
-	flex-shrink: 0;
+	position: absolute;
+	top: 50%;
+	right: 0px;
+	transform: translateY(-50%);
+	width: 570px;
+	pointer-events: none;
+}
+
+.bp-hero__art img {
+	display: block;
+	width: 100%;
+	height: auto;
+	transform: rotate(-3.1deg);
 }
 
 .bp-hero__dots {
@@ -140,23 +152,27 @@
 	align-items: center;
 	text-align: center;
 	background: #fff;
-	border: 1px solid var(--bp-border);
-	border-radius: var(--bp-radius-md);
-	padding: 32px 20px;
+	/* border: 1px solid var(--bp-border); */
+	border-radius: 100px;
+	padding: 40px 30px;
 	text-decoration: none;
 	color: inherit;
-	box-shadow: 0 1px 2px rgba(20, 20, 43, 0.03);
+	box-shadow: 0px -20px 40px -15px rgba(234, 237, 255, 1);
 }
 
 .bp-category-card__icon {
-	width: 56px;
-	height: 56px;
+	width: 110px;
+	height: 110px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 999px;
-	background: var(--bp-lavender);
 	margin-bottom: 16px;
+}
+
+.bp-category-card__icon img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 
 .bp-category-card__title {
@@ -200,8 +216,9 @@
 .bp-parking__stats {
 	display: flex;
 	align-items: center;
-	background: var(--bp-navy-dark);
-	border-radius: var(--bp-radius-md);
+	background: rgba(131, 142, 174, 1);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-radius: var(--bp-radius-lg);
 	overflow: hidden;
 }
 
@@ -227,10 +244,10 @@
 }
 
 .bp-parking__stat-label {
-	font-size: 10px;
+	font-size: 12px;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
-	color: #c7cad6;
+	color: #fff;
 	margin-top: 4px;
 }
 
@@ -341,14 +358,20 @@
 	display: none;
 }
 
-.bp-movies-grid--slider > .bp-movie-card {
+.bp-movies-grid--slider .bp-movie-card {
 	flex: 0 0 calc((100% - 2 * 20px) / 3);
 	scroll-snap-align: start;
+}
+
+.bp-movie-slide {
+	display: contents;
 }
 
 .bp-movie-card {
 	display: flex;
 	gap: 14px;
+	text-decoration: none;
+	color: inherit;
 	border: 1px solid var(--bp-border);
 	border-radius: var(--bp-radius-md);
 	padding: 14px;
@@ -376,13 +399,23 @@
 	object-fit: cover;
 }
 
+.bp-movie-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
 .bp-movie-card__label {
 	display: block;
 	color: var(--bp-pink);
 	font-size: 10px;
 	font-weight: 700;
 	letter-spacing: 0.03em;
-	margin-bottom: 6px;
+}
+
+.bp-movie-card__time {
+	display: none;
 }
 
 .bp-movie-card__title {
@@ -429,29 +462,88 @@
 	gap: 20px;
 }
 
+.bp-events-grid--slider {
+	display: flex;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	scrollbar-width: none;
+	padding-bottom: 2px;
+}
+
+.bp-events-grid--slider::-webkit-scrollbar {
+	display: none;
+}
+
+.bp-events-grid--slider > .bp-event-card {
+	flex: 0 0 calc((100% - 20px) / 2);
+	scroll-snap-align: start;
+}
+
 .bp-event-card {
-	position: relative;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	text-decoration: none;
+	color: inherit;
+	background: #fff;
+	border-radius: var(--bp-radius-md);
+	overflow: hidden;
+}
+
+.bp-event-card__image {
+	display: block;
 	aspect-ratio: 16 / 10;
-	border-radius: var(--bp-radius-lg);
+	overflow: hidden;
+}
+
+.bp-event-card__photo {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.bp-event-card__placeholder {
+	display: block;
+	width: 100%;
+	height: 100%;
 	background-size: cover;
 	background-position: center;
-	padding: 24px;
-	text-decoration: none;
-	color: #fff;
+}
+
+.bp-event-card__body {
+	display: flex;
+	flex-direction: column;
+	padding: 20px 4px 0;
+}
+
+.bp-event-card__category {
+	color: var(--bp-pink);
+	font-size: 13px;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+
+.bp-event-card__date {
+	font-size: 14px;
+	margin-bottom: 10px;
 }
 
 .bp-event-card__title {
 	font-size: 20px;
 	font-weight: 700;
-	margin-bottom: 4px;
+	margin-bottom: 8px;
 }
 
-.bp-event-card__subtitle {
-	font-size: 13px;
-	opacity: 0.85;
+.bp-event-card__description {
+	font-size: 14px;
+	color: var(--bp-text-muted);
+	margin-bottom: 14px;
+}
+
+.bp-event-card__link {
+	color: var(--bp-pink);
+	font-size: 14px;
+	font-weight: 700;
 }
 
 /* Leasing CTA
@@ -497,7 +589,7 @@
 	flex-shrink: 0;
 	width: 40px;
 	height: 40px;
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 999px;
@@ -541,25 +633,47 @@
 		flex-basis: calc((100% - 20px) / 2);
 	}
 
-	.bp-movies-grid--slider > .bp-movie-card {
+	.bp-movies-grid--slider .bp-movie-card {
 		flex-basis: calc((100% - 20px) / 2);
 	}
 
 	.bp-leasing__features {
 		grid-template-columns: 1fr;
 	}
+
+	.bp-leasing__feature {
+		flex-direction: row;
+	}
+
+	.bp-hero {
+		padding: 60px 40px;
+	}
+
+	.bp-hero__content {
+		max-width: 380px;
+	}
+
+	.bp-hero__art {
+		right: 0px;
+		width: 450px;
+	}
+
+	.bp-section__header {
+		margin: 0 0 35px;
+	}
 }
 
 @media (max-width: 782px) {
-	.bp-shops-grid--slider > .bp-shop-card,
+	/* .bp-shops-grid--slider > .bp-shop-card,
 	.bp-movies-grid--slider > .bp-movie-card {
 		flex-basis: 82%;
-	}
+	} */
 
 	.bp-hero {
 		flex-direction: column;
 		align-items: stretch;
-		padding: 32px 24px;
+		padding: 28px 24px 150px;
+		min-height: 0;
 	}
 
 	.bp-hero__content {
@@ -567,7 +681,11 @@
 	}
 
 	.bp-hero__art {
-		align-self: center;
+		top: auto;
+		bottom: 0;
+		right: 0;
+		transform: none;
+		width: 260px;
 	}
 
 	.bp-hero__title {
@@ -575,32 +693,190 @@
 	}
 
 	.bp-categories {
-		grid-template-columns: 1fr;
+		margin-left: 24px;
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+		padding-bottom: 2px;
+	}
+
+	.bp-category-card {
+		background: #fff;
+		border: 1px solid var(--bp-border);
+		box-shadow: none;
+		border-radius: 24px;
+		padding: 20px;
+	}
+
+	.bp-categories::-webkit-scrollbar {
+		display: none;
+	}
+
+	.bp-categories > .bp-category-card {
+		flex: 0 0 40%;
+		scroll-snap-align: start;
+	}
+
+	.bp-category-card__icon {
+		width: 80px;
+		height: 80px;
 	}
 
 	.bp-parking {
 		flex-direction: column;
-		align-items: flex-start;
+		align-items: stretch;
+		gap: 16px;
 	}
 
-	.bp-shops-grid,
-	.bp-movies-grid,
-	.bp-events-grid {
-		grid-template-columns: 1fr;
+	.bp-parking__text {
+		display: contents;
+	}
+
+	.bp-parking__text p {
+		max-width: none;
+	}
+
+	.bp-parking__stats {
+		order: 1;
+		width: 100%;
+		background: none;
+		border: none;
+		gap: 12px;
+	}
+
+	.bp-parking__stat {
+		flex: 1;
+		border-radius: var(--bp-radius-md);
+		padding: 20px 16px;
+	}
+
+	.bp-parking__stat:first-child {
+		border-right: none;
+		background: var(--bp-navy-dark);
+	}
+
+	.bp-parking__stat:last-child {
+		background: #fff;
+	}
+
+	.bp-parking__stat:last-child .bp-parking__stat-num {
+		color: var(--bp-text);
+	}
+
+	.bp-parking__stat:last-child .bp-parking__stat-label {
+		color: var(--bp-text-muted);
+	}
+
+	.bp-parking .bp-btn {
+		order: 2;
+		width: 100%;
+		justify-content: center;
+	}
+
+	.bp-cinema-section .bp-movies-grid,
+	.bp-cinema-section .bp-movies-grid--slider {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+		padding-bottom: 2px;
+	}
+
+	.bp-cinema-section .bp-movies-grid::-webkit-scrollbar,
+	.bp-cinema-section .bp-movies-grid--slider::-webkit-scrollbar {
+		display: none;
+	}
+
+	.bp-cinema-section .bp-movie-slide {
+		display: flex;
+		flex-direction: column;
+		flex: 0 0 100%;
+		gap: 16px;
+		scroll-snap-align: start;
+	}
+
+	.bp-cinema-section .bp-movie-card {
+		flex-direction: column;
+		gap: 0;
+		background: #fff;
+		border: none;
+		border-radius: var(--bp-radius-md);
+		padding: 0;
+		overflow: hidden;
+	}
+
+	.bp-cinema-section .bp-movie-card__poster {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 10;
+		border-radius: 0;
+	}
+
+	.bp-cinema-section .bp-movie-card__body {
+		padding: 16px;
+	}
+
+	.bp-cinema-section .bp-movie-card__meta {
+		justify-content: space-between;
+	}
+
+	.bp-cinema-section .bp-movie-card__time {
+		display: block;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.bp-cinema-section .bp-movie-card__times {
+		display: none;
+	}
+
+	.bp-events-section .bp-events-grid,
+	.bp-events-section .bp-events-grid--slider {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+		padding-bottom: 2px;
+	}
+
+	.bp-events-section .bp-events-grid::-webkit-scrollbar,
+	.bp-events-section .bp-events-grid--slider::-webkit-scrollbar {
+		display: none;
+	}
+
+	.bp-events-section .bp-event-card {
+		flex: 0 0 100%;
+		scroll-snap-align: start;
+	}
+
+	.bp-events-section .bp-event-card__description {
+		display: none;
 	}
 
 	.bp-leasing {
 		padding: 32px 24px;
 	}
 
-	.bp-leasing h2 {
-		font-size: 22px;
+	.bp-section__header {
+		margin: 0 0 25px;
 	}
 }
 
 @media (max-width: 480px) {
+	.bp-category-card {
+		padding: 10px;
+	}
+	.bp-category-card__icon {
+		width: 55px;
+		height: 55px;
+	}
+
 	.bp-hero {
-		padding: 24px 20px;
+		padding: 20px 20px 120px;
 	}
 
 	.bp-hero__title {
@@ -612,7 +888,7 @@
 	}
 
 	.bp-hero__art {
-		width: 180px;
+		width: 190px;
 	}
 
 	.bp-section__title {
@@ -620,20 +896,21 @@
 	}
 
 	.bp-parking {
-		padding: 24px 20px;
+		padding: 24px;
 	}
 
 	.bp-parking__stat {
 		padding: 16px 20px;
 	}
 
-	.bp-movie-card {
-		flex-direction: column;
+	.bp-event-card__title {
+		font-size: 17px;
 	}
 
-	.bp-movie-card__poster {
-		width: 100%;
-		height: 140px;
+	.bp-event-card__category,
+	.bp-event-card__date,
+	.bp-event-card__link {
+		font-size: 13px;
 	}
 
 	.bp-leasing__actions .bp-btn {
