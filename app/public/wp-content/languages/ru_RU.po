@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 7.0.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-07-05 14:48:11+0000\n"
+"PO-Revision-Date: 2026-07-10 08:45:43+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3235,7 +3235,7 @@ msgctxt "block description"
 msgid "Reuse this design across your site."
 msgstr "Повторное использование этого оформления на сайте."
 
-#: wp-includes/js/dist/editor.js:67144 wp-admin/about.php:149
+#: wp-includes/js/dist/editor.js:67144 wp-admin/about.php:180
 msgid "Accessibility"
 msgstr "Доступность"
 
@@ -7480,7 +7480,7 @@ msgstr "Тип виджета не поддерживает сырой экзе�
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-widgets-controller.php:566
 msgid "Cannot set instance on a widget that does not extend WP_Widget."
-msgstr "Невозможно установить экземпляр для виджета  без поддержки  WP_Widget."
+msgstr "Невозможно установить экземпляр для виджета без поддержки WP_Widget."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-widgets-controller.php:557
 msgid "The provided widget type (id_base) cannot be updated."
