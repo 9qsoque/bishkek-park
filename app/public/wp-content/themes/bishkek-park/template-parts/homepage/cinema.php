@@ -18,10 +18,14 @@ define( 'BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE', 2 );
 $bp_movies_query = new WP_Query(
 	array(
 		'post_type'      => 'bp_movie',
-		'posts_per_page' => 24,
+		'posts_per_page' => 10,
 		'orderby'        => 'menu_order',
 		'order'          => 'ASC',
 		'no_found_rows'  => true,
+		// Always query the default (RU) language as the canonical list, then
+		// swap in the current-language translation per post where it exists —
+		// keeps untranslated sessions visible instead of vanishing on other languages.
+		'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
 	)
 );
 
@@ -34,13 +38,13 @@ $bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_RO
 ?>
 <section class="bp-container bp-section bp-cinema-section">
 	<div class="bp-section__header">
-		<h2 class="bp-section__title">Синематика</h2>
+		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Синематика' ); ?></h2>
 		<?php if ( $bp_movies_is_slider ) : ?>
 			<div class="bp-slider-nav" data-bp-slider-nav="bp-movies-track">
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="Предыдущие сеансы">
+				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие сеансы' ); ?>">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 				</button>
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="Следующие сеансы">
+				<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="<?php pll_esc_attr_e( 'Следующие сеансы' ); ?>">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-right.svg' ) ); ?>" width="7" height="12" alt="">
 				</button>
 			</div>
@@ -55,6 +59,11 @@ $bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_RO
 		$bp_movie_index = 0;
 		while ( $bp_movies_query->have_posts() ) :
 			$bp_movies_query->the_post();
+
+			$bp_movie_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
+			if ( $bp_movie_localized_id !== get_the_ID() ) {
+				setup_postdata( get_post( $bp_movie_localized_id ) );
+			}
 
 			$label        = get_post_meta( get_the_ID(), '_bp_label', true );
 			$subtitle     = get_post_meta( get_the_ID(), '_bp_subtitle', true );

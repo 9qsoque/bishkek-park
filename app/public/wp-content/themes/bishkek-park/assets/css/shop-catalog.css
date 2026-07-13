@@ -1,0 +1,45 @@
+/* ==========================================================================
+   Shop catalog archive (archive-bp_shop.php)
+   ========================================================================== */
+
+.bp-shop-catalog__filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 0 0 32px;
+}
+
+.bp-shop-catalog__filter {
+	border: 1px solid var(--bp-border);
+	background: #fff;
+	color: var(--bp-text);
+	border-radius: 999px;
+	padding: 8px 18px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.bp-shop-catalog__filter:hover {
+	background: var(--bp-lavender);
+}
+
+.bp-shop-catalog__filter.is-active {
+	background: var(--bp-navy-dark);
+	border-color: var(--bp-navy-dark);
+	color: #fff;
+}
+
+.bp-shop-card.is-hidden {
+	display: none;
+}
+
+.bp-shop-catalog__empty {
+	color: var(--bp-text-muted);
+}
+
+@media (max-width: 1024px) {
+	.bp-shop-catalog .bp-shops-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}

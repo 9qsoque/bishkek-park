@@ -18,10 +18,14 @@ define( 'BISHKEK_PARK_EVENTS_PER_MOBILE_PAGE', 1 );
 $bp_events_query = new WP_Query(
 	array(
 		'post_type'      => 'bp_event',
-		'posts_per_page' => 24,
+		'posts_per_page' => 10,
 		'orderby'        => 'menu_order',
 		'order'          => 'ASC',
 		'no_found_rows'  => true,
+		// Always query the default (RU) language as the canonical list, then
+		// swap in the current-language translation per post where it exists —
+		// keeps untranslated events visible instead of vanishing on other languages.
+		'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
 	)
 );
 
@@ -41,13 +45,13 @@ $bp_event_index     = 0;
 ?>
 <section class="bp-container bp-section bp-events-section">
 	<div class="bp-section__header">
-		<h2 class="bp-section__title">Мероприятия</h2>
+		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Мероприятия' ); ?></h2>
 		<?php if ( $bp_events_is_slider ) : ?>
 			<div class="bp-slider-nav" data-bp-slider-nav="bp-events-track">
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="Предыдущие мероприятия">
+				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие мероприятия' ); ?>">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 				</button>
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="Следующие мероприятия">
+				<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="<?php pll_esc_attr_e( 'Следующие мероприятия' ); ?>">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-right.svg' ) ); ?>" width="7" height="12" alt="">
 				</button>
 			</div>
@@ -61,6 +65,11 @@ $bp_event_index     = 0;
 		<?php
 		while ( $bp_events_query->have_posts() ) :
 			$bp_events_query->the_post();
+
+			$bp_event_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
+			if ( $bp_event_localized_id !== get_the_ID() ) {
+				setup_postdata( get_post( $bp_event_localized_id ) );
+			}
 
 			$category    = get_post_meta( get_the_ID(), '_bp_category', true );
 			$date        = get_post_meta( get_the_ID(), '_bp_date', true );
@@ -88,7 +97,7 @@ $bp_event_index     = 0;
 					<?php if ( $description ) : ?>
 						<span class="bp-event-card__description"><?php echo esc_html( $description ); ?></span>
 					<?php endif; ?>
-					<span class="bp-event-card__link">Подробнее <span aria-hidden="true">→</span></span>
+					<span class="bp-event-card__link"><?php pll_esc_html_e( 'Подробнее' ); ?> <span aria-hidden="true">→</span></span>
 				</span>
 			</a>
 			<?php

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<address class="bp-site-footer__address">
 			<span class="bp-site-footer__address-item">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map-pin.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
-				148В, ул. Киевская<br>720001 Бишкек / Кыргызстан
+				<?php pll_esc_html_e( '148В, ул. Киевская' ); ?><br><?php pll_esc_html_e( '720001 Бишкек / Кыргызстан' ); ?>
 			</span>
 			<a class="bp-site-footer__phone" href="tel:+996312312031">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
@@ -43,12 +43,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</a>
 
 		<div class="bp-site-footer__mobile-group">
-			<span class="bp-site-footer__mobile-title">Наш адрес</span>
+			<span class="bp-site-footer__mobile-title"><?php pll_esc_html_e( 'Наш адрес' ); ?></span>
 			<address class="bp-site-footer__mobile-text">148В, Kievskaya Str. 720001 Bishkek<br>/ Kyrgyzstan</address>
 		</div>
 
 		<div class="bp-site-footer__mobile-group">
-			<span class="bp-site-footer__mobile-title ">Связаться с нами</span>
+			<span class="bp-site-footer__mobile-title "><?php pll_esc_html_e( 'Связаться с нами' ); ?></span>
 			<a class="bp-site-footer__mobile-text" href="tel:+996312312031">+996 (312) 312 031</a>
 		</div>
 
@@ -56,20 +56,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<div class="bp-footer-links bp-site-footer__mobile-links">
 			<ul>
-				<li><a href="#">Шопинг</a></li>
-				<li><a href="#">Синематика</a></li>
+				<li><a href="#"><?php pll_esc_html_e( 'Шопинг' ); ?></a></li>
+				<li><a href="#"><?php pll_esc_html_e( 'Синематика' ); ?></a></li>
 				<li><a href="#">Funcity</a></li>
 			</ul>
 			<ul>
-				<li><a href="#">Кафе и рестораны</a></li>
-				<li><a href="#">Мероприятия</a></li>
-				<li><a href="#">Контакты</a></li>
+				<li><a href="#"><?php pll_esc_html_e( 'Кафе и рестораны' ); ?></a></li>
+				<li><a href="#"><?php pll_esc_html_e( 'Мероприятия' ); ?></a></li>
+				<li><a href="#"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
 			</ul>
 		</div>
 
 		<div class="bp-site-footer__mobile-utility">
-			<a href="#">План молла</a>
-			<a href="#">Парковка</a>
+			<a href="#"><?php pll_esc_html_e( 'План молла' ); ?></a>
+			<a href="#"><?php pll_esc_html_e( 'Парковка' ); ?></a>
 		</div>
 
 		<div class="bp-site-footer__social bp-site-footer__social--mobile">
@@ -88,11 +88,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="bp-site-footer__bottom">
 		<div class="bp-container bp-site-footer__bottom-inner">
 			<div class="bp-footer-hours">
-				<span class="bp-footer-hours__label">Время работы</span>
+				<span class="bp-footer-hours__label"><?php pll_esc_html_e( 'Время работы' ); ?></span>
 				<table>
 					<tbody>
 						<tr>
-							<th scope="col">Пн</th><th scope="col">Вт</th><th scope="col">Ср</th><th scope="col">Чт</th><th scope="col">Пт</th><th scope="col">Сб</th><th scope="col">Вс</th>
+							<th scope="col"><?php pll_esc_html_e( 'Пн' ); ?></th><th scope="col"><?php pll_esc_html_e( 'Вт' ); ?></th><th scope="col"><?php pll_esc_html_e( 'Ср' ); ?></th><th scope="col"><?php pll_esc_html_e( 'Чт' ); ?></th><th scope="col"><?php pll_esc_html_e( 'Пт' ); ?></th><th scope="col"><?php pll_esc_html_e( 'Сб' ); ?></th><th scope="col"><?php pll_esc_html_e( 'Вс' ); ?></th>
 						</tr>
 						<tr>
 							<td>10:00<br>22:00</td>
@@ -109,14 +109,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="bp-footer-links">
 				<ul>
-					<li><a href="#">Контакты</a></li>
-					<li><a href="#">Обратная связь</a></li>
-					<li><a href="#">Арендаторам</a></li>
+					<li><a href="#"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
+					<li><a href="#"><?php pll_esc_html_e( 'Обратная связь' ); ?></a></li>
+					<li><a href="#"><?php pll_esc_html_e( 'Арендаторам' ); ?></a></li>
 				</ul>
 				<ul>
-					<li><a href="#">Рекламные услуги</a></li>
-					<li><a href="#">Вакансии</a></li>
-					<li><a href="#">Политика конфиденциальности</a></li>
+					<li><a href="#"><?php pll_esc_html_e( 'Рекламные услуги' ); ?></a></li>
+					<li><a href="#"><?php pll_esc_html_e( 'Вакансии' ); ?></a></li>
+					<li><a href="#"><?php pll_esc_html_e( 'Политика конфиденциальности' ); ?></a></li>
 				</ul>
 			</div>
 		</div>

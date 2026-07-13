@@ -17,10 +17,14 @@ define( 'BISHKEK_PARK_SHOPS_PER_ROW', 4 );
 $bp_shops_query = new WP_Query(
 	array(
 		'post_type'      => 'bp_shop',
-		'posts_per_page' => 24,
+		'posts_per_page' => 10,
 		'orderby'        => 'menu_order',
 		'order'          => 'ASC',
 		'no_found_rows'  => true,
+		// Always query the default (RU) language as the canonical list, then
+		// swap in the current-language translation per post where it exists —
+		// keeps untranslated shops visible instead of vanishing on other languages.
+		'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
 	)
 );
 
@@ -32,17 +36,20 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 ?>
 <section class="bp-container bp-section">
 	<div class="bp-section__header">
-		<h2 class="bp-section__title">Магазины</h2>
-		<?php if ( $bp_shops_is_slider ) : ?>
-			<div class="bp-slider-nav" data-bp-slider-nav="bp-shops-track">
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="Предыдущие магазины">
-					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
-				</button>
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="Следующие магазины">
-					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-right.svg' ) ); ?>" width="7" height="12" alt="">
-				</button>
-			</div>
-		<?php endif; ?>
+		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Магазины' ); ?></h2>
+		<div class="bp-section__header-actions">
+			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_shop' ) ); ?>"><?php pll_esc_html_e( 'Все магазины' ); ?></a>
+			<?php if ( $bp_shops_is_slider ) : ?>
+				<div class="bp-slider-nav" data-bp-slider-nav="bp-shops-track">
+					<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие магазины' ); ?>">
+						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
+					</button>
+					<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="<?php pll_esc_attr_e( 'Следующие магазины' ); ?>">
+						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-right.svg' ) ); ?>" width="7" height="12" alt="">
+					</button>
+				</div>
+			<?php endif; ?>
+		</div>
 	</div>
 
 	<div
@@ -52,6 +59,11 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 		<?php
 		while ( $bp_shops_query->have_posts() ) :
 			$bp_shops_query->the_post();
+
+			$bp_shop_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
+			if ( $bp_shop_localized_id !== get_the_ID() ) {
+				setup_postdata( get_post( $bp_shop_localized_id ) );
+			}
 
 			$category = get_post_meta( get_the_ID(), '_bp_category', true );
 			$floor    = get_post_meta( get_the_ID(), '_bp_floor', true );

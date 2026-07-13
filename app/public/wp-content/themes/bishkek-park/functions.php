@@ -13,6 +13,8 @@ define( 'BISHKEK_PARK_URI', get_stylesheet_directory_uri() );
 
 require BISHKEK_PARK_DIR . '/inc/post-types.php';
 require BISHKEK_PARK_DIR . '/inc/meta-boxes.php';
+require BISHKEK_PARK_DIR . '/inc/translatable-strings.php';
+require BISHKEK_PARK_DIR . '/inc/seo.php';
 
 /**
  * Returns the inline logo SVG markup so its fill can follow CSS `color` (currentColor).
@@ -42,6 +44,22 @@ function bishkek_park_icon_url( $filename ) {
  */
 function bishkek_park_image_url( $filename ) {
 	return BISHKEK_PARK_URI . '/assets/images/' . $filename;
+}
+
+/**
+ * Resolves a post ID queried in the default language to its translation in the
+ * current language, falling back to the given (default-language) post when no
+ * translation exists yet — so untranslated bp_shop/bp_movie/bp_event entries
+ * still show up (in Russian) instead of disappearing on the KY site.
+ */
+function bishkek_park_get_localized_post_id( $post_id ) {
+	if ( ! function_exists( 'pll_current_language' ) || ! function_exists( 'pll_get_post' ) ) {
+		return $post_id;
+	}
+
+	$translated_id = pll_get_post( $post_id, pll_current_language() );
+
+	return $translated_id ? $translated_id : $post_id;
 }
 
 /**
@@ -78,19 +96,50 @@ function bishkek_park_enqueue_assets() {
 		BISHKEK_PARK_VERSION
 	);
 
-	if ( is_front_page() ) {
+	wp_enqueue_script(
+		'bishkek-park-header',
+		BISHKEK_PARK_URI . '/assets/js/header.js',
+		array(),
+		filemtime( BISHKEK_PARK_DIR . '/assets/js/header.js' ),
+		true
+	);
+
+	$bp_is_shop_catalog = is_post_type_archive( 'bp_shop' );
+
+	// front-page.css/.bp-shops-grid & .bp-shop-card also back the shop
+	// catalog archive's card grid, so it shares that stylesheet.
+	if ( is_front_page() || $bp_is_shop_catalog ) {
 		wp_enqueue_style(
 			'bishkek-park-front-page',
 			BISHKEK_PARK_URI . '/assets/css/front-page.css',
 			array( 'bishkek-park-style' ),
 			filemtime( BISHKEK_PARK_DIR . '/assets/css/front-page.css' )
 		);
+	}
 
+	if ( is_front_page() ) {
 		wp_enqueue_script(
 			'bishkek-park-front-page',
 			BISHKEK_PARK_URI . '/assets/js/front-page.js',
 			array(),
 			filemtime( BISHKEK_PARK_DIR . '/assets/js/front-page.js' ),
+			true
+		);
+	}
+
+	if ( $bp_is_shop_catalog ) {
+		wp_enqueue_style(
+			'bishkek-park-shop-catalog',
+			BISHKEK_PARK_URI . '/assets/css/shop-catalog.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/shop-catalog.css' )
+		);
+
+		wp_enqueue_script(
+			'bishkek-park-shop-catalog',
+			BISHKEK_PARK_URI . '/assets/js/shop-catalog.js',
+			array(),
+			filemtime( BISHKEK_PARK_DIR . '/assets/js/shop-catalog.js' ),
 			true
 		);
 	}
