@@ -43,3 +43,35 @@
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
+
+@media (max-width: 480px) {
+	.bp-shop-catalog .bp-shops-grid {
+		gap: 10px;
+	}
+
+	.bp-shop-catalog .bp-shop-card {
+		min-width: 0;
+	}
+
+	.bp-shop-catalog .bp-shop-card__image {
+		margin-bottom: 8px;
+	}
+
+	.bp-shop-catalog .bp-shop-card__logo {
+		font-size: 13px;
+		letter-spacing: 0.02em;
+	}
+
+	.bp-shop-catalog .bp-shop-card__name {
+		font-size: 12px;
+	}
+
+	.bp-shop-catalog .bp-shop-card__category,
+	.bp-shop-catalog .bp-shop-card__floor {
+		font-size: 10px;
+	}
+
+	.bp-shop-catalog .bp-shop-card__floor {
+		padding: 3px 8px;
+	}
+}

@@ -75,13 +75,17 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 					<?php else : ?>
 						<span class="bp-shop-card__logo"><?php the_title(); ?></span>
 					<?php endif; ?>
-					<?php if ( $floor ) : ?>
-						<span class="bp-shop-card__floor"><?php echo esc_html( $floor ); ?></span>
-					<?php endif; ?>
 				</span>
 				<h3 class="bp-shop-card__name"><?php the_title(); ?></h3>
-				<?php if ( $category ) : ?>
-					<span class="bp-shop-card__category"><?php echo esc_html( $category ); ?></span>
+				<?php if ( $category || $floor ) : ?>
+					<span class="bp-shop-card__meta">
+						<?php if ( $category ) : ?>
+							<span class="bp-shop-card__category"><?php echo esc_html( $category ); ?></span>
+						<?php endif; ?>
+						<?php if ( $floor ) : ?>
+							<span class="bp-shop-card__floor"><?php echo bishkek_park_get_shop_floor_label( $floor ); ?></span>
+						<?php endif; ?>
+					</span>
 				<?php endif; ?>
 			</a>
 			<?php

@@ -63,6 +63,59 @@ function bishkek_park_get_localized_post_id( $post_id ) {
 }
 
 /**
+ * Formats a bp_shop's raw `_bp_floor` meta value (stored as a bare number,
+ * e.g. "2") into the "Этаж 2" label shown on shop cards, catalog filters,
+ * and the shop detail page, translated via Polylang. Returns '' if no floor
+ * is set. Editors enter just the number in wp-admin — see
+ * bishkek_park_sanitize_shop_floor() in inc/post-types.php, which strips a
+ * leading "Этаж" if someone types the old style anyway.
+ */
+function bishkek_park_get_shop_floor_label( $floor ) {
+	if ( '' === $floor ) {
+		return '';
+	}
+
+	return pll_esc_html__( 'Этаж' ) . ' ' . esc_html( $floor );
+}
+
+/**
+ * Formats a bp_event's raw `_bp_date` meta value — stored as an ISO `Y-m-d`
+ * string from the admin date-picker input (see `_bp_date`'s 'date' field
+ * type in inc/meta-boxes.php) — into the "15 июля 2025" display string used
+ * on event cards and the single event page. Falls back to returning the raw
+ * value untouched if it isn't a parseable ISO date (e.g. legacy free-text
+ * entries from before the date-picker existed), so old content doesn't just
+ * disappear.
+ */
+function bishkek_park_format_event_date( $date ) {
+	if ( '' === $date ) {
+		return '';
+	}
+
+	$parsed = DateTime::createFromFormat( 'Y-m-d', $date );
+	if ( ! $parsed ) {
+		return $date;
+	}
+
+	$months = array(
+		1  => 'января',
+		2  => 'февраля',
+		3  => 'марта',
+		4  => 'апреля',
+		5  => 'мая',
+		6  => 'июня',
+		7  => 'июля',
+		8  => 'августа',
+		9  => 'сентября',
+		10 => 'октября',
+		11 => 'ноября',
+		12 => 'декабря',
+	);
+
+	return (int) $parsed->format( 'j' ) . ' ' . $months[ (int) $parsed->format( 'n' ) ] . ' ' . $parsed->format( 'Y' );
+}
+
+/**
  * Basic theme setup: supported features and the mobile nav menu location.
  */
 function bishkek_park_setup() {
@@ -104,11 +157,22 @@ function bishkek_park_enqueue_assets() {
 		true
 	);
 
-	$bp_is_shop_catalog = is_post_type_archive( 'bp_shop' );
+	$bp_is_shop_catalog  = is_post_type_archive( 'bp_shop' );
+	$bp_is_single_shop   = is_singular( 'bp_shop' );
+	$bp_is_cafe_catalog  = is_post_type_archive( 'bp_cafe' );
+	$bp_is_single_cafe   = is_singular( 'bp_cafe' );
+	$bp_is_event_catalog = is_post_type_archive( 'bp_event' );
+	$bp_is_single_event  = is_singular( 'bp_event' );
 
-	// front-page.css/.bp-shops-grid & .bp-shop-card also back the shop
-	// catalog archive's card grid, so it shares that stylesheet.
-	if ( is_front_page() || $bp_is_shop_catalog ) {
+	// front-page.css/.bp-shops-grid & .bp-shop-card also back the shop and
+	// cafe catalog archives' card grids and the single shop/cafe pages'
+	// "related" grids — bp_cafe deliberately reuses bp_shop's card markup
+	// (see bishkek_park_register_cafe_post_type()), so all five share this
+	// stylesheet instead of duplicating it. The events catalog archive and
+	// single event page reuse the same file for .bp-back-link and its
+	// .bp-events-grid/.bp-event-card (already defined there for the homepage
+	// teaser section).
+	if ( is_front_page() || $bp_is_shop_catalog || $bp_is_single_shop || $bp_is_cafe_catalog || $bp_is_single_cafe || $bp_is_event_catalog || $bp_is_single_event ) {
 		wp_enqueue_style(
 			'bishkek-park-front-page',
 			BISHKEK_PARK_URI . '/assets/css/front-page.css',
@@ -127,7 +191,10 @@ function bishkek_park_enqueue_assets() {
 		);
 	}
 
-	if ( $bp_is_shop_catalog ) {
+	// shop-catalog.css/.js implement the floor-filter grid generically (via
+	// data-bp-shop-filter/-grid/-floor attributes, not shop-specific
+	// selectors), so the bp_cafe archive reuses them as-is too.
+	if ( $bp_is_shop_catalog || $bp_is_cafe_catalog ) {
 		wp_enqueue_style(
 			'bishkek-park-shop-catalog',
 			BISHKEK_PARK_URI . '/assets/css/shop-catalog.css',
@@ -141,6 +208,48 @@ function bishkek_park_enqueue_assets() {
 			array(),
 			filemtime( BISHKEK_PARK_DIR . '/assets/js/shop-catalog.js' ),
 			true
+		);
+	}
+
+	// shop-single.css's .bp-shop-detail-* classes are likewise reused as-is
+	// on the single bp_cafe page.
+	if ( $bp_is_single_shop || $bp_is_single_cafe ) {
+		wp_enqueue_style(
+			'bishkek-park-shop-single',
+			BISHKEK_PARK_URI . '/assets/css/shop-single.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/shop-single.css' )
+		);
+	}
+
+	// event-catalog.css/.js implement the category-filter grid: a different
+	// shape from the shop/cafe floor filter (categories are free-text, not a
+	// fixed set), so bp_event gets its own pair rather than reusing
+	// shop-catalog.css/.js.
+	if ( $bp_is_event_catalog ) {
+		wp_enqueue_style(
+			'bishkek-park-event-catalog',
+			BISHKEK_PARK_URI . '/assets/css/event-catalog.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/event-catalog.css' )
+		);
+
+		wp_enqueue_script(
+			'bishkek-park-event-catalog',
+			BISHKEK_PARK_URI . '/assets/js/event-catalog.js',
+			array(),
+			filemtime( BISHKEK_PARK_DIR . '/assets/js/event-catalog.js' ),
+			true
+		);
+	}
+
+	// event-single.css's .bp-event-detail-* classes are single-event-page-only.
+	if ( $bp_is_single_event ) {
+		wp_enqueue_style(
+			'bishkek-park-event-single',
+			BISHKEK_PARK_URI . '/assets/css/event-single.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/event-single.css' )
 		);
 	}
 }

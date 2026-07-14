@@ -46,16 +46,19 @@ $bp_event_index     = 0;
 <section class="bp-container bp-section bp-events-section">
 	<div class="bp-section__header">
 		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Мероприятия' ); ?></h2>
-		<?php if ( $bp_events_is_slider ) : ?>
-			<div class="bp-slider-nav" data-bp-slider-nav="bp-events-track">
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие мероприятия' ); ?>">
-					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
-				</button>
-				<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="<?php pll_esc_attr_e( 'Следующие мероприятия' ); ?>">
-					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-right.svg' ) ); ?>" width="7" height="12" alt="">
-				</button>
-			</div>
-		<?php endif; ?>
+		<div class="bp-section__header-actions">
+			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_event' ) ); ?>"><?php pll_esc_html_e( 'Все мероприятия' ); ?></a>
+			<?php if ( $bp_events_is_slider ) : ?>
+				<div class="bp-slider-nav" data-bp-slider-nav="bp-events-track">
+					<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие мероприятия' ); ?>">
+						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
+					</button>
+					<button type="button" class="bp-slider-nav__btn" data-bp-slider-next aria-label="<?php pll_esc_attr_e( 'Следующие мероприятия' ); ?>">
+						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-right.svg' ) ); ?>" width="7" height="12" alt="">
+					</button>
+				</div>
+			<?php endif; ?>
+		</div>
 	</div>
 
 	<div
@@ -72,7 +75,7 @@ $bp_event_index     = 0;
 			}
 
 			$category    = get_post_meta( get_the_ID(), '_bp_category', true );
-			$date        = get_post_meta( get_the_ID(), '_bp_date', true );
+			$date        = bishkek_park_format_event_date( get_post_meta( get_the_ID(), '_bp_date', true ) );
 			$description = get_post_meta( get_the_ID(), '_bp_description', true );
 			?>
 			<a href="<?php the_permalink(); ?>" class="bp-event-card">

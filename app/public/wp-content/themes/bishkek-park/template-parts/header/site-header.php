@@ -26,12 +26,12 @@ $bp_nav_items = array(
 	array(
 		'label' => 'Кафе и рестораны',
 		'icon'  => 'icon-utensils.svg',
-		'url'   => '#',
+		'url'   => get_post_type_archive_link( 'bp_cafe' ),
 	),
 	array(
 		'label' => 'Мероприятия',
 		'icon'  => 'icon-calendar.svg',
-		'url'   => '#',
+		'url'   => get_post_type_archive_link( 'bp_event' ),
 	),
 	array(
 		'label' => 'Контакты',

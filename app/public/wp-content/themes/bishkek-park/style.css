@@ -511,6 +511,7 @@ body.admin-bar .bp-mobile-menu {
 .bp-site-footer__mobile {
 	display: none;
 	padding: 24px;
+	background: var(--bp-navy);
 }
 
 .bp-site-footer__mobile-logo {
