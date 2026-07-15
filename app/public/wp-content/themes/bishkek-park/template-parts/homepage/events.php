@@ -72,9 +72,11 @@ $bp_event_index     = 0;
 		while ( $bp_events_query->have_posts() ) :
 			$bp_events_query->the_post();
 
+			global $post;
 			$bp_event_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
 			if ( $bp_event_localized_id !== get_the_ID() ) {
-				setup_postdata( get_post( $bp_event_localized_id ) );
+				$post = get_post( $bp_event_localized_id );
+				setup_postdata( $post );
 			}
 
 			$category    = get_post_meta( get_the_ID(), '_bp_category', true );

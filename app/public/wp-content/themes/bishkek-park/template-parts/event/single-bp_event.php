@@ -101,9 +101,11 @@ while ( have_posts() ) :
 					while ( $bp_related_events_query->have_posts() ) :
 						$bp_related_events_query->the_post();
 
+						global $post;
 						$bp_related_event_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
 						if ( $bp_related_event_localized_id !== get_the_ID() ) {
-							setup_postdata( get_post( $bp_related_event_localized_id ) );
+							$post = get_post( $bp_related_event_localized_id );
+							setup_postdata( $post );
 						}
 
 						$bp_related_category    = get_post_meta( get_the_ID(), '_bp_category', true );

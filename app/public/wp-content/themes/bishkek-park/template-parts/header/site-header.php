@@ -52,6 +52,20 @@ $bp_lang_switch_languages = function_exists( 'pll_the_languages' )
 	)
 	: array();
 
+// Polylang links a language with no translation of the current post to that
+// language's homepage by default. Link to the current (default-language)
+// URL instead, so switching language keeps showing this content — in the
+// default language, per the fallback pattern documented in CLAUDE.md —
+// instead of bouncing the visitor to the homepage.
+if ( $bp_lang_switch_languages ) {
+	$bp_lang_switch_current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	foreach ( $bp_lang_switch_languages as $bp_lang_switch_key => $bp_lang_switch_language ) {
+		if ( ! empty( $bp_lang_switch_language['no_translation'] ) ) {
+			$bp_lang_switch_languages[ $bp_lang_switch_key ]['url'] = $bp_lang_switch_current_url;
+		}
+	}
+}
+
 $bp_lang_switch_current = null;
 foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 	if ( ! empty( $bp_lang_switch_language['current_lang'] ) ) {

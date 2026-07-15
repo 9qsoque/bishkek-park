@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <section class="bp-container bp-categories">
-	<a href="#" class="bp-category-card">
+	<a href="<?php echo esc_url( get_post_type_archive_link( 'bp_shop' ) ); ?>" class="bp-category-card">
 		<span class="bp-category-card__icon">
 			<img src="<?php echo esc_url( bishkek_park_image_url( 'shops.png' ) ); ?>" width="110" height="110" alt="">
 		</span>
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<span class="bp-category-card__text desktop"><?php pll_esc_html_e( 'Шопинг и покупки с кешбэком 10%' ); ?></span>
 		<span class="bp-category-card__text mobile"><?php pll_esc_html_e( 'Кешбэк 10%' ); ?></span>
 	</a>
-	<a href="#" class="bp-category-card">
+	<a href="<?php echo esc_url( get_post_type_archive_link( 'bp_cafe' ) ); ?>" class="bp-category-card">
 		<span class="bp-category-card__icon">
 			<img src="<?php echo esc_url( bishkek_park_image_url( 'cafe.png' ) ); ?>" width="110" height="110" alt="">
 		</span>
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<span class="bp-category-card__text desktop"><?php pll_esc_html_e( 'Еда и напитки с кешбэком 10%' ); ?></span>
 		<span class="bp-category-card__text mobile"><?php pll_esc_html_e( 'Кешбэк 10%' ); ?></span>
 	</a>
-	<a href="#" class="bp-category-card">
+	<a href="<?php echo esc_url( bishkek_park_get_cinematica_link_url() ); ?>" class="bp-category-card" target="_blank" rel="noopener noreferrer">
 		<span class="bp-category-card__icon">
 			<img src="<?php echo esc_url( bishkek_park_image_url( 'cinema.png' ) ); ?>" width="110" height="110" alt="">
 		</span>

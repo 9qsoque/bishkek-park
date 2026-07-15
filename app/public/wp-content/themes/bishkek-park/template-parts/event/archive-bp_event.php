@@ -26,9 +26,11 @@ if ( have_posts() ) {
 	while ( have_posts() ) {
 		the_post();
 
+		global $post;
 		$bp_event_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
 		if ( $bp_event_localized_id !== get_the_ID() ) {
-			setup_postdata( get_post( $bp_event_localized_id ) );
+			$post = get_post( $bp_event_localized_id );
+			setup_postdata( $post );
 		}
 
 		$bp_catalog_events[] = array(

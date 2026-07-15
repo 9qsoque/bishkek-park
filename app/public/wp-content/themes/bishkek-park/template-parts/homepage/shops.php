@@ -63,9 +63,11 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 		while ( $bp_shops_query->have_posts() ) :
 			$bp_shops_query->the_post();
 
+			global $post;
 			$bp_shop_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
 			if ( $bp_shop_localized_id !== get_the_ID() ) {
-				setup_postdata( get_post( $bp_shop_localized_id ) );
+				$post = get_post( $bp_shop_localized_id );
+				setup_postdata( $post );
 			}
 
 			$category = get_post_meta( get_the_ID(), '_bp_category', true );

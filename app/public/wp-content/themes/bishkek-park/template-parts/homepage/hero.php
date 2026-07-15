@@ -34,9 +34,11 @@ $bp_banner_count = $bp_banners_query->post_count;
 			while ( $bp_banners_query->have_posts() ) :
 				$bp_banners_query->the_post();
 
+				global $post;
 				$bp_banner_id = bishkek_park_get_localized_post_id( get_the_ID() );
 				if ( $bp_banner_id !== get_the_ID() ) {
-					setup_postdata( get_post( $bp_banner_id ) );
+					$post = get_post( $bp_banner_id );
+					setup_postdata( $post );
 				}
 
 				$bp_badge        = get_post_meta( get_the_ID(), '_bp_badge', true );
