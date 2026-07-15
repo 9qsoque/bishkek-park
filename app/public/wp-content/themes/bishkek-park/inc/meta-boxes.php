@@ -1,12 +1,52 @@
 <?php
 /**
- * Admin meta boxes (custom fields) for the Shops, Movies, and Events
- * post types, plus pages (currently just the SEO description field),
- * and the sanitize/save logic behind them.
+ * Admin meta boxes (custom fields) for the Shops and Events post types,
+ * plus pages (currently just the SEO description field), and the
+ * sanitize/save logic behind them. Синематика (bp_movie) intentionally has
+ * no fields here — its homepage section is populated live from the
+ * Cinematica.kg API instead of wp-admin entry, see inc/cinematica-api.php
+ * and inc/cinematica-settings.php.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Editable fields for the Контакты page template only (address/hours/phone,
+ * the "Арендаторам" block, and the 6 FAQ pairs) — merged into the 'page'
+ * entry below when the page being edited uses
+ * template-parts/contacts/page-contacts.php, so other pages (Главная,
+ * Funcity, ...) don't get a wall of irrelevant fields in their "Данные для
+ * сайта" box. Rendered with the same defaults the template itself falls
+ * back to when a field is left empty — see template-parts/contacts/page-contacts.php.
+ */
+function bishkek_park_contacts_meta_fields() {
+	$fields = array(
+		'_bp_contacts_address'                => array( 'label' => __( 'Адрес', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается "148В, ул. Киевская, 720001 Бишкек / Кыргызстан"', 'bishkek-park' ) ),
+		'_bp_contacts_hours'                   => array( 'label' => __( 'Часы работы ТЦ', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается "Ежедневно: 10:00 — 22:00"', 'bishkek-park' ) ),
+		'_bp_contacts_phone'                   => array( 'label' => __( 'Телефон', 'bishkek-park' ), 'description' => __( 'Например: +996 (312) 312 031. Используется и как ссылка для звонка', 'bishkek-park' ) ),
+		'_bp_contacts_tenants_text'            => array( 'label' => __( 'Арендаторам: текст', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается стандартный текст с адресом info@bishkekpark.kg', 'bishkek-park' ), 'type' => 'textarea' ),
+		'_bp_contacts_tenants_download_label'  => array( 'label' => __( 'Арендаторам: текст ссылки на заявку', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается "Скачать заявку на аренду помещения"', 'bishkek-park' ) ),
+		'_bp_contacts_tenants_download_url'    => array( 'label' => __( 'Арендаторам: ссылка на файл заявки', 'bishkek-park' ), 'description' => __( 'Куда ведёт ссылка "Скачать заявку". Если не заполнено, ссылка никуда не ведёт (#)', 'bishkek-park' ) ),
+		'_bp_contacts_tenants_hours'           => array( 'label' => __( 'Арендаторам: часы приёма', 'bishkek-park' ), 'description' => __( 'По одной строке на часы работы (показывается только на десктопе). Если не заполнено, показывается стандартный график', 'bishkek-park' ), 'type' => 'textarea' ),
+	);
+
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$fields[ "_bp_contacts_faq_q{$i}" ] = array(
+			// translators: %d is the FAQ item number (1-6).
+			'label'       => sprintf( __( 'Вопрос %d', 'bishkek-park' ), $i ),
+			'description' => '',
+		);
+		$fields[ "_bp_contacts_faq_a{$i}" ] = array(
+			// translators: %d is the FAQ item number (1-6).
+			'label'       => sprintf( __( 'Ответ %d', 'bishkek-park' ), $i ),
+			'description' => '',
+			'type'        => 'textarea',
+		);
+	}
+
+	return $fields;
 }
 
 /**
@@ -22,8 +62,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * sanitize, for one-off input normalization (see `_bp_floor` below). Keeping
  * this data-driven means one render + one save function covers every post
  * type instead of duplicating boilerplate for each one.
+ * `$post` (optional) is only used to detect the Контакты page template —
+ * see bishkek_park_contacts_meta_fields() above.
  */
-function bishkek_park_meta_fields( $post_type ) {
+function bishkek_park_meta_fields( $post_type, $post = null ) {
 	$fields = array(
 		'bp_shop'  => array(
 			'_bp_category'    => array( 'label' => __( 'Категория', 'bishkek-park' ), 'description' => __( 'Например: Одежда и аксессуары', 'bishkek-park' ) ),
@@ -33,7 +75,7 @@ function bishkek_park_meta_fields( $post_type ) {
 				'sanitize_callback' => 'bishkek_park_sanitize_shop_floor',
 			),
 			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Подробное описание магазина для его страницы. Не более 400 символов', 'bishkek-park' ), 'type' => 'textarea', 'max_length' => 400 ),
-			'_bp_hours'       => array( 'label' => __( 'Время работы', 'bishkek-park' ), 'description' => __( 'Например: Пн - Вс: 10:00 - 23:00. Если не заполнено, показывается "Пн - Вс: 10:00 - 22:00"', 'bishkek-park' ) ),
+			'_bp_hours'       => array( 'label' => __( 'Время работы', 'bishkek-park' ), 'description' => __( 'Например: Пн - Вс: 10:00 - 22:00. Если не заполнено, показывается "Пн - Вс: 10:00 - 22:00"', 'bishkek-park' ) ),
 			'_bp_website'     => array( 'label' => __( 'Сайт', 'bishkek-park' ), 'description' => __( 'Сайт или email магазина. Если не заполнено, показывается "info@bishkekpark.kg"', 'bishkek-park' ) ),
 		),
 		'bp_cafe'  => array(
@@ -44,14 +86,8 @@ function bishkek_park_meta_fields( $post_type ) {
 				'sanitize_callback' => 'bishkek_park_sanitize_shop_floor',
 			),
 			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Подробное описание кафе/ресторана для его страницы. Не более 400 символов', 'bishkek-park' ), 'type' => 'textarea', 'max_length' => 400 ),
-			'_bp_hours'       => array( 'label' => __( 'Время работы', 'bishkek-park' ), 'description' => __( 'Например: Пн - Вс: 10:00 - 23:00. Если не заполнено, показывается "Пн - Вс: 10:00 - 22:00"', 'bishkek-park' ) ),
+			'_bp_hours'       => array( 'label' => __( 'Время работы', 'bishkek-park' ), 'description' => __( 'Например: Пн - Вс: 10:00 - 22:00. Если не заполнено, показывается "Пн - Вс: 10:00 - 22:00"', 'bishkek-park' ) ),
 			'_bp_website'     => array( 'label' => __( 'Сайт', 'bishkek-park' ), 'description' => __( 'Сайт или email кафе/ресторана. Если не заполнено, показывается "info@bishkekpark.kg"', 'bishkek-park' ) ),
-		),
-		'bp_movie' => array(
-			'_bp_label'       => array( 'label' => __( 'Метка (необязательно)', 'bishkek-park' ), 'description' => __( 'Например: СЕГОДНЯ В КИНО', 'bishkek-park' ) ),
-			'_bp_subtitle'    => array( 'label' => __( 'Подзаголовок', 'bishkek-park' ), 'description' => __( 'Например: МДМ Театр • Каждую пятницу', 'bishkek-park' ) ),
-			'_bp_times'       => array( 'label' => __( 'Сеансы', 'bishkek-park' ), 'description' => __( 'Через запятую, например: 10:30, 14:00, 19:30', 'bishkek-park' ) ),
-			'_bp_active_time' => array( 'label' => __( 'Выделенное время', 'bishkek-park' ), 'description' => __( 'Должно совпадать с одним из сеансов выше', 'bishkek-park' ) ),
 		),
 		'bp_event' => array(
 			'_bp_category'    => array( 'label' => __( 'Категория', 'bishkek-park' ), 'description' => __( 'Например: Концерт', 'bishkek-park' ) ),
@@ -73,6 +109,10 @@ function bishkek_park_meta_fields( $post_type ) {
 		),
 	);
 
+	if ( 'page' === $post_type && $post instanceof WP_Post && 'template-parts/contacts/page-contacts.php' === get_page_template_slug( $post ) ) {
+		$fields['page'] = array_merge( $fields['page'], bishkek_park_contacts_meta_fields() );
+	}
+
 	return isset( $fields[ $post_type ] ) ? $fields[ $post_type ] : array();
 }
 
@@ -80,7 +120,7 @@ function bishkek_park_meta_fields( $post_type ) {
  * Register the meta box on each of our post types' edit screens.
  */
 function bishkek_park_add_meta_boxes() {
-	foreach ( array( 'bp_shop', 'bp_cafe', 'bp_movie', 'bp_event', 'bp_banner', 'page' ) as $post_type ) {
+	foreach ( array( 'bp_shop', 'bp_cafe', 'bp_event', 'bp_banner', 'page' ) as $post_type ) {
 		add_meta_box(
 			'bishkek_park_fields',
 			__( 'Данные для сайта', 'bishkek-park' ),
@@ -97,7 +137,7 @@ add_action( 'add_meta_boxes', 'bishkek_park_add_meta_boxes' );
  * Render the meta box fields for the current post type.
  */
 function bishkek_park_render_meta_box( $post ) {
-	$fields = bishkek_park_meta_fields( $post->post_type );
+	$fields = bishkek_park_meta_fields( $post->post_type, $post );
 
 	wp_nonce_field( 'bishkek_park_save_meta', 'bishkek_park_meta_nonce' );
 
@@ -180,7 +220,7 @@ function bishkek_park_save_meta( $post_id ) {
 	}
 
 	$post_type = get_post_type( $post_id );
-	$fields    = bishkek_park_meta_fields( $post_type );
+	$fields    = bishkek_park_meta_fields( $post_type, get_post( $post_id ) );
 
 	foreach ( $fields as $key => $field ) {
 		if ( ! isset( $_POST[ $key ] ) ) {

@@ -1,7 +1,10 @@
 <?php
 /**
- * Custom post types used to power the editable homepage sections:
- * Shops, Cinema listings, Events, and hero Banners.
+ * Custom post types used to power the editable homepage sections: Shops,
+ * Events, and hero Banners. (Синематика/bp_movie was removed — cinema
+ * showtimes are now fetched live from an external API instead of being
+ * hand-entered as posts, see inc/cinematica-api.php and
+ * inc/cinematica-settings.php.)
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -180,32 +183,6 @@ function bishkek_park_cafe_single_template( $template ) {
 	return $template;
 }
 add_filter( 'single_template', 'bishkek_park_cafe_single_template' );
-
-/**
- * Register the "Movies" post type (Синематика section).
- */
-function bishkek_park_register_movie_post_type() {
-	register_post_type(
-		'bp_movie',
-		array(
-			'label'        => __( 'Синематика', 'bishkek-park' ),
-			'labels'       => array(
-				'name'          => __( 'Синематика', 'bishkek-park' ),
-				'singular_name' => __( 'Сеанс', 'bishkek-park' ),
-				'add_new_item'  => __( 'Добавить сеанс', 'bishkek-park' ),
-				'edit_item'     => __( 'Редактировать сеанс', 'bishkek-park' ),
-			),
-			'public'       => true,
-			'show_in_menu' => true,
-			'show_in_rest' => true,
-			'menu_icon'    => 'dashicons-tickets-alt',
-			'supports'     => array( 'title', 'thumbnail', 'page-attributes' ),
-			'has_archive'  => false,
-			'rewrite'      => array( 'slug' => 'cinema' ),
-		)
-	);
-}
-add_action( 'init', 'bishkek_park_register_movie_post_type' );
 
 /**
  * Register the "Events" post type (Мероприятия section).

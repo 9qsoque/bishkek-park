@@ -15,6 +15,8 @@ require BISHKEK_PARK_DIR . '/inc/post-types.php';
 require BISHKEK_PARK_DIR . '/inc/meta-boxes.php';
 require BISHKEK_PARK_DIR . '/inc/translatable-strings.php';
 require BISHKEK_PARK_DIR . '/inc/seo.php';
+require BISHKEK_PARK_DIR . '/inc/cinematica-settings.php';
+require BISHKEK_PARK_DIR . '/inc/cinematica-api.php';
 
 /**
  * Returns the inline logo SVG markup so its fill can follow CSS `color` (currentColor).
@@ -49,8 +51,8 @@ function bishkek_park_image_url( $filename ) {
 /**
  * Resolves a post ID queried in the default language to its translation in the
  * current language, falling back to the given (default-language) post when no
- * translation exists yet — so untranslated bp_shop/bp_movie/bp_event entries
- * still show up (in Russian) instead of disappearing on the KY site.
+ * translation exists yet — so untranslated bp_shop/bp_event entries still
+ * show up (in Russian) instead of disappearing on the KY site.
  */
 function bishkek_park_get_localized_post_id( $post_id ) {
 	if ( ! function_exists( 'pll_current_language' ) || ! function_exists( 'pll_get_post' ) ) {
@@ -116,6 +118,115 @@ function bishkek_park_format_event_date( $date ) {
 }
 
 /**
+ * Registers the Funcity page template with the Page edit screen's template
+ * dropdown. The file lives in template-parts/funcity/ per the theme's
+ * template-parts/{something}/ convention, but WordPress only auto-discovers
+ * `Template Name:` headers one directory deep — so it's registered here
+ * explicitly. Once assigned to a page, core's get_page_template() resolves
+ * the relative path itself; no page_template filter is needed.
+ */
+function bishkek_park_register_page_templates( $templates ) {
+	$templates['template-parts/funcity/page-funcity.php']   = 'Funcity';
+	$templates['template-parts/contacts/page-contacts.php'] = 'Контакты';
+	$templates['template-parts/map/page-map.php']           = 'Карта ТЦ';
+
+	return $templates;
+}
+add_filter( 'theme_page_templates', 'bishkek_park_register_page_templates' );
+
+/**
+ * URL of the page the Funcity template is assigned to, for nav links.
+ * Queries the default language (see CLAUDE.md "Polylang CPT translation")
+ * and swaps in the current-language translation when one exists, so the
+ * link doesn't vanish on the KY site while the page is untranslated.
+ * Returns '#' (matching the header's other not-yet-built links) if no page
+ * uses the template yet.
+ */
+function bishkek_park_get_funcity_page_url() {
+	static $url = null;
+
+	if ( null === $url ) {
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
+				'meta_key'       => '_wp_page_template',
+				'meta_value'     => 'template-parts/funcity/page-funcity.php',
+			)
+		);
+
+		$url = $pages ? get_permalink( bishkek_park_get_localized_post_id( $pages[0] ) ) : '#';
+	}
+
+	return $url;
+}
+
+/**
+ * Turns a displayed phone number (e.g. "+996 (312) 312 031") into a `tel:`
+ * href by keeping only digits and a leading `+`. Used by the Контакты page
+ * template so editors can type the number naturally in wp-admin without
+ * having to also enter a separate dial string.
+ */
+function bishkek_park_get_tel_href( $phone ) {
+	return 'tel:' . preg_replace( '/[^0-9+]/', '', $phone );
+}
+
+/**
+ * URL of the page the Контакты (contacts) template is assigned to, for nav
+ * links. Same pattern as bishkek_park_get_funcity_page_url() above.
+ */
+function bishkek_park_get_contacts_page_url() {
+	static $url = null;
+
+	if ( null === $url ) {
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
+				'meta_key'       => '_wp_page_template',
+				'meta_value'     => 'template-parts/contacts/page-contacts.php',
+			)
+		);
+
+		$url = $pages ? get_permalink( bishkek_park_get_localized_post_id( $pages[0] ) ) : '#';
+	}
+
+	return $url;
+}
+
+/**
+ * URL of the page the Карта ТЦ (mall map) template is assigned to, for nav
+ * links. Same pattern as bishkek_park_get_funcity_page_url() above.
+ */
+function bishkek_park_get_mall_map_page_url() {
+	static $url = null;
+
+	if ( null === $url ) {
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
+				'meta_key'       => '_wp_page_template',
+				'meta_value'     => 'template-parts/map/page-map.php',
+			)
+		);
+
+		$url = $pages ? get_permalink( bishkek_park_get_localized_post_id( $pages[0] ) ) : '#';
+	}
+
+	return $url;
+}
+
+/**
  * Basic theme setup: supported features and the mobile nav menu location.
  */
 function bishkek_park_setup() {
@@ -163,6 +274,9 @@ function bishkek_park_enqueue_assets() {
 	$bp_is_single_cafe   = is_singular( 'bp_cafe' );
 	$bp_is_event_catalog = is_post_type_archive( 'bp_event' );
 	$bp_is_single_event  = is_singular( 'bp_event' );
+	$bp_is_funcity       = is_page_template( 'template-parts/funcity/page-funcity.php' );
+	$bp_is_contacts      = is_page_template( 'template-parts/contacts/page-contacts.php' );
+	$bp_is_mall_map      = is_page_template( 'template-parts/map/page-map.php' );
 
 	// front-page.css/.bp-shops-grid & .bp-shop-card also back the shop and
 	// cafe catalog archives' card grids and the single shop/cafe pages'
@@ -171,8 +285,9 @@ function bishkek_park_enqueue_assets() {
 	// stylesheet instead of duplicating it. The events catalog archive and
 	// single event page reuse the same file for .bp-back-link and its
 	// .bp-events-grid/.bp-event-card (already defined there for the homepage
-	// teaser section).
-	if ( is_front_page() || $bp_is_shop_catalog || $bp_is_single_shop || $bp_is_cafe_catalog || $bp_is_single_cafe || $bp_is_event_catalog || $bp_is_single_event ) {
+	// teaser section). The Funcity page reuses its .bp-back-link and
+	// .bp-section styles the same way, as does the Карта ТЦ (mall map) page.
+	if ( is_front_page() || $bp_is_shop_catalog || $bp_is_single_shop || $bp_is_cafe_catalog || $bp_is_single_cafe || $bp_is_event_catalog || $bp_is_single_event || $bp_is_funcity || $bp_is_contacts || $bp_is_mall_map ) {
 		wp_enqueue_style(
 			'bishkek-park-front-page',
 			BISHKEK_PARK_URI . '/assets/css/front-page.css',
@@ -250,6 +365,46 @@ function bishkek_park_enqueue_assets() {
 			BISHKEK_PARK_URI . '/assets/css/event-single.css',
 			array( 'bishkek-park-front-page' ),
 			filemtime( BISHKEK_PARK_DIR . '/assets/css/event-single.css' )
+		);
+	}
+
+	// funcity.css's .bp-funcity-* classes are Funcity-template-only.
+	if ( $bp_is_funcity ) {
+		wp_enqueue_style(
+			'bishkek-park-funcity',
+			BISHKEK_PARK_URI . '/assets/css/funcity.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/funcity.css' )
+		);
+	}
+
+	// contacts.css's .bp-contacts-*/.bp-faq-* classes are contacts-page-only.
+	if ( $bp_is_contacts ) {
+		wp_enqueue_style(
+			'bishkek-park-contacts',
+			BISHKEK_PARK_URI . '/assets/css/contacts.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/contacts.css' )
+		);
+	}
+
+	// mall-map.css/.js implement the floor switcher (prev/next + the
+	// data-bp-mall-map-* attributes driving which floor plan is shown) —
+	// Карта ТЦ template-only.
+	if ( $bp_is_mall_map ) {
+		wp_enqueue_style(
+			'bishkek-park-mall-map',
+			BISHKEK_PARK_URI . '/assets/css/mall-map.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/mall-map.css' )
+		);
+
+		wp_enqueue_script(
+			'bishkek-park-mall-map',
+			BISHKEK_PARK_URI . '/assets/js/mall-map.js',
+			array(),
+			filemtime( BISHKEK_PARK_DIR . '/assets/js/mall-map.js' ),
+			true
 		);
 	}
 }

@@ -1,10 +1,16 @@
 <?php
 /**
- * Homepage "Синематика" section, pulled from the bp_movie post type.
- * Edit/add sessions under WP Admin -> Синематика.
+ * Homepage "Синематика" section — today's showtimes, fetched live from the
+ * Cinematica.kg API (see inc/cinematica-api.php). Grouped one card per
+ * movie with its showtimes as a row of pills; replaces the previous
+ * bp_movie CPT listing since sessions now come straight from the cinema's
+ * own booking system instead of being hand-entered in wp-admin. Cards link
+ * out to the cinema's own page (bishkek_park_get_cinematica_link_url(), see
+ * inc/cinematica-settings.php) since there's no single-movie page on this
+ * site to send visitors to.
  *
  * Shows one row (BISHKEK_PARK_MOVIES_PER_ROW cards) as a static grid.
- * If more sessions are published than that, it becomes a horizontally
+ * If more movies are showing today than that, it becomes a horizontally
  * scrollable slider with prev/next controls instead of wrapping rows.
  */
 
@@ -15,26 +21,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'BISHKEK_PARK_MOVIES_PER_ROW', 3 );
 define( 'BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE', 2 );
 
-$bp_movies_query = new WP_Query(
-	array(
-		'post_type'      => 'bp_movie',
-		'posts_per_page' => 10,
-		'orderby'        => 'menu_order',
-		'order'          => 'ASC',
-		'no_found_rows'  => true,
-		// Always query the default (RU) language as the canonical list, then
-		// swap in the current-language translation per post where it exists —
-		// keeps untranslated sessions visible instead of vanishing on other languages.
-		'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
-	)
-);
+$bp_movies = bishkek_park_get_cinematica_sessions();
 
-if ( ! $bp_movies_query->have_posts() ) {
+if ( ! $bp_movies ) {
 	return;
 }
 
-$bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_ROW
-	|| $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE;
+$bp_movies_count     = count( $bp_movies );
+$bp_movies_is_slider = $bp_movies_count > BISHKEK_PARK_MOVIES_PER_ROW
+	|| $bp_movies_count > BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE;
+$bp_cinema_link_url  = bishkek_park_get_cinematica_link_url();
+
+// Sessions come back as "HH:MM" strings already zero-padded, so a plain
+// string comparison against "now" (same format, Bishkek's GMT+6) is enough
+// to tell past showtimes from the next upcoming one — no DateTime parsing
+// needed per pill.
+$bp_now = ( new DateTime( 'now', new DateTimeZone( '+06:00' ) ) )->format( 'H:i' );
 ?>
 <section class="bp-container bp-section bp-cinema-section">
 	<div class="bp-section__header">
@@ -57,31 +59,17 @@ $bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_RO
 	>
 		<?php
 		$bp_movie_index = 0;
-		while ( $bp_movies_query->have_posts() ) :
-			$bp_movies_query->the_post();
-
-			$bp_movie_localized_id = bishkek_park_get_localized_post_id( get_the_ID() );
-			if ( $bp_movie_localized_id !== get_the_ID() ) {
-				setup_postdata( get_post( $bp_movie_localized_id ) );
-			}
-
-			$label        = get_post_meta( get_the_ID(), '_bp_label', true );
-			$subtitle     = get_post_meta( get_the_ID(), '_bp_subtitle', true );
-			$times_raw    = get_post_meta( get_the_ID(), '_bp_times', true );
-			$active_time  = trim( get_post_meta( get_the_ID(), '_bp_active_time', true ) );
-			$times        = $times_raw ? array_map( 'trim', explode( ',', $times_raw ) ) : array();
-			$primary_time = $active_time ? $active_time : ( $times ? $times[0] : '' );
-
+		foreach ( $bp_movies as $bp_movie ) :
 			if ( 0 === $bp_movie_index % BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE ) :
 				?>
 				<div class="bp-movie-slide">
 				<?php
 			endif;
 			?>
-			<a href="<?php the_permalink(); ?>" class="bp-movie-card">
-				<?php if ( has_post_thumbnail() ) : ?>
+			<a href="<?php echo esc_url( $bp_cinema_link_url ); ?>" class="bp-movie-card" target="_blank" rel="noopener noreferrer">
+				<?php if ( $bp_movie['poster'] ) : ?>
 					<div class="bp-movie-card__poster bp-movie-card__poster--photo">
-						<?php the_post_thumbnail( 'thumbnail' ); ?>
+						<img src="<?php echo esc_url( $bp_movie['poster'] ); ?>" alt="<?php echo esc_attr( $bp_movie['title'] ); ?>" loading="lazy">
 					</div>
 				<?php else : ?>
 					<div class="bp-movie-card__poster" aria-hidden="true">
@@ -89,24 +77,33 @@ $bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_RO
 					</div>
 				<?php endif; ?>
 				<div class="bp-movie-card__body">
-					<?php if ( $label || $primary_time ) : ?>
-						<div class="bp-movie-card__meta">
-							<?php if ( $label ) : ?>
-								<span class="bp-movie-card__label"><?php echo esc_html( $label ); ?></span>
-							<?php endif; ?>
-							<?php if ( $primary_time ) : ?>
-								<span class="bp-movie-card__time"><?php echo esc_html( $primary_time ); ?></span>
-							<?php endif; ?>
-						</div>
-					<?php endif; ?>
-					<h3 class="bp-movie-card__title"><?php the_title(); ?></h3>
-					<?php if ( $subtitle ) : ?>
-						<p class="bp-movie-card__subtitle"><?php echo esc_html( $subtitle ); ?></p>
-					<?php endif; ?>
-					<?php if ( $times ) : ?>
+					<div class="bp-movie-card__meta">
+						<span class="bp-movie-card__label"><?php pll_esc_html_e( 'Сегодня в кино' ); ?></span>
+					</div>
+					<h3 class="bp-movie-card__title"><?php echo esc_html( $bp_movie['title'] ); ?></h3>
+					<?php if ( $bp_movie['times'] ) : ?>
+						<?php
+						// Times are sorted chronologically, so the first one that
+						// hasn't passed yet is the next upcoming session.
+						$bp_next_time = null;
+						foreach ( $bp_movie['times'] as $bp_time ) {
+							if ( $bp_time >= $bp_now ) {
+								$bp_next_time = $bp_time;
+								break;
+							}
+						}
+						?>
 						<div class="bp-movie-card__times">
-							<?php foreach ( $times as $time ) : ?>
-								<span class="bp-time-pill<?php echo ( $time === $active_time ) ? ' is-active' : ''; ?>"><?php echo esc_html( $time ); ?></span>
+							<?php foreach ( $bp_movie['times'] as $bp_time ) : ?>
+								<?php
+								$bp_time_class = '';
+								if ( $bp_time < $bp_now ) {
+									$bp_time_class = ' is-past';
+								} elseif ( $bp_time === $bp_next_time ) {
+									$bp_time_class = ' is-active';
+								}
+								?>
+								<span class="bp-time-pill<?php echo esc_attr( $bp_time_class ); ?>"><?php echo esc_html( $bp_time ); ?></span>
 							<?php endforeach; ?>
 						</div>
 					<?php endif; ?>
@@ -114,13 +111,12 @@ $bp_movies_is_slider = $bp_movies_query->post_count > BISHKEK_PARK_MOVIES_PER_RO
 			</a>
 			<?php
 			++$bp_movie_index;
-			if ( 0 === $bp_movie_index % BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE || $bp_movie_index === $bp_movies_query->post_count ) :
+			if ( 0 === $bp_movie_index % BISHKEK_PARK_MOVIES_PER_MOBILE_PAGE || $bp_movie_index === $bp_movies_count ) :
 				?>
 				</div>
 				<?php
 			endif;
-		endwhile;
-		wp_reset_postdata();
+		endforeach;
 		?>
 	</div>
 </section>

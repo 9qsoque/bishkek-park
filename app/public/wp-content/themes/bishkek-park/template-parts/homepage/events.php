@@ -47,7 +47,10 @@ $bp_event_index     = 0;
 	<div class="bp-section__header">
 		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Мероприятия' ); ?></h2>
 		<div class="bp-section__header-actions">
-			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_event' ) ); ?>"><?php pll_esc_html_e( 'Все мероприятия' ); ?></a>
+			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_event' ) ); ?>">
+				<span class="bp-section__view-all-full"><?php pll_esc_html_e( 'Все мероприятия' ); ?></span>
+				<span class="bp-section__view-all-short"><?php pll_esc_html_e( 'Все' ); ?></span>
+			</a>
 			<?php if ( $bp_events_is_slider ) : ?>
 				<div class="bp-slider-nav" data-bp-slider-nav="bp-events-track">
 					<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие мероприятия' ); ?>">

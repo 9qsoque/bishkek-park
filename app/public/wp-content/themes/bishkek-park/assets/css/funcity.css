@@ -1,0 +1,332 @@
+/* ==========================================================================
+   Funcity page (template-parts/funcity/page-funcity.php).
+   Loaded only on pages using the Funcity template; shared pieces
+   (.bp-section, .bp-back-link) come from front-page.css, .bp-btn from
+   style.css.
+   ========================================================================== */
+
+/* Hero
+   ========================================================================== */
+
+.bp-funcity-hero {
+	margin-top: 24px;
+	background: linear-gradient(90deg, #ff7300 0%, #f5148e 100%);
+	color: #fff;
+}
+
+.bp-funcity-hero__inner {
+	padding-top: 44px;
+	padding-bottom: 52px;
+	padding-left: 88px;
+}
+
+.bp-funcity-hero__heading {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+}
+
+.bp-funcity-hero__logo {
+	width: 96px;
+	height: auto;
+	flex-shrink: 0;
+}
+
+.bp-funcity-hero__title {
+	margin: 0;
+	font-size: clamp(36px, 4.5vw, 58px);
+	font-weight: 800;
+	letter-spacing: 0.02em;
+}
+
+.bp-funcity-hero__subtitle {
+	margin: 20px 0 0;
+	font-size: 17px;
+	font-weight: 700;
+}
+
+.bp-funcity-hero__text {
+	margin: 14px 0 0;
+	font-size: 14px;
+	opacity: 0.95;
+}
+
+/* The booking/details buttons only exist in the mobile design. */
+.bp-funcity-hero__actions {
+	display: none;
+}
+
+.bp-funcity-hero__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	padding: 13px 26px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	border: 1px solid transparent;
+}
+
+.bp-funcity-hero__btn--solid {
+	background: #fff;
+	color: var(--bp-text);
+}
+
+.bp-funcity-hero__btn--ghost {
+	border-color: #fff;
+	color: #fff;
+}
+
+/* Photo collage (desktop)
+   ========================================================================== */
+
+.bp-funcity-gallery {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	margin: 0 auto;
+	max-width: var(--bp-container);
+}
+
+.bp-funcity-gallery__item {
+	position: relative;
+	margin: 0;
+}
+
+.bp-funcity-gallery__item--maze {
+	grid-column: 1 / -1;
+}
+
+.bp-funcity-gallery__photo {
+	display: block;
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+}
+
+.bp-funcity-gallery__item--maze .bp-funcity-gallery__photo {
+	aspect-ratio: 14 / 3.5;
+}
+
+.bp-funcity-gallery .bp-funcity-badge {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 8px 20px rgba(18, 21, 28, 0.25);
+}
+
+/* Zone badges
+   ========================================================================== */
+
+.bp-funcity-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 18px;
+	border-radius: 999px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #fff;
+	white-space: nowrap;
+}
+
+.bp-funcity-badge--maze {
+	background: var(--bp-pink);
+}
+
+.bp-funcity-badge--trampoline {
+	background: #00a76f;
+}
+
+.bp-funcity-badge--animators {
+	background: #f7810a;
+}
+
+/* Sections (zones + rules)
+   ========================================================================== */
+
+.bp-funcity-section-text {
+	margin: 14px 0 0;
+	font-size: 14px;
+	color: var(--bp-text-muted);
+	max-width: 640px;
+}
+
+.bp-funcity-zones__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 56px 64px;
+	margin: 44px 32px 0;
+}
+
+/* Zone photos are the mobile replacement for the desktop collage. */
+.bp-funcity-zone__image {
+	display: none;
+}
+
+.bp-funcity-zone__text {
+	margin: 16px 0 0;
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--bp-text-muted);
+	max-width: 520px;
+}
+
+.bp-funcity-rules__list {
+	list-style: none;
+	margin: 36px 32px 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+}
+
+.bp-funcity-rule {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.bp-funcity-rule__icon {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	background: #eef0f5;
+}
+
+.bp-funcity-rule__text {
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+/* Contact CTA
+   ========================================================================== */
+
+.bp-funcity-cta {
+	margin-top: 64px;
+	background: #f5f6f8;
+}
+
+.bp-funcity-cta__inner {
+	padding-top: 64px;
+	padding-bottom: 64px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 10px;
+}
+
+.bp-funcity-cta__title {
+	margin: 0;
+	font-size: 28px;
+	font-weight: 800;
+}
+
+.bp-funcity-cta__subtitle {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--bp-pink);
+}
+
+.bp-funcity-cta__text {
+	margin: 0 0 14px;
+	font-size: 14px;
+	color: var(--bp-text-muted);
+}
+
+/* Mobile
+   ========================================================================== */
+
+@media (max-width: 782px) {
+	.bp-funcity-hero {
+		margin-top: 16px;
+	}
+
+	.bp-funcity-hero__inner {
+		padding: 40px 24px 36px;
+		text-align: center;
+	}
+
+	.bp-funcity-hero__heading {
+		justify-content: center;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.bp-funcity-hero__title {
+		font-size: 34px;
+	}
+
+	.bp-funcity-hero__subtitle {
+		margin-top: 14px;
+	}
+
+	.bp-funcity-hero__actions {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin-top: 28px;
+	}
+
+	.bp-funcity-gallery {
+		display: none;
+	}
+
+	.bp-funcity-zones__grid {
+		grid-template-columns: 1fr;
+		gap: 36px;
+		margin: 28px 0 0;
+	}
+
+	.bp-funcity-rules__list {
+		margin: 28px 0 0;
+	}
+
+	.bp-funcity-zone__image {
+		display: block;
+		margin-bottom: 20px;
+	}
+
+	.bp-funcity-zone__image img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+	}
+
+	.bp-funcity-zone {
+		background: #f8f8f8;
+		border-radius: 20px;
+	}
+
+	.bp-funcity-badge {
+		margin: 0 20px 0;
+	}
+
+	.bp-funcity-zone__text {
+		margin: 12px 0 20px;
+		padding: 0 20px 0;
+	}
+
+	.bp-funcity-cta {
+		margin-top: 32px;
+	}
+
+	.bp-funcity-cta__inner {
+		padding-top: 48px;
+		padding-bottom: 48px;
+	}
+
+	.bp-funcity-cta__title {
+		font-size: 24px;
+	}
+}

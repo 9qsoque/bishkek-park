@@ -36,6 +36,15 @@ if ( have_posts() ) {
 
 $bp_catalog_floors = array_unique( array_filter( wp_list_pluck( $bp_catalog_shops, 'floor' ) ) );
 natsort( $bp_catalog_floors );
+
+// Supports deep-linking a floor from the Карта ТЦ (mall map) page's
+// "Магазины на этаже" link (?floor=-1) by pre-selecting that floor's filter
+// button and pre-hiding non-matching cards server-side; shop-catalog.js
+// takes over from there for subsequent clicks.
+$bp_requested_floor = isset( $_GET['floor'] ) ? sanitize_text_field( wp_unslash( $_GET['floor'] ) ) : '';
+if ( ! in_array( $bp_requested_floor, $bp_catalog_floors, true ) ) {
+	$bp_requested_floor = '';
+}
 ?>
 
 <main class="bp-main">
@@ -53,9 +62,9 @@ natsort( $bp_catalog_floors );
 
 		<?php if ( ! empty( $bp_catalog_floors ) ) : ?>
 			<div class="bp-shop-catalog__filters" data-bp-shop-filter role="group" aria-label="<?php pll_esc_attr_e( 'Фильтр по этажам' ); ?>">
-				<button type="button" class="bp-shop-catalog__filter is-active" data-bp-shop-filter-value="all"><?php pll_esc_html_e( 'Все этажи' ); ?></button>
+				<button type="button" class="bp-shop-catalog__filter<?php echo '' === $bp_requested_floor ? ' is-active' : ''; ?>" data-bp-shop-filter-value="all"><?php pll_esc_html_e( 'Все этажи' ); ?></button>
 				<?php foreach ( $bp_catalog_floors as $bp_floor_value ) : ?>
-					<button type="button" class="bp-shop-catalog__filter" data-bp-shop-filter-value="<?php echo esc_attr( $bp_floor_value ); ?>"><?php echo bishkek_park_get_shop_floor_label( $bp_floor_value ); ?></button>
+					<button type="button" class="bp-shop-catalog__filter<?php echo $bp_floor_value === $bp_requested_floor ? ' is-active' : ''; ?>" data-bp-shop-filter-value="<?php echo esc_attr( $bp_floor_value ); ?>"><?php echo bishkek_park_get_shop_floor_label( $bp_floor_value ); ?></button>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
@@ -63,7 +72,7 @@ natsort( $bp_catalog_floors );
 		<?php if ( ! empty( $bp_catalog_shops ) ) : ?>
 			<div class="bp-shops-grid" data-bp-shop-grid>
 				<?php foreach ( $bp_catalog_shops as $bp_shop ) : ?>
-					<a href="<?php echo esc_url( $bp_shop['permalink'] ); ?>" class="bp-shop-card" data-bp-shop-floor="<?php echo esc_attr( $bp_shop['floor'] ); ?>">
+					<a href="<?php echo esc_url( $bp_shop['permalink'] ); ?>" class="bp-shop-card<?php echo $bp_requested_floor && $bp_shop['floor'] !== $bp_requested_floor ? ' is-hidden' : ''; ?>" data-bp-shop-floor="<?php echo esc_attr( $bp_shop['floor'] ); ?>">
 						<span class="bp-shop-card__image">
 							<?php if ( $bp_shop['thumbnail'] ) : ?>
 								<?php echo $bp_shop['thumbnail']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

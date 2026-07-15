@@ -39,6 +39,10 @@
 	text-decoration: underline;
 }
 
+.bp-section__view-all-short {
+	display: none;
+}
+
 .bp-slider-nav {
 	display: flex;
 	gap: 8px;
@@ -219,6 +223,12 @@
 	text-decoration: none;
 	color: inherit;
 	box-shadow: 0px -20px 40px -15px rgba(234, 237, 255, 1);
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bp-category-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0px 20px 40px -15px rgba(180, 188, 235, 0.6);
 }
 
 .bp-category-card__icon {
@@ -228,6 +238,11 @@
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 16px;
+	transition: transform 0.25s ease;
+}
+
+.bp-category-card:hover .bp-category-card__icon {
+	transform: scale(1.08);
 }
 
 .bp-category-card__icon img {
@@ -373,6 +388,11 @@
 	height: 100%;
 	object-fit: cover;
 	border-radius: var(--bp-radius-md);
+	transition: transform 0.3s ease;
+}
+
+.bp-shop-card:hover .bp-shop-card__photo {
+	transform: scale(1.08);
 }
 
 .bp-shop-card__name {
@@ -380,6 +400,11 @@
 	font-weight: 700;
 	font-size: 14px;
 	margin-bottom: 2px;
+	transition: color 0.2s ease;
+}
+
+.bp-shop-card:hover .bp-shop-card__name {
+	color: var(--bp-pink);
 }
 
 .bp-shop-card__meta {
@@ -443,18 +468,27 @@
 
 .bp-movie-card {
 	display: flex;
-	gap: 14px;
+	flex-direction: column;
+	gap: 16px;
 	text-decoration: none;
 	color: inherit;
 	border: 1px solid var(--bp-border);
 	border-radius: var(--bp-radius-md);
-	padding: 14px;
+	padding: 18px;
+	transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bp-movie-card:hover {
+	transform: translateY(-6px);
+	border-color: var(--bp-pink);
+	box-shadow: 0px 16px 32px -18px rgba(20, 20, 30, 0.35);
 }
 
 .bp-movie-card__poster {
 	flex-shrink: 0;
-	width: 64px;
-	height: 88px;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 12 / 10;
 	border-radius: var(--bp-radius-sm);
 	background: linear-gradient(160deg, #1c1f26 0%, #3a2f45 100%);
 	display: flex;
@@ -471,31 +505,32 @@
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.bp-movie-card:hover .bp-movie-card__poster--photo img {
+	transform: scale(1.08);
 }
 
 .bp-movie-card__meta {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	margin-bottom: 6px;
+	margin-bottom: 8px;
 }
 
 .bp-movie-card__label {
 	display: block;
 	color: var(--bp-pink);
-	font-size: 10px;
+	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.03em;
 }
 
-.bp-movie-card__time {
-	display: none;
-}
-
 .bp-movie-card__title {
-	font-size: 15px;
+	font-size: 17px;
 	font-weight: 700;
-	margin: 0 0 4px;
+	margin: 0 0 6px;
 	line-height: 1.25;
 }
 
@@ -513,11 +548,11 @@
 }
 
 .bp-time-pill {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 600;
 	border: 1px solid var(--bp-border);
 	border-radius: 999px;
-	padding: 5px 10px;
+	padding: 6px 12px;
 	color: var(--bp-text-muted);
 }
 
@@ -525,6 +560,10 @@
 	background: var(--bp-pink);
 	border-color: var(--bp-pink);
 	color: #fff;
+}
+
+.bp-time-pill.is-past {
+	opacity: 0.4;
 }
 
 /* Events
@@ -562,6 +601,12 @@
 	background: #fff;
 	border-radius: var(--bp-radius-md);
 	overflow: hidden;
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bp-event-card:hover {
+	transform: translateY(-6px);
+	box-shadow: 0px 16px 32px -18px rgba(20, 20, 30, 0.3);
 }
 
 .bp-event-card__image {
@@ -574,6 +619,11 @@
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.bp-event-card:hover .bp-event-card__photo {
+	transform: scale(1.08);
 }
 
 .bp-event-card__placeholder {
@@ -617,6 +667,15 @@
 	color: var(--bp-pink);
 	font-size: 14px;
 	font-weight: 700;
+}
+
+.bp-event-card__link span {
+	display: inline-block;
+	transition: transform 0.2s ease;
+}
+
+.bp-event-card:hover .bp-event-card__link span {
+	transform: translateX(4px);
 }
 
 /* Leasing CTA
@@ -901,26 +960,12 @@
 	.bp-cinema-section .bp-movie-card__poster {
 		width: 100%;
 		height: auto;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 16 / 9;
 		border-radius: 0;
 	}
 
 	.bp-cinema-section .bp-movie-card__body {
 		padding: 16px;
-	}
-
-	.bp-cinema-section .bp-movie-card__meta {
-		justify-content: space-between;
-	}
-
-	.bp-cinema-section .bp-movie-card__time {
-		display: block;
-		font-size: 13px;
-		font-weight: 600;
-	}
-
-	.bp-cinema-section .bp-movie-card__times {
-		display: none;
 	}
 
 	.bp-events-section .bp-events-grid,
@@ -987,6 +1032,14 @@
 
 	.bp-section__title {
 		font-size: 20px;
+	}
+
+	.bp-section__view-all-full {
+		display: none;
+	}
+
+	.bp-section__view-all-short {
+		display: inline;
 	}
 
 	.bp-parking {

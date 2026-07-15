@@ -38,7 +38,10 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 	<div class="bp-section__header">
 		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Магазины' ); ?></h2>
 		<div class="bp-section__header-actions">
-			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_shop' ) ); ?>"><?php pll_esc_html_e( 'Все магазины' ); ?></a>
+			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_shop' ) ); ?>">
+				<span class="bp-section__view-all-full"><?php pll_esc_html_e( 'Все магазины' ); ?></span>
+				<span class="bp-section__view-all-short"><?php pll_esc_html_e( 'Все' ); ?></span>
+			</a>
 			<?php if ( $bp_shops_is_slider ) : ?>
 				<div class="bp-slider-nav" data-bp-slider-nav="bp-shops-track">
 					<button type="button" class="bp-slider-nav__btn" data-bp-slider-prev aria-label="<?php pll_esc_attr_e( 'Предыдущие магазины' ); ?>">

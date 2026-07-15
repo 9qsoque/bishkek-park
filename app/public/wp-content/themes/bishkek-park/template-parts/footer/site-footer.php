@@ -63,12 +63,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<ul>
 				<li><a href="#"><?php pll_esc_html_e( 'Кафе и рестораны' ); ?></a></li>
 				<li><a href="#"><?php pll_esc_html_e( 'Мероприятия' ); ?></a></li>
-				<li><a href="#"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
+				<li><a href="<?php echo esc_url( bishkek_park_get_contacts_page_url() ); ?>"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
 			</ul>
 		</div>
 
 		<div class="bp-site-footer__mobile-utility">
-			<a href="#"><?php pll_esc_html_e( 'План молла' ); ?></a>
+			<a href="<?php echo esc_url( bishkek_park_get_mall_map_page_url() ); ?>"><?php pll_esc_html_e( 'План молла' ); ?></a>
 			<a href="#"><?php pll_esc_html_e( 'Парковка' ); ?></a>
 		</div>
 
@@ -99,8 +99,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<td>10:00<br>22:00</td>
 							<td>10:00<br>22:00</td>
 							<td>10:00<br>22:00</td>
-							<td>10:00<br>23:00</td>
-							<td>10:00<br>23:00</td>
+							<td>10:00<br>22:00</td>
+							<td>10:00<br>22:00</td>
 							<td>10:00<br>22:00</td>
 						</tr>
 					</tbody>
@@ -109,7 +109,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="bp-footer-links">
 				<ul>
-					<li><a href="#"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
+					<li><a href="<?php echo esc_url( bishkek_park_get_contacts_page_url() ); ?>"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
 					<li><a href="#"><?php pll_esc_html_e( 'Обратная связь' ); ?></a></li>
 					<li><a href="#"><?php pll_esc_html_e( 'Арендаторам' ); ?></a></li>
 				</ul>
@@ -147,7 +147,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'@type'     => 'OpeningHoursSpecification',
 				'dayOfWeek' => array( 'Friday', 'Saturday' ),
 				'opens'     => '10:00',
-				'closes'    => '23:00',
+				'closes'    => '22:00',
 			),
 		),
 	);

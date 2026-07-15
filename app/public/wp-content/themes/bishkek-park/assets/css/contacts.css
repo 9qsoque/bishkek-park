@@ -1,0 +1,272 @@
+/* ==========================================================================
+   Contacts page (template-parts/contacts/page-contacts.php).
+   Loaded only on the page using the Контакты template; shared pieces
+   (.bp-section, .bp-back-link-wrap spacing) come from front-page.css,
+   .bp-btn from style.css.
+   ========================================================================== */
+
+/* Heading + breadcrumb
+   ========================================================================== */
+
+.bp-contacts-heading {
+	padding-top: 32px;
+}
+
+.bp-contacts-heading__title {
+	margin: 0 0 12px;
+	font-size: 40px;
+	font-weight: 700;
+}
+
+.bp-breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--bp-text-muted);
+}
+
+.bp-breadcrumb__link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.bp-breadcrumb__link:hover {
+	color: var(--bp-pink);
+}
+
+/* Map + details
+   ========================================================================== */
+
+.bp-contacts-info {
+	display: grid;
+	grid-template-columns: minmax(0, 480px) minmax(0, 480px);
+	justify-content: center;
+	gap: 64px;
+	align-items: start;
+	margin-top: 40px;
+}
+
+.bp-contacts-map img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: contain;
+}
+.bp-contacts-details {
+	margin: auto 0;
+	text-transform: uppercase;
+}
+
+.bp-contacts-details__list {
+	list-style: none;
+	margin: 0 0 32px;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.bp-contacts-details__item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 14px;
+	color: #4e4e4e;
+}
+
+.bp-contacts-details__item a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.bp-contacts-details__item a:hover {
+	color: var(--bp-pink);
+}
+
+.bp-contacts-tenants__title {
+	margin: 0 0 16px;
+	font-size: 34px;
+	font-weight: 400;
+	color: #4e4e4e;
+}
+
+.bp-contacts-tenants__text {
+	margin: 0 0 14px;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #4e4e4e;
+	max-width: 460px;
+}
+
+.bp-contacts-tenants__download {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--bp-pink);
+	text-decoration: underline;
+}
+
+.bp-contacts-tenants__hours {
+	margin: 24px 0 0;
+	font-size: 13px;
+	line-height: 1.8;
+	color: #4e4e4e;
+}
+
+/* FAQ
+   ========================================================================== */
+
+.bp-contacts-faq__title {
+	position: relative;
+	margin: 0 0 40px;
+	padding-bottom: 14px;
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.bp-contacts-faq__title::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 48px;
+	height: 3px;
+	background: var(--bp-pink);
+	border-radius: 999px;
+}
+
+.bp-faq__item {
+	border-top: 1px solid var(--bp-border);
+	padding: 24px 0;
+}
+
+.bp-faq__item:last-child {
+	border-bottom: 1px solid var(--bp-border);
+}
+
+.bp-faq__question {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.bp-faq__question::-webkit-details-marker {
+	display: none;
+}
+
+.bp-faq__index {
+	flex-shrink: 0;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--bp-navy);
+}
+
+.bp-faq__question-text {
+	flex: 1;
+	font-size: 16px;
+	font-weight: 500;
+	color: #414141;
+}
+
+.bp-faq__icon {
+	position: relative;
+	flex-shrink: 0;
+	width: 32px;
+	height: 32px;
+	border-radius: 999px;
+	background: var(--bp-lavender);
+	transition: transform 0.2s ease;
+}
+
+.bp-faq__icon::before,
+.bp-faq__icon::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background: var(--bp-navy-dark);
+	transform: translate(-50%, -50%);
+}
+
+.bp-faq__icon::before {
+	width: 12px;
+	height: 2px;
+}
+
+.bp-faq__icon::after {
+	width: 2px;
+	height: 12px;
+}
+
+.bp-faq__item[open] .bp-faq__icon {
+	transform: rotate(45deg);
+}
+
+.bp-faq__answer {
+	margin: 16px 0 0 52px;
+}
+
+.bp-faq__answer p {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.6;
+	color: #737373;
+	max-width: 760px;
+}
+
+/* Mobile
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+	.bp-contacts-info {
+		gap: 32px;
+	}
+	.bp-contacts-tenants__title {
+		font-size: 24px;
+	}
+}
+
+@media (max-width: 782px) {
+	.bp-contacts-details__item {
+		font-size: 12px;
+	}
+	.bp-contacts-tenants__text {
+		font-size: 12px;
+	}
+	.bp-contacts-heading__title {
+		font-size: 28px;
+	}
+
+	.bp-contacts-info {
+		grid-template-columns: 1fr;
+		gap: 32px;
+		margin-top: 24px;
+	}
+
+	.bp-contacts-map img {
+		max-width: 320px;
+		margin: 0 auto;
+	}
+
+	.bp-contacts-tenants__card {
+		background: var(--bp-lavender);
+		border-radius: var(--bp-radius-md);
+		padding: 20px;
+	}
+
+	.bp-contacts-tenants__hours {
+		display: none;
+	}
+
+	.bp-faq__answer {
+		margin-left: 0;
+	}
+
+	.bp-faq__question-text {
+		font-size: 14px;
+	}
+}

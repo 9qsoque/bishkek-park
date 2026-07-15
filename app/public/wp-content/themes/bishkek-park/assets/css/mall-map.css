@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Карта ТЦ (mall map) page (template-parts/map/page-map.php).
+   Loaded only on pages using the Карта ТЦ template; shared pieces
+   (.bp-back-link, .bp-container) come from front-page.css/style.css.
+   ========================================================================== */
+
+.bp-mall-map-heading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 24px;
+}
+
+.bp-mall-map-heading__title {
+	margin: 0;
+	font-size: clamp(32px, 4vw, 48px);
+	font-weight: 800;
+	color: var(--bp-navy);
+	text-align: center;
+}
+
+.bp-mall-map-nav__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	border: none;
+	background: none;
+	padding: 8px;
+	color: var(--bp-navy);
+	cursor: pointer;
+}
+
+.bp-mall-map-nav__btn:hover {
+	color: var(--bp-pink);
+}
+
+.bp-mall-map-nav__btn.is-disabled {
+	opacity: 0.35;
+	cursor: default;
+	pointer-events: none;
+}
+
+/* Prev/next: flank the map, per the design. */
+.bp-mall-map-nav__btn--prev,
+.bp-mall-map-nav__btn--next {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+	padding: 16px;
+}
+
+.bp-mall-map-nav__btn--prev {
+	left: 0;
+}
+
+.bp-mall-map-nav__btn--next {
+	right: 0;
+	/* transform: rotate(180deg); */
+}
+
+.bp-mall-map-nav__btn--prev img,
+.bp-mall-map-nav__btn--next img {
+	width: 70px;
+	height: 70px;
+}
+
+/* Same icon-arrow-left.svg as prev, just mirrored. */
+.bp-mall-map-nav__btn--next img {
+	transform: scaleX(-1);
+}
+
+/* Mobile-only "next floor" button next to the heading title. */
+.bp-mall-map-nav__btn--mobile-next,
+.bp-mall-map-nav__btn--mobile-prev {
+	display: none;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	border-radius: 999px;
+	border: 1px solid var(--bp-border);
+	background: #fff;
+}
+.bp-mall-map-nav__btn--mobile-prev {
+	transform: rotate(180deg);
+}
+
+.bp-mall-map-nav__btn--mobile-next:hover,
+.bp-mall-map-nav__btn--mobile-prev:hover {
+	background: var(--bp-lavender);
+	color: var(--bp-navy);
+}
+
+.bp-mall-map-stage {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 40px;
+	min-height: 320px;
+	touch-action: pan-y;
+}
+
+.bp-mall-map-floor {
+	display: none;
+	margin: 0;
+	width: 100%;
+	max-width: 620px;
+}
+
+.bp-mall-map-floor.is-active {
+	display: block;
+}
+
+.bp-mall-map-floor__img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.bp-mall-map-shops {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+	margin-top: 40px;
+	text-align: center;
+}
+
+.bp-mall-map-shops.is-hidden {
+	display: none;
+}
+
+.bp-mall-map-shops__heading {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.bp-mall-map-shops__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 22px;
+	border-radius: 999px;
+	background: var(--bp-lavender);
+	color: var(--bp-text);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.bp-mall-map-shops__link:hover {
+	background: var(--bp-pink-light);
+}
+
+.bp-mall-map-shops__count {
+	font-weight: 800;
+}
+
+@media (max-width: 782px) {
+	.bp-mall-map-heading {
+		gap: 12px;
+		margin-top: 16px;
+	}
+
+	.bp-mall-map-heading__title {
+		font-size: 24px;
+		text-align: left;
+	}
+
+	.bp-mall-map-nav__btn--mobile-next,
+	.bp-mall-map-nav__btn--mobile-prev {
+		display: inline-flex;
+	}
+
+	/* Replaced by the mobile-next button next to the title above; per the
+	   design the previous-floor control isn't shown on mobile at all. */
+	.bp-mall-map-nav__btn--prev,
+	.bp-mall-map-nav__btn--next {
+		display: none;
+	}
+
+	.bp-mall-map-stage {
+		margin-top: 24px;
+		min-height: 0;
+	}
+
+	.bp-mall-map-shops {
+		margin-top: 28px;
+	}
+}

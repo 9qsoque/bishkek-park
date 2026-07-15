@@ -11,17 +11,18 @@ $bp_nav_items = array(
 	array(
 		'label' => 'Шопинг',
 		'icon'  => 'icon-shopping-bag.svg',
-		'url'   => '#',
+		'url'   => get_post_type_archive_link( 'bp_shop' ),
 	),
 	array(
-		'label' => 'Синематика',
-		'icon'  => 'icon-clapperboard.svg',
-		'url'   => '#',
+		'label'    => 'Синематика',
+		'icon'     => 'icon-clapperboard.svg',
+		'url'      => bishkek_park_get_cinematica_link_url(),
+		'external' => true,
 	),
 	array(
 		'label' => 'Funcity',
 		'icon'  => 'icon-star.svg',
-		'url'   => '#',
+		'url'   => bishkek_park_get_funcity_page_url(),
 	),
 	array(
 		'label' => 'Кафе и рестораны',
@@ -36,7 +37,7 @@ $bp_nav_items = array(
 	array(
 		'label' => 'Контакты',
 		'icon'  => 'icon-phone-outline.svg',
-		'url'   => '#',
+		'url'   => bishkek_park_get_contacts_page_url(),
 	),
 );
 // Nav item labels above are registered as translatable strings in
@@ -112,7 +113,7 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 			<ul class="bp-mobile-menu__list">
 				<?php foreach ( $bp_nav_items as $bp_nav_item ) : ?>
 					<li>
-						<a href="<?php echo esc_url( $bp_nav_item['url'] ); ?>">
+						<a href="<?php echo esc_url( $bp_nav_item['url'] ); ?>"<?php echo ! empty( $bp_nav_item['external'] ) ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
 							<img src="<?php echo esc_url( bishkek_park_icon_url( $bp_nav_item['icon'] ) ); ?>" width="22" height="22" alt="" aria-hidden="true">
 							<?php pll_esc_html_e( $bp_nav_item['label'] ); ?>
 						</a>
@@ -129,10 +130,10 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-clock.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
 					<?php pll_esc_html_e( 'Сегодня до 22:00' ); ?>
 				</span>
-				<span class="bp-info-bar__item">
+				<a class="bp-info-bar__item" href="<?php echo esc_url( bishkek_park_get_mall_map_page_url() ); ?>">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map-pin.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
 					<?php pll_esc_html_e( 'Карта Молла' ); ?>
-				</span>
+				</a>
 			</div>
 			<div class="bp-info-bar__right">
 				<span class="bp-info-bar__item">
