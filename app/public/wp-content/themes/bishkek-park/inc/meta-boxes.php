@@ -50,11 +50,31 @@ function bishkek_park_contacts_meta_fields() {
 }
 
 /**
+ * Value => label options for the `_bp_floor` select field, shared by
+ * `bp_shop` and `bp_cafe`. Values match `bishkek_park_get_map_floors()`
+ * (inc/mall-map.php) so shop/cafe floor assignments always line up with the
+ * floors the interactive map knows about; labels go through
+ * `bishkek_park_get_floor_number_label()` (functions.php) so the basement
+ * floor reads "М1" the same way it does everywhere else on the site. The
+ * leading blank option lets a shop/cafe be saved with no floor set.
+ */
+function bishkek_park_shop_floor_field_options() {
+	$options = array( '' => __( '— Не выбрано —', 'bishkek-park' ) );
+
+	foreach ( bishkek_park_get_map_floors() as $floor ) {
+		$options[ $floor ] = bishkek_park_get_floor_number_label( $floor );
+	}
+
+	return $options;
+}
+
+/**
  * Field definitions per post type: meta key => [ label, description, type,
- * max_length, sanitize_callback ]. `type` is 'text' (default), 'textarea', or
- * 'date' (native HTML5 date-picker input; stored as an ISO `Y-m-d` string —
- * see bishkek_park_format_event_date() in functions.php for turning that
- * into the displayed "15 июля 2025" string).
+ * max_length, sanitize_callback ]. `type` is 'text' (default), 'textarea',
+ * 'select' (dropdown; needs an `options` array of value => label), or 'date'
+ * (native HTML5 date-picker input; stored as an ISO `Y-m-d` string — see
+ * bishkek_park_format_event_date() in functions.php for turning that into
+ * the displayed "15 июля 2025" string).
  * `max_length` (optional) caps the field at N characters — enforced both as
  * the textarea's `maxlength` attribute and as a hard truncation on save, so
  * long-winded content can't break the layout it's rendered into.
@@ -71,7 +91,9 @@ function bishkek_park_meta_fields( $post_type, $post = null ) {
 			'_bp_category'    => array( 'label' => __( 'Категория', 'bishkek-park' ), 'description' => __( 'Например: Одежда и аксессуары', 'bishkek-park' ) ),
 			'_bp_floor'       => array(
 				'label'             => __( 'Этаж', 'bishkek-park' ),
-				'description'       => __( 'Только номер этажа, например: 2 — слово «Этаж» добавляется на сайте автоматически', 'bishkek-park' ),
+				'description'       => __( 'Слово «Этаж» добавляется на сайте автоматически', 'bishkek-park' ),
+				'type'              => 'select',
+				'options'           => bishkek_park_shop_floor_field_options(),
 				'sanitize_callback' => 'bishkek_park_sanitize_shop_floor',
 			),
 			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Подробное описание магазина для его страницы. Не более 400 символов', 'bishkek-park' ), 'type' => 'textarea', 'max_length' => 400 ),
@@ -82,7 +104,9 @@ function bishkek_park_meta_fields( $post_type, $post = null ) {
 			'_bp_category'    => array( 'label' => __( 'Категория', 'bishkek-park' ), 'description' => __( 'Например: Ресторан', 'bishkek-park' ) ),
 			'_bp_floor'       => array(
 				'label'             => __( 'Этаж', 'bishkek-park' ),
-				'description'       => __( 'Только номер этажа, например: 2 — слово «Этаж» добавляется на сайте автоматически', 'bishkek-park' ),
+				'description'       => __( 'Слово «Этаж» добавляется на сайте автоматически', 'bishkek-park' ),
+				'type'              => 'select',
+				'options'           => bishkek_park_shop_floor_field_options(),
 				'sanitize_callback' => 'bishkek_park_sanitize_shop_floor',
 			),
 			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Подробное описание кафе/ресторана для его страницы. Не более 400 символов', 'bishkek-park' ), 'type' => 'textarea', 'max_length' => 400 ),
@@ -99,6 +123,14 @@ function bishkek_park_meta_fields( $post_type, $post = null ) {
 			'_bp_text'         => array( 'label' => __( 'Текст', 'bishkek-park' ), 'description' => __( 'Короткое описание под заголовком', 'bishkek-park' ), 'type' => 'textarea' ),
 			'_bp_button_label' => array( 'label' => __( 'Текст кнопки (необязательно)', 'bishkek-park' ), 'description' => __( 'Например: Подробнее. Кнопка не показывается, если текст или ссылка не заполнены', 'bishkek-park' ) ),
 			'_bp_button_url'   => array( 'label' => __( 'Ссылка кнопки', 'bishkek-park' ), 'description' => __( 'Куда ведёт кнопка', 'bishkek-park' ) ),
+		),
+		'bp_leader' => array(
+			'_bp_position'    => array( 'label' => __( 'Должность', 'bishkek-park' ), 'description' => __( 'Например: Генеральный директор. Имя сотрудника вводится как заголовок записи', 'bishkek-park' ) ),
+			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Короткое описание обязанностей сотрудника', 'bishkek-park' ), 'type' => 'textarea', 'max_length' => 300 ),
+		),
+		'bp_milestone' => array(
+			'_bp_year'        => array( 'label' => __( 'Год', 'bishkek-park' ), 'description' => __( 'Например: 2013. Название этапа вводится как заголовок записи', 'bishkek-park' ) ),
+			'_bp_description' => array( 'label' => __( 'Описание', 'bishkek-park' ), 'description' => __( 'Короткое описание этапа', 'bishkek-park' ), 'type' => 'textarea', 'max_length' => 300 ),
 		),
 		'page'     => array(
 			'_bp_seo_description' => array(
@@ -120,7 +152,7 @@ function bishkek_park_meta_fields( $post_type, $post = null ) {
  * Register the meta box on each of our post types' edit screens.
  */
 function bishkek_park_add_meta_boxes() {
-	foreach ( array( 'bp_shop', 'bp_cafe', 'bp_event', 'bp_banner', 'page' ) as $post_type ) {
+	foreach ( array( 'bp_shop', 'bp_cafe', 'bp_event', 'bp_banner', 'bp_leader', 'bp_milestone', 'page' ) as $post_type ) {
 		add_meta_box(
 			'bishkek_park_fields',
 			__( 'Данные для сайта', 'bishkek-park' ),
@@ -163,6 +195,16 @@ function bishkek_park_render_meta_box( $post ) {
 					name="<?php echo esc_attr( $key ); ?>"
 					value="<?php echo esc_attr( $value ); ?>"
 				>
+			<?php elseif ( 'select' === $type ) : ?>
+				<select
+					id="<?php echo esc_attr( $key ); ?>"
+					name="<?php echo esc_attr( $key ); ?>"
+					class="widefat"
+				>
+					<?php foreach ( $field['options'] as $option_value => $option_label ) : ?>
+						<option value="<?php echo esc_attr( $option_value ); ?>" <?php selected( $value, $option_value ); ?>><?php echo esc_html( $option_label ); ?></option>
+					<?php endforeach; ?>
+				</select>
 			<?php else : ?>
 				<input
 					type="text"

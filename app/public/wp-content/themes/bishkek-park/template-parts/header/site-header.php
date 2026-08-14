@@ -35,9 +35,20 @@ $bp_nav_items = array(
 		'url'   => get_post_type_archive_link( 'bp_event' ),
 	),
 	array(
+		'label'       => 'Карта ТЦ',
+		'icon'        => 'icon-map-pin-black.svg',
+		'url'         => bishkek_park_get_mall_map_page_url(),
+		'mobile_only' => true,
+	),
+	array(
 		'label' => 'Контакты',
 		'icon'  => 'icon-phone-outline.svg',
 		'url'   => bishkek_park_get_contacts_page_url(),
+	),
+	array(
+		'label' => 'О нас',
+		'icon'  => 'icon-user.svg',
+		'url'   => bishkek_park_get_about_page_url(),
 	),
 );
 // Nav item labels above are registered as translatable strings in
@@ -124,9 +135,15 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 
 	<nav id="bp-mobile-menu" class="bp-mobile-menu" aria-hidden="true">
 		<div class="bp-container bp-mobile-menu__inner">
+			<div class="bp-mobile-menu__info">
+				<span class="bp-info-bar__item">
+					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-clock.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
+					<?php pll_esc_html_e( 'Сегодня до 22:00' ); ?>
+				</span>
+			</div>
 			<ul class="bp-mobile-menu__list">
 				<?php foreach ( $bp_nav_items as $bp_nav_item ) : ?>
-					<li>
+					<li<?php echo ! empty( $bp_nav_item['mobile_only'] ) ? ' class="bp-mobile-menu__list-item--mobile-only"' : ''; ?>>
 						<a href="<?php echo esc_url( $bp_nav_item['url'] ); ?>"<?php echo ! empty( $bp_nav_item['external'] ) ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
 							<img src="<?php echo esc_url( bishkek_park_icon_url( $bp_nav_item['icon'] ) ); ?>" width="22" height="22" alt="" aria-hidden="true">
 							<?php pll_esc_html_e( $bp_nav_item['label'] ); ?>
@@ -146,7 +163,7 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 				</span>
 				<a class="bp-info-bar__item" href="<?php echo esc_url( bishkek_park_get_mall_map_page_url() ); ?>">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map-pin.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
-					<?php pll_esc_html_e( 'Карта Молла' ); ?>
+					<?php pll_esc_html_e( 'Карта ТЦ' ); ?>
 				</a>
 			</div>
 			<div class="bp-info-bar__right">

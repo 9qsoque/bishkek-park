@@ -103,6 +103,7 @@
 }
 
 .bp-mall-map-floor {
+	position: relative;
 	display: none;
 	margin: 0;
 	width: 100%;
@@ -117,6 +118,97 @@
 	display: block;
 	width: 100%;
 	height: auto;
+}
+
+/* Clickable/hoverable shop zones: bishkek_park_render_map_svg() (see
+   inc/mall-map.php) inlines the floor SVG and wraps each assigned unit's own
+   room-outline <path> in one of these <a> tags, so the hover/click area is
+   the exact drawn shape — not an approximated box. */
+.bp-mall-map-unit-link {
+	cursor: pointer;
+}
+
+.bp-mall-map-unit-link path {
+	/* A handful of units are outline-only shapes (fill="none", just a
+	   stroke) — by SVG default, an unfilled path only reacts to the
+	   pointer over its stroke line, not its interior, which is why hover
+	   would otherwise only trigger along the drawn edge. `fill` here makes
+	   the whole shape hittable regardless of its actual fill/stroke. */
+	pointer-events: fill;
+	transition: fill 0.15s;
+}
+
+.bp-mall-map-unit-link:hover path,
+.bp-mall-map-unit-link:focus-visible path {
+	fill: #d60055;
+}
+
+.bp-mall-map-unit-label {
+	font-family: var(--bp-font-family);
+	font-size: 28px;
+	font-weight: 700;
+	fill: var(--bp-navy-dark);
+	pointer-events: none;
+	transition: fill 0.15s;
+}
+
+.bp-mall-map-unit-link:hover .bp-mall-map-unit-label,
+.bp-mall-map-unit-link:focus-visible .bp-mall-map-unit-label {
+	fill: #fff;
+}
+
+/* Fallback for units too small to fit their name at any readable size:
+   assets/js/mall-map.js toggles .is-compact on the wrapping <g> (see
+   bishkek_park_get_map_label_markup() in inc/mall-map.php) to swap the name
+   out for a bare number, sized down the same way the name is — no
+   background shape, it just sits inside the unit's own outline; the
+   matching name is listed in the .bp-mall-map-legend below the plan. */
+.bp-mall-map-unit-fallback__num {
+	display: none;
+	font-family: var(--bp-font-family);
+	font-size: 24px;
+	font-weight: 700;
+	fill: var(--bp-navy-dark);
+	pointer-events: none;
+	transition: fill 0.15s;
+}
+
+.bp-mall-map-unit-label-group.is-compact .bp-mall-map-unit-label {
+	display: none;
+}
+
+.bp-mall-map-unit-label-group.is-compact .bp-mall-map-unit-fallback__num {
+	display: inline;
+}
+
+.bp-mall-map-unit-link:hover .bp-mall-map-unit-fallback__num,
+.bp-mall-map-unit-link:focus-visible .bp-mall-map-unit-fallback__num {
+	fill: #fff;
+}
+
+/* List of number -> name for units the plan above only had room to label
+   with a number (see .bp-mall-map-unit-fallback). Populated by
+   assets/js/mall-map.js per floor; stays [hidden] (see the `hidden`
+   attribute in template-parts/map/page-map.php) when a floor has none. */
+.bp-mall-map-legend {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 160px, 1fr ) );
+	gap: 6px 24px;
+	max-width: 620px;
+	margin: 20px auto 0;
+	padding: 0;
+	list-style: none;
+	font-size: 14px;
+	color: var(--bp-text);
+}
+
+.bp-mall-map-legend[hidden] {
+	display: none;
+}
+
+.bp-mall-map-legend__num {
+	font-weight: 700;
+	color: var(--bp-navy-dark);
 }
 
 .bp-mall-map-shops {
@@ -189,5 +281,10 @@
 
 	.bp-mall-map-shops {
 		margin-top: 28px;
+	}
+
+	.bp-mall-map-legend {
+		grid-template-columns: repeat( 2, 1fr );
+		gap: 6px 16px;
 	}
 }

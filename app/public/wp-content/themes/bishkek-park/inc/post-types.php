@@ -266,6 +266,65 @@ function bishkek_park_event_single_template( $template ) {
 add_filter( 'single_template', 'bishkek_park_event_single_template' );
 
 /**
+ * Register the "Leadership" post type (Руководство section on the О нас
+ * page, template-parts/about/page-about.php) — one entry per management team
+ * member (photo, position, name via the native title, short bio). Ordered
+ * via menu_order like the other card CPTs; the About page hides the whole
+ * section if none are published yet (see bishkek_park_leaders_query() usage
+ * there) instead of showing an empty heading.
+ */
+function bishkek_park_register_leader_post_type() {
+	register_post_type(
+		'bp_leader',
+		array(
+			'label'        => __( 'Руководство', 'bishkek-park' ),
+			'labels'       => array(
+				'name'          => __( 'Руководство', 'bishkek-park' ),
+				'singular_name' => __( 'Сотрудник', 'bishkek-park' ),
+				'add_new_item'  => __( 'Добавить сотрудника', 'bishkek-park' ),
+				'edit_item'     => __( 'Редактировать сотрудника', 'bishkek-park' ),
+			),
+			'public'       => true,
+			'show_in_menu' => true,
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-groups',
+			'supports'     => array( 'title', 'thumbnail', 'page-attributes' ),
+			'has_archive'  => false,
+			'rewrite'      => array( 'slug' => 'leadership' ),
+		)
+	);
+}
+add_action( 'init', 'bishkek_park_register_leader_post_type' );
+
+/**
+ * Register the "Milestones" post type (Этапы нашего развития section on the
+ * О нас page) — one entry per year/stage (year, title via the native title,
+ * short text). Same ordering/empty-section pattern as bp_leader above.
+ */
+function bishkek_park_register_milestone_post_type() {
+	register_post_type(
+		'bp_milestone',
+		array(
+			'label'        => __( 'Этапы развития', 'bishkek-park' ),
+			'labels'       => array(
+				'name'          => __( 'Этапы развития', 'bishkek-park' ),
+				'singular_name' => __( 'Этап', 'bishkek-park' ),
+				'add_new_item'  => __( 'Добавить этап', 'bishkek-park' ),
+				'edit_item'     => __( 'Редактировать этап', 'bishkek-park' ),
+			),
+			'public'       => true,
+			'show_in_menu' => true,
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-chart-line',
+			'supports'     => array( 'title', 'page-attributes' ),
+			'has_archive'  => false,
+			'rewrite'      => array( 'slug' => 'milestones' ),
+		)
+	);
+}
+add_action( 'init', 'bishkek_park_register_milestone_post_type' );
+
+/**
  * Register the "Banners" post type (homepage hero slider).
  */
 function bishkek_park_register_banner_post_type() {

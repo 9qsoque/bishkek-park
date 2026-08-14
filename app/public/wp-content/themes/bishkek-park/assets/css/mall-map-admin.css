@@ -1,0 +1,100 @@
+/* ==========================================================================
+   "Карта ТЦ" admin settings page (inc/mall-map.php) — floor plan preview
+   with numbered zones next to the assignment table. The plan is the real
+   floor SVG inlined via bishkek_park_render_map_svg(), so the numbered
+   zones are the actual room-outline <path> elements (data-bp-unit="..."),
+   not an approximated overlay.
+   ========================================================================== */
+
+.bp-map-admin-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-top: 16px;
+}
+
+.bp-map-admin-tabs__btn {
+	padding: 8px 16px;
+	border: 1px solid #c3c4c7;
+	border-bottom: none;
+	background: #f0f0f1;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.bp-map-admin-tabs__btn.is-active {
+	background: #fff;
+	border-bottom: 1px solid #fff;
+	color: #d60055;
+}
+
+.bp-map-admin {
+	display: none;
+	flex-wrap: wrap;
+	gap: 32px;
+	align-items: flex-start;
+	padding: 20px;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+}
+
+.bp-map-admin.is-active {
+	display: flex;
+}
+
+.bp-map-admin__plan {
+	flex: 0 0 auto;
+	width: 100%;
+	max-width: 760px;
+}
+
+.bp-map-admin__plan .bp-mall-map-floor__img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.bp-map-admin__plan path[data-bp-unit] {
+	cursor: pointer;
+	/* See assets/css/mall-map.css for why this is needed: some units are
+	   outline-only shapes (fill="none"), which by SVG default only react
+	   to the pointer along their stroke, not their interior. */
+	pointer-events: fill;
+	transition: fill 0.15s;
+}
+
+.bp-map-admin__plan path[data-bp-unit].is-highlighted {
+	fill: rgba(214, 0, 85, 0.35) !important;
+}
+
+.bp-map-admin-unit-number {
+	font-size: 15px;
+	font-weight: 700;
+	fill: #d60055;
+	pointer-events: none;
+}
+
+.bp-map-admin__table {
+	flex: 1 1 420px;
+	min-width: 280px;
+	max-width: 720px;
+}
+
+.bp-map-admin__table-num {
+	width: 32px;
+	text-align: center;
+}
+
+.bp-map-admin__table tr.is-highlighted {
+	background: #fcd9e4;
+}
+
+.bp-map-admin__table input[type="text"],
+.bp-map-admin__table input[type="url"] {
+	width: 100%;
+	max-width: 260px;
+}
+
+.bp-map-admin__table input[type="text"] + input[type="url"] {
+	margin-top: 4px;
+}

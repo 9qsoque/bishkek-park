@@ -76,23 +76,32 @@ $bp_now = ( new DateTime( 'now', new DateTimeZone( '+06:00' ) ) )->format( 'H:i'
 						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-movie-placeholder.svg' ) ); ?>" width="26" height="26" alt="">
 					</div>
 				<?php endif; ?>
+				<?php
+				// Times are sorted chronologically, so the first one that
+				// hasn't passed yet is the next upcoming session. On mobile
+				// only this single nearest session is shown (see
+				// .bp-movie-card__next-time in front-page.css); the full
+				// list of pills stays for desktop.
+				$bp_next_time = null;
+				foreach ( $bp_movie['times'] as $bp_time ) {
+					if ( $bp_time >= $bp_now ) {
+						$bp_next_time = $bp_time;
+						break;
+					}
+				}
+				?>
 				<div class="bp-movie-card__body">
 					<div class="bp-movie-card__meta">
-						<span class="bp-movie-card__label"><?php pll_esc_html_e( 'Сегодня в кино' ); ?></span>
+						<span class="bp-movie-card__label">
+							<span class="bp-movie-card__label-full"><?php pll_esc_html_e( 'Сегодня в кино' ); ?></span>
+							<span class="bp-movie-card__label-short"><?php pll_esc_html_e( 'Сегодня' ); ?></span>
+						</span>
+						<?php if ( $bp_next_time ) : ?>
+							<span class="bp-movie-card__next-time"><?php echo esc_html( $bp_next_time ); ?></span>
+						<?php endif; ?>
 					</div>
 					<h3 class="bp-movie-card__title"><?php echo esc_html( $bp_movie['title'] ); ?></h3>
 					<?php if ( $bp_movie['times'] ) : ?>
-						<?php
-						// Times are sorted chronologically, so the first one that
-						// hasn't passed yet is the next upcoming session.
-						$bp_next_time = null;
-						foreach ( $bp_movie['times'] as $bp_time ) {
-							if ( $bp_time >= $bp_now ) {
-								$bp_next_time = $bp_time;
-								break;
-							}
-						}
-						?>
 						<div class="bp-movie-card__times">
 							<?php foreach ( $bp_movie['times'] as $bp_time ) : ?>
 								<?php

@@ -17,6 +17,9 @@ require BISHKEK_PARK_DIR . '/inc/translatable-strings.php';
 require BISHKEK_PARK_DIR . '/inc/seo.php';
 require BISHKEK_PARK_DIR . '/inc/cinematica-settings.php';
 require BISHKEK_PARK_DIR . '/inc/cinematica-api.php';
+require BISHKEK_PARK_DIR . '/inc/parking-settings.php';
+require BISHKEK_PARK_DIR . '/inc/mall-map.php';
+require BISHKEK_PARK_DIR . '/inc/admin-menu.php';
 
 /**
  * Returns the inline logo SVG markup so its fill can follow CSS `color` (currentColor).
@@ -65,6 +68,21 @@ function bishkek_park_get_localized_post_id( $post_id ) {
 }
 
 /**
+ * The display text for a floor's own number/code, e.g. "2" or (for the
+ * basement level, stored internally as "-1" — see bishkek_park_get_map_floors()
+ * in inc/mall-map.php) "М1". Only the display text changes here; the
+ * underlying floor key stays "-1" everywhere it's used as data (post meta,
+ * map assignments, the `{floor}-floor.svg` filename, the `?floor=` query
+ * arg) so existing shop assignments and URLs keep working. Every place that
+ * shows a floor number to a visitor or editor should go through this
+ * (directly, or via bishkek_park_get_shop_floor_label() below) instead of
+ * echoing the raw floor value.
+ */
+function bishkek_park_get_floor_number_label( $floor ) {
+	return '-1' === $floor ? 'М1' : $floor;
+}
+
+/**
  * Formats a bp_shop's raw `_bp_floor` meta value (stored as a bare number,
  * e.g. "2") into the "Этаж 2" label shown on shop cards, catalog filters,
  * and the shop detail page, translated via Polylang. Returns '' if no floor
@@ -77,7 +95,7 @@ function bishkek_park_get_shop_floor_label( $floor ) {
 		return '';
 	}
 
-	return pll_esc_html__( 'Этаж' ) . ' ' . esc_html( $floor );
+	return pll_esc_html__( 'Этаж' ) . ' ' . esc_html( bishkek_park_get_floor_number_label( $floor ) );
 }
 
 /**
@@ -129,6 +147,7 @@ function bishkek_park_register_page_templates( $templates ) {
 	$templates['template-parts/funcity/page-funcity.php']   = 'Funcity';
 	$templates['template-parts/contacts/page-contacts.php'] = 'Контакты';
 	$templates['template-parts/map/page-map.php']           = 'Карта ТЦ';
+	$templates['template-parts/about/page-about.php']       = 'О нас';
 
 	return $templates;
 }
@@ -227,6 +246,32 @@ function bishkek_park_get_mall_map_page_url() {
 }
 
 /**
+ * URL of the page the О нас (about) template is assigned to, for nav links.
+ * Same pattern as bishkek_park_get_funcity_page_url() above.
+ */
+function bishkek_park_get_about_page_url() {
+	static $url = null;
+
+	if ( null === $url ) {
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'lang'           => function_exists( 'pll_default_language' ) ? pll_default_language() : '',
+				'meta_key'       => '_wp_page_template',
+				'meta_value'     => 'template-parts/about/page-about.php',
+			)
+		);
+
+		$url = $pages ? get_permalink( bishkek_park_get_localized_post_id( $pages[0] ) ) : '#';
+	}
+
+	return $url;
+}
+
+/**
  * Basic theme setup: supported features and the mobile nav menu location.
  */
 function bishkek_park_setup() {
@@ -277,6 +322,7 @@ function bishkek_park_enqueue_assets() {
 	$bp_is_funcity       = is_page_template( 'template-parts/funcity/page-funcity.php' );
 	$bp_is_contacts      = is_page_template( 'template-parts/contacts/page-contacts.php' );
 	$bp_is_mall_map      = is_page_template( 'template-parts/map/page-map.php' );
+	$bp_is_about         = is_page_template( 'template-parts/about/page-about.php' );
 
 	// front-page.css/.bp-shops-grid & .bp-shop-card also back the shop and
 	// cafe catalog archives' card grids and the single shop/cafe pages'
@@ -286,8 +332,9 @@ function bishkek_park_enqueue_assets() {
 	// single event page reuse the same file for .bp-back-link and its
 	// .bp-events-grid/.bp-event-card (already defined there for the homepage
 	// teaser section). The Funcity page reuses its .bp-back-link and
-	// .bp-section styles the same way, as does the Карта ТЦ (mall map) page.
-	if ( is_front_page() || $bp_is_shop_catalog || $bp_is_single_shop || $bp_is_cafe_catalog || $bp_is_single_cafe || $bp_is_event_catalog || $bp_is_single_event || $bp_is_funcity || $bp_is_contacts || $bp_is_mall_map ) {
+	// .bp-section styles the same way, as does the Карта ТЦ (mall map) page
+	// and the О нас (about) page.
+	if ( is_front_page() || $bp_is_shop_catalog || $bp_is_single_shop || $bp_is_cafe_catalog || $bp_is_single_cafe || $bp_is_event_catalog || $bp_is_single_event || $bp_is_funcity || $bp_is_contacts || $bp_is_mall_map || $bp_is_about ) {
 		wp_enqueue_style(
 			'bishkek-park-front-page',
 			BISHKEK_PARK_URI . '/assets/css/front-page.css',
@@ -368,13 +415,25 @@ function bishkek_park_enqueue_assets() {
 		);
 	}
 
-	// funcity.css's .bp-funcity-* classes are Funcity-template-only.
-	if ( $bp_is_funcity ) {
+	// funcity.css's .bp-funcity-* classes are Funcity-template-only. The About
+	// page also loads it, since its "Остались вопросы?" CTA reuses the
+	// .bp-funcity-cta markup/classes verbatim instead of duplicating them.
+	if ( $bp_is_funcity || $bp_is_about ) {
 		wp_enqueue_style(
 			'bishkek-park-funcity',
 			BISHKEK_PARK_URI . '/assets/css/funcity.css',
 			array( 'bishkek-park-front-page' ),
 			filemtime( BISHKEK_PARK_DIR . '/assets/css/funcity.css' )
+		);
+	}
+
+	// about.css's .bp-about-* classes are About-page-only.
+	if ( $bp_is_about ) {
+		wp_enqueue_style(
+			'bishkek-park-about',
+			BISHKEK_PARK_URI . '/assets/css/about.css',
+			array( 'bishkek-park-front-page' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/css/about.css' )
 		);
 	}
 

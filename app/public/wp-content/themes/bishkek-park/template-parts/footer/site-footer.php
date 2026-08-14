@@ -68,7 +68,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 
 		<div class="bp-site-footer__mobile-utility">
-			<a href="<?php echo esc_url( bishkek_park_get_mall_map_page_url() ); ?>"><?php pll_esc_html_e( 'План молла' ); ?></a>
+			<a href="<?php echo esc_url( bishkek_park_get_mall_map_page_url() ); ?>"><?php pll_esc_html_e( 'План ТЦ' ); ?></a>
 			<a href="#"><?php pll_esc_html_e( 'Парковка' ); ?></a>
 		</div>
 

@@ -3,7 +3,7 @@
    ========================================================================== */
 
 .bp-section {
-	margin-top: 56px;
+	margin-top: 90px;
 }
 
 .bp-section__header {
@@ -223,7 +223,9 @@
 	text-decoration: none;
 	color: inherit;
 	box-shadow: 0px -20px 40px -15px rgba(234, 237, 255, 1);
-	transition: transform 0.25s ease, box-shadow 0.25s ease;
+	transition:
+		transform 0.25s ease,
+		box-shadow 0.25s ease;
 }
 
 .bp-category-card:hover {
@@ -475,7 +477,10 @@
 	border: 1px solid var(--bp-border);
 	border-radius: var(--bp-radius-md);
 	padding: 18px;
-	transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+	transition:
+		transform 0.25s ease,
+		border-color 0.25s ease,
+		box-shadow 0.25s ease;
 }
 
 .bp-movie-card:hover {
@@ -525,6 +530,17 @@
 	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 0.03em;
+}
+
+.bp-movie-card__next-time {
+	display: none;
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--bp-text);
+}
+
+.bp-movie-card__label-short {
+	display: none;
 }
 
 .bp-movie-card__title {
@@ -601,7 +617,9 @@
 	background: #fff;
 	border-radius: var(--bp-radius-md);
 	overflow: hidden;
-	transition: transform 0.25s ease, box-shadow 0.25s ease;
+	transition:
+		transform 0.25s ease,
+		box-shadow 0.25s ease;
 }
 
 .bp-event-card:hover {
@@ -918,15 +936,10 @@
 		color: var(--bp-text-muted);
 	}
 
-	.bp-parking .bp-btn {
-		order: 2;
-		width: 100%;
-		justify-content: center;
-	}
-
 	.bp-cinema-section .bp-movies-grid,
 	.bp-cinema-section .bp-movies-grid--slider {
 		display: flex;
+		gap: 12px;
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
 		scroll-behavior: smooth;
@@ -940,32 +953,47 @@
 	}
 
 	.bp-cinema-section .bp-movie-slide {
-		display: flex;
-		flex-direction: column;
-		flex: 0 0 100%;
-		gap: 16px;
-		scroll-snap-align: start;
+		display: contents;
 	}
 
 	.bp-cinema-section .bp-movie-card {
+		flex: 0 0 calc((100% - 12px) / 2.1);
 		flex-direction: column;
 		gap: 0;
 		background: #fff;
-		border: none;
+		border: 1px solid var(--bp-border);
 		border-radius: var(--bp-radius-md);
 		padding: 0;
 		overflow: hidden;
+		scroll-snap-align: start;
 	}
 
 	.bp-cinema-section .bp-movie-card__poster {
 		width: 100%;
 		height: auto;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: 1 / 1;
 		border-radius: 0;
 	}
 
 	.bp-cinema-section .bp-movie-card__body {
-		padding: 16px;
+		padding: 12px;
+	}
+
+	.bp-cinema-section .bp-movie-card__meta {
+		justify-content: space-between;
+		margin-bottom: 6px;
+	}
+
+	.bp-cinema-section .bp-movie-card__title {
+		font-size: 15px;
+	}
+
+	.bp-cinema-section .bp-movie-card__times {
+		display: none;
+	}
+
+	.bp-cinema-section .bp-movie-card__next-time {
+		display: inline-block;
 	}
 
 	.bp-events-section .bp-events-grid,
@@ -1063,5 +1091,21 @@
 	.bp-leasing__actions .bp-btn {
 		width: 100%;
 		justify-content: center;
+	}
+
+	.bp-cinema-section .bp-movie-card__label-full {
+		display: none;
+	}
+
+	.bp-cinema-section .bp-movie-card__label-short {
+		display: inline;
+	}
+
+	.bp-cinema-section .bp-movie-card__title {
+		margin-top: 10px;
+	}
+
+	.bp-cinema-section .bp-movie-card__next-time {
+		font-size: 11px;
 	}
 }

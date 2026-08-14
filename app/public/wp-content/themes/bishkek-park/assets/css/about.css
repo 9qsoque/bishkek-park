@@ -1,0 +1,263 @@
+/* ==========================================================================
+   About page (template-parts/about/page-about.php).
+   Loaded only on pages using the О нас template; shared pieces
+   (.bp-back-link, .bp-section, .bp-section__title) come from front-page.css,
+   the closing CTA reuses .bp-funcity-cta from funcity.css, .bp-btn from
+   style.css.
+   ========================================================================== */
+
+/* Hero + feature cards
+   ========================================================================== */
+
+.bp-about-hero {
+	margin-top: 32px;
+	text-align: center;
+}
+
+.bp-about-hero__image {
+	display: block;
+	width: 180px;
+	height: auto;
+	margin: 0 auto 24px;
+}
+
+.bp-about-hero__title {
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 1.2;
+	max-width: 760px;
+	margin: 0 auto 16px;
+}
+
+.bp-about-hero__text {
+	font-size: 15px;
+	color: var(--bp-text-muted);
+	max-width: 640px;
+	margin: 0 auto;
+}
+
+.bp-about-features {
+	margin-top: 40px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	text-align: left;
+}
+
+.bp-about-feature-card {
+	background: #fff;
+	border: 1px solid var(--bp-border);
+	border-radius: 24px;
+	padding: 28px 24px;
+	box-shadow: 0px 10px 30px -20px rgba(18, 21, 28, 0.2);
+	text-align: center;
+}
+
+.bp-about-feature-card__icon {
+	display: inline-flex;
+	margin-bottom: 16px;
+}
+
+.bp-about-feature-card__title {
+	font-size: 16px;
+	font-weight: 700;
+	margin: 0 0 8px;
+}
+
+.bp-about-feature-card__text {
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--bp-text-muted);
+	margin: 0;
+}
+
+/* Leadership
+   ========================================================================== */
+
+.bp-about-leadership__title {
+	font-size: 36px;
+	font-weight: 700;
+}
+
+.bp-leaders-grid {
+	margin-top: 44px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 32px;
+}
+
+.bp-leaders-grid--slider {
+	display: flex;
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scroll-behavior: smooth;
+	scrollbar-width: none;
+	padding-bottom: 2px;
+}
+
+.bp-leaders-grid--slider::-webkit-scrollbar {
+	display: none;
+}
+
+.bp-leaders-grid--slider > .bp-leader-card {
+	flex: 0 0 calc((100% - 2 * 32px) / 3);
+	scroll-snap-align: start;
+}
+
+.bp-leader-card__image {
+	display: block;
+	aspect-ratio: 4 / 3.2;
+	border-radius: var(--bp-radius-md);
+	overflow: hidden;
+	background: var(--bp-lavender);
+	margin-bottom: 20px;
+}
+
+.bp-leader-card__photo {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.bp-leader-card__position {
+	display: block;
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--bp-pink);
+	text-transform: uppercase;
+	margin-bottom: 6px;
+}
+
+.bp-leader-card__name {
+	font-size: 20px;
+	font-weight: 700;
+	margin: 0 0 8px;
+}
+
+.bp-leader-card__text {
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--bp-text-muted);
+	margin: 0;
+}
+
+/* Milestones
+   ========================================================================== */
+
+.bp-about-section-text {
+	margin: 14px 0 0;
+	font-size: 14px;
+	color: var(--bp-text-muted);
+}
+
+.bp-milestones-grid {
+	margin-top: 36px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+}
+
+.bp-milestone-card {
+	background: #fff;
+	border: 1px solid var(--bp-border);
+	border-radius: 24px;
+	padding: 24px;
+}
+
+.bp-milestone-card__year {
+	display: block;
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--bp-pink);
+	margin-bottom: 10px;
+}
+
+.bp-milestone-card__title {
+	font-size: 15px;
+	font-weight: 700;
+	margin: 0 0 8px;
+}
+
+.bp-milestone-card__text {
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--bp-text-muted);
+	margin: 0;
+}
+
+/* Mobile
+   ========================================================================== */
+
+@media (max-width: 782px) {
+	.bp-about-hero {
+		margin-top: 20px;
+	}
+
+	.bp-about-hero__image {
+		width: 140px;
+		margin-bottom: 20px;
+	}
+
+	.bp-about-hero__title {
+		font-size: 24px;
+	}
+
+	.bp-about-hero__text {
+		font-size: 14px;
+	}
+
+	.bp-about-features {
+		margin-top: 28px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.bp-about-feature-card {
+		display: flex;
+		align-items: flex-start;
+		gap: 16px;
+		border-radius: 20px;
+		padding: 18px;
+		text-align: left;
+	}
+
+	.bp-about-feature-card__icon {
+		flex-shrink: 0;
+		width: 44px;
+		height: 44px;
+		align-items: center;
+		justify-content: center;
+		border-radius: 14px;
+		background: var(--bp-pink-light);
+		margin-bottom: 0;
+	}
+
+	.bp-about-feature-card__body {
+		min-width: 0;
+	}
+
+	.bp-leaders-grid,
+	.bp-leaders-grid--slider {
+		margin-top: 28px;
+		display: flex;
+		flex-direction: column;
+		overflow-x: visible;
+		gap: 24px;
+	}
+
+	.bp-leaders-grid--slider > .bp-leader-card {
+		flex-basis: auto;
+	}
+
+	.bp-milestones-grid {
+		margin-top: 24px;
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+
+	.bp-section__header {
+		margin: 0 0 25px;
+	}
+}

@@ -44,10 +44,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<div class="bp-leasing__actions">
 			<a href="#" class="bp-btn bp-btn--primary"><?php pll_esc_html_e( 'Оставить заявку' ); ?></a>
-			<a href="#" class="bp-btn bp-btn--outline">
+			<!-- <a href="#" class="bp-btn bp-btn--outline">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-download.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
 				<?php pll_esc_html_e( 'Скачать медиакит' ); ?>
-			</a>
+			</a> -->
 		</div>
 	</div>
 </section>
