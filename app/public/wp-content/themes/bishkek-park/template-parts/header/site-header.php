@@ -36,7 +36,7 @@ $bp_nav_items = array(
 	),
 	array(
 		'label'       => 'Карта ТЦ',
-		'icon'        => 'icon-map-pin-black.svg',
+		'icon'        => 'icon-nav-map.svg',
 		'url'         => bishkek_park_get_mall_map_page_url(),
 		'mobile_only' => true,
 	),
