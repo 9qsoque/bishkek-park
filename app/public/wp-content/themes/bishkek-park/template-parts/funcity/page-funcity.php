@@ -62,15 +62,15 @@ $bp_funcity_rules = array(
 get_header();
 ?>
 <main class="bp-main bp-funcity">
-	<div class="bp-container bp-back-link-wrap">
+	<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 		<a class="bp-back-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 			<?php pll_esc_html_e( 'Назад на главную' ); ?>
 		</a>
 	</div>
 
-	<section class="bp-container bp-funcity-hero">
-		<div class="bp-container bp-funcity-hero__inner">
+	<section class="bp-container bp-funcity-hero bp-pattern bp-pattern--light">
+		<div class="bp-container bp-funcity-hero__inner" data-bp-reveal>
 			<div class="bp-funcity-hero__heading">
 				<img class="bp-funcity-hero__logo" src="<?php echo esc_url( bishkek_park_icon_url( 'funcityLogo.svg' ) ); ?>" width="121" height="90" alt="">
 				<h1 class="bp-funcity-hero__title"><?php pll_esc_html_e( 'FUNCITY' ); ?></h1>
@@ -80,7 +80,7 @@ get_header();
 		</div>
 	</section>
 
-	<div class="bp-funcity-gallery">
+	<div class="bp-funcity-gallery" data-bp-reveal-stagger>
 		<?php foreach ( $bp_funcity_gallery_order as $bp_funcity_zone_key ) : ?>
 			<?php $bp_funcity_zone = $bp_funcity_zones[ $bp_funcity_zone_key ]; ?>
 			<figure class="bp-funcity-gallery__item bp-funcity-gallery__item--<?php echo esc_attr( $bp_funcity_zone_key ); ?>">
@@ -98,13 +98,13 @@ get_header();
 	</div>
 
 	<section id="funcity-zones" class="bp-container bp-section bp-funcity-zones">
-		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Игровые зоны' ); ?></h2>
-		<p class="bp-funcity-section-text"><?php pll_esc_html_e( 'Подберите зону по возрасту и интересам - для малышей, старших детей и всей семьи.' ); ?></p>
+		<h2 class="bp-section__title" data-bp-reveal><?php pll_esc_html_e( 'Игровые зоны' ); ?></h2>
+		<p class="bp-funcity-section-text" data-bp-reveal><?php pll_esc_html_e( 'Подберите зону по возрасту и интересам - для малышей, старших детей и всей семьи.' ); ?></p>
 
-		<div class="bp-funcity-zones__grid">
+		<div class="bp-funcity-zones__grid" data-bp-reveal-stagger>
 			<?php foreach ( $bp_funcity_zones_order as $bp_funcity_zone_key ) : ?>
 				<?php $bp_funcity_zone = $bp_funcity_zones[ $bp_funcity_zone_key ]; ?>
-				<article class="bp-funcity-zone">
+				<article class="bp-funcity-zone bp-funcity-zone--<?php echo esc_attr( $bp_funcity_zone_key ); ?>">
 					<?php // alt="" is deliberate: the badge right below repeats the zone name. ?>
 					<span class="bp-funcity-zone__image">
 						<img src="<?php echo esc_url( bishkek_park_image_url( $bp_funcity_zone['image'] ) ); ?>" alt="">
@@ -120,10 +120,10 @@ get_header();
 	</section>
 
 	<section class="bp-container bp-section bp-funcity-rules">
-		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Правила посещения' ); ?></h2>
-		<p class="bp-funcity-section-text"><?php pll_esc_html_e( 'Чтобы всем было комфортно и безопасно, просим соблюдать простые правила.' ); ?></p>
+		<h2 class="bp-section__title" data-bp-reveal><?php pll_esc_html_e( 'Правила посещения' ); ?></h2>
+		<p class="bp-funcity-section-text" data-bp-reveal><?php pll_esc_html_e( 'Чтобы всем было комфортно и безопасно, просим соблюдать простые правила.' ); ?></p>
 
-		<ul class="bp-funcity-rules__list">
+		<ul class="bp-funcity-rules__list" data-bp-reveal-stagger>
 			<?php foreach ( $bp_funcity_rules as $bp_funcity_rule ) : ?>
 				<li class="bp-funcity-rule">
 					<span class="bp-funcity-rule__icon">
@@ -135,8 +135,8 @@ get_header();
 		</ul>
 	</section>
 
-	<section class="bp-funcity-cta">
-		<div class="bp-container bp-funcity-cta__inner">
+	<section class="bp-funcity-cta bp-pattern">
+		<div class="bp-container bp-funcity-cta__inner" data-bp-reveal>
 			<h2 class="bp-funcity-cta__title"><?php pll_esc_html_e( 'Остались вопросы?' ); ?></h2>
 			<p class="bp-funcity-cta__subtitle"><?php pll_esc_html_e( 'Свяжитесь с нами' ); ?></p>
 			<p class="bp-funcity-cta__text"><?php pll_esc_html_e( 'Мы готовы ответить на любые ваши вопросы' ); ?></p>

@@ -53,14 +53,14 @@ foreach ( $bp_map_floors as $bp_map_floor ) {
 get_header();
 ?>
 <main class="bp-main bp-mall-map">
-	<div class="bp-container bp-back-link-wrap">
+	<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 		<a class="bp-back-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 			<?php pll_esc_html_e( 'Назад на главную' ); ?>
 		</a>
 	</div>
 
-	<div class="bp-container bp-mall-map-heading">
+	<div class="bp-container bp-mall-map-heading" data-bp-reveal>
 		<button type="button" class="bp-mall-map-nav__btn bp-mall-map-nav__btn--mobile-prev" data-bp-mall-map-prev aria-label="<?php pll_esc_attr_e( 'Предыдущий этаж' ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'arrow-map.svg' ) ); ?>" width="14" height="17" alt="">
 		</button>
@@ -70,7 +70,7 @@ get_header();
 		</button>
 	</div>
 
-	<div class="bp-container bp-mall-map-stage" data-bp-mall-map>
+	<div class="bp-container bp-mall-map-stage" data-bp-mall-map data-bp-reveal>
 		<button type="button" class="bp-mall-map-nav__btn bp-mall-map-nav__btn--prev" data-bp-mall-map-prev aria-label="<?php pll_esc_attr_e( 'Предыдущий этаж' ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'arrow_back_ios.svg' ) ); ?>" width="14" height="24" alt="">
 		</button>

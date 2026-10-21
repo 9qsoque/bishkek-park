@@ -261,3 +261,17 @@
 		margin: 0 0 25px;
 	}
 }
+
+/* Tablet: one full-width column makes the leader photos and milestone
+   cards huge, so use two columns until the phone layout kicks in. */
+@media (min-width: 581px) and (max-width: 782px) {
+	.bp-leaders-grid,
+	.bp-leaders-grid--slider {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.bp-milestones-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

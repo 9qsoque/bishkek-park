@@ -50,7 +50,7 @@ if ( ! in_array( $bp_requested_floor, $bp_catalog_floors, true ) ) {
 ?>
 
 <main class="bp-main">
-	<div class="bp-container bp-back-link-wrap">
+	<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 		<a class="bp-back-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 			<?php pll_esc_html_e( 'Назад на главную' ); ?>
@@ -58,12 +58,12 @@ if ( ! in_array( $bp_requested_floor, $bp_catalog_floors, true ) ) {
 	</div>
 
 	<div class="bp-container bp-section bp-shop-catalog">
-		<div class="bp-section__header">
+		<div class="bp-section__header" data-bp-reveal>
 			<h1 class="bp-section__title"><?php pll_esc_html_e( 'Каталог магазинов' ); ?></h1>
 		</div>
 
 		<?php if ( ! empty( $bp_catalog_floors ) ) : ?>
-			<div class="bp-shop-catalog__filters" data-bp-shop-filter role="group" aria-label="<?php pll_esc_attr_e( 'Фильтр по этажам' ); ?>">
+			<div class="bp-shop-catalog__filters" data-bp-reveal-stagger data-bp-shop-filter role="group" aria-label="<?php pll_esc_attr_e( 'Фильтр по этажам' ); ?>">
 				<button type="button" class="bp-shop-catalog__filter<?php echo '' === $bp_requested_floor ? ' is-active' : ''; ?>" data-bp-shop-filter-value="all"><?php pll_esc_html_e( 'Все этажи' ); ?></button>
 				<?php foreach ( $bp_catalog_floors as $bp_floor_value ) : ?>
 					<button type="button" class="bp-shop-catalog__filter<?php echo $bp_floor_value === $bp_requested_floor ? ' is-active' : ''; ?>" data-bp-shop-filter-value="<?php echo esc_attr( $bp_floor_value ); ?>"><?php echo bishkek_park_get_shop_floor_label( $bp_floor_value ); ?></button>
@@ -72,10 +72,10 @@ if ( ! in_array( $bp_requested_floor, $bp_catalog_floors, true ) ) {
 		<?php endif; ?>
 
 		<?php if ( ! empty( $bp_catalog_shops ) ) : ?>
-			<div class="bp-shops-grid" data-bp-shop-grid>
+			<div class="bp-shops-grid" data-bp-shop-grid data-bp-reveal-stagger>
 				<?php foreach ( $bp_catalog_shops as $bp_shop ) : ?>
 					<a href="<?php echo esc_url( $bp_shop['permalink'] ); ?>" class="bp-shop-card<?php echo $bp_requested_floor && $bp_shop['floor'] !== $bp_requested_floor ? ' is-hidden' : ''; ?>" data-bp-shop-floor="<?php echo esc_attr( $bp_shop['floor'] ); ?>">
-						<span class="bp-shop-card__image">
+						<span class="bp-shop-card__image bp-pattern bp-pattern--sm">
 							<?php if ( $bp_shop['thumbnail'] ) : ?>
 								<?php echo $bp_shop['thumbnail']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php else : ?>
@@ -97,7 +97,7 @@ if ( ! in_array( $bp_requested_floor, $bp_catalog_floors, true ) ) {
 				<?php endforeach; ?>
 			</div>
 		<?php else : ?>
-			<p class="bp-shop-catalog__empty"><?php pll_esc_html_e( 'Магазины пока не добавлены.' ); ?></p>
+			<p class="bp-shop-catalog__empty" data-bp-reveal><?php pll_esc_html_e( 'Магазины пока не добавлены.' ); ?></p>
 		<?php endif; ?>
 	</div>
 </main>

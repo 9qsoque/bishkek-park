@@ -10,28 +10,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 $bp_nav_items = array(
 	array(
 		'label' => 'Шопинг',
-		'icon'  => 'icon-shopping-bag.svg',
+		'icon'  => 'icon-nav-shopping-bag.svg',
 		'url'   => get_post_type_archive_link( 'bp_shop' ),
 	),
 	array(
 		'label'    => 'Синематика',
-		'icon'     => 'icon-clapperboard.svg',
+		'icon'     => 'icon-nav-clapperboard.svg',
 		'url'      => bishkek_park_get_cinematica_link_url(),
 		'external' => true,
 	),
 	array(
 		'label' => 'Funcity',
-		'icon'  => 'icon-star.svg',
+		'icon'  => 'icon-nav-star.svg',
 		'url'   => bishkek_park_get_funcity_page_url(),
 	),
 	array(
 		'label' => 'Кафе и рестораны',
-		'icon'  => 'icon-utensils.svg',
+		'icon'  => 'icon-nav-utensils.svg',
 		'url'   => get_post_type_archive_link( 'bp_cafe' ),
 	),
 	array(
 		'label' => 'Мероприятия',
-		'icon'  => 'icon-calendar.svg',
+		'icon'  => 'icon-nav-calendar.svg',
 		'url'   => get_post_type_archive_link( 'bp_event' ),
 	),
 	array(
@@ -42,12 +42,12 @@ $bp_nav_items = array(
 	),
 	array(
 		'label' => 'Контакты',
-		'icon'  => 'icon-phone-outline.svg',
+		'icon'  => 'icon-nav-phone.svg',
 		'url'   => bishkek_park_get_contacts_page_url(),
 	),
 	array(
 		'label' => 'О нас',
-		'icon'  => 'icon-user.svg',
+		'icon'  => 'icon-nav-user.svg',
 		'url'   => bishkek_park_get_about_page_url(),
 	),
 );
@@ -133,7 +133,7 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 		</div>
 	</div>
 
-	<nav id="bp-mobile-menu" class="bp-mobile-menu" aria-hidden="true">
+	<nav id="bp-mobile-menu" class="bp-mobile-menu bp-pattern" aria-hidden="true">
 		<div class="bp-container bp-mobile-menu__inner">
 			<div class="bp-mobile-menu__info">
 				<span class="bp-info-bar__item">
@@ -154,7 +154,7 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 		</div>
 	</nav>
 
-	<div class="bp-info-bar">
+	<div class="bp-info-bar bp-pattern bp-pattern--light bp-pattern--sm">
 		<div class="bp-container bp-info-bar__inner">
 			<div class="bp-info-bar__left">
 				<span class="bp-info-bar__item">
@@ -162,7 +162,7 @@ foreach ( $bp_lang_switch_languages as $bp_lang_switch_language ) {
 					<?php pll_esc_html_e( 'Сегодня до 22:00' ); ?>
 				</span>
 				<a class="bp-info-bar__item" href="<?php echo esc_url( bishkek_park_get_mall_map_page_url() ); ?>">
-					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map-pin.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
+					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
 					<?php pll_esc_html_e( 'Карта ТЦ' ); ?>
 				</a>
 			</div>

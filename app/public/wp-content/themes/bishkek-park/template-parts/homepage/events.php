@@ -44,7 +44,7 @@ $bp_event_gradients = array(
 $bp_event_index     = 0;
 ?>
 <section class="bp-container bp-section bp-events-section">
-	<div class="bp-section__header">
+	<div class="bp-section__header" data-bp-reveal>
 		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Мероприятия' ); ?></h2>
 		<div class="bp-section__header-actions">
 			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_event' ) ); ?>">
@@ -67,6 +67,7 @@ $bp_event_index     = 0;
 	<div
 		class="bp-events-grid<?php echo $bp_events_is_slider ? ' bp-events-grid--slider' : ''; ?>"
 		<?php echo $bp_events_is_slider ? 'id="bp-events-track"' : ''; ?>
+		data-bp-reveal-stagger
 	>
 		<?php
 		while ( $bp_events_query->have_posts() ) :
@@ -105,7 +106,7 @@ $bp_event_index     = 0;
 					<?php if ( $description ) : ?>
 						<span class="bp-event-card__description"><?php echo esc_html( $description ); ?></span>
 					<?php endif; ?>
-					<span class="bp-event-card__link"><?php pll_esc_html_e( 'Подробнее' ); ?> <span aria-hidden="true">→</span></span>
+					<span class="bp-event-card__link"><?php pll_esc_html_e( 'Подробнее' ); ?> <span aria-hidden="true"><img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-link.svg' ) ); ?>" width="16" height="16" alt=""></span></span>
 				</span>
 			</a>
 			<?php

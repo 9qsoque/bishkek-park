@@ -53,7 +53,7 @@ natsort( $bp_catalog_categories );
 ?>
 
 <main class="bp-main">
-	<div class="bp-container bp-back-link-wrap">
+	<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 		<a class="bp-back-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 			<?php pll_esc_html_e( 'Назад на главную' ); ?>
@@ -61,12 +61,12 @@ natsort( $bp_catalog_categories );
 	</div>
 
 	<div class="bp-container bp-section bp-event-catalog">
-		<div class="bp-section__header">
+		<div class="bp-section__header" data-bp-reveal>
 			<h1 class="bp-section__title"><?php pll_esc_html_e( 'Мероприятия' ); ?></h1>
 		</div>
 
 		<?php if ( ! empty( $bp_catalog_categories ) ) : ?>
-			<div class="bp-event-catalog__filters" data-bp-event-filter role="group" aria-label="<?php pll_esc_attr_e( 'Фильтр по категориям' ); ?>">
+			<div class="bp-event-catalog__filters" data-bp-reveal-stagger data-bp-event-filter role="group" aria-label="<?php pll_esc_attr_e( 'Фильтр по категориям' ); ?>">
 				<button type="button" class="bp-event-catalog__filter is-active" data-bp-event-filter-value="all"><?php pll_esc_html_e( 'Все' ); ?></button>
 				<?php foreach ( $bp_catalog_categories as $bp_category_value ) : ?>
 					<button type="button" class="bp-event-catalog__filter" data-bp-event-filter-value="<?php echo esc_attr( $bp_category_value ); ?>"><?php echo esc_html( $bp_category_value ); ?></button>
@@ -75,7 +75,7 @@ natsort( $bp_catalog_categories );
 		<?php endif; ?>
 
 		<?php if ( ! empty( $bp_catalog_events ) ) : ?>
-			<div class="bp-events-grid" data-bp-event-grid>
+			<div class="bp-events-grid" data-bp-event-grid data-bp-reveal-stagger>
 				<?php foreach ( $bp_catalog_events as $bp_event ) : ?>
 					<a href="<?php echo esc_url( $bp_event['permalink'] ); ?>" class="bp-event-card" data-bp-event-category="<?php echo esc_attr( $bp_event['category'] ); ?>">
 						<span class="bp-event-card__image">
@@ -102,7 +102,7 @@ natsort( $bp_catalog_categories );
 				<?php endforeach; ?>
 			</div>
 		<?php else : ?>
-			<p class="bp-event-catalog__empty"><?php pll_esc_html_e( 'Мероприятия пока не добавлены.' ); ?></p>
+			<p class="bp-event-catalog__empty" data-bp-reveal><?php pll_esc_html_e( 'Мероприятия пока не добавлены.' ); ?></p>
 		<?php endif; ?>
 	</div>
 </main>

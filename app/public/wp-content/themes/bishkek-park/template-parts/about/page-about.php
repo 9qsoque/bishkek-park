@@ -78,7 +78,7 @@ $bp_milestones_query = new WP_Query(
 get_header();
 ?>
 <main class="bp-main bp-about">
-	<div class="bp-container bp-back-link-wrap">
+	<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 		<a class="bp-back-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 			<?php pll_esc_html_e( 'Назад на главную' ); ?>
@@ -87,10 +87,10 @@ get_header();
 
 	<section class="bp-container bp-about-hero">
 		<img class="bp-about-hero__image" src="<?php echo esc_url( bishkek_park_image_url( 'about-hero.png' ) ); ?>" width="220" height="220" alt="">
-		<h1 class="bp-about-hero__title"><?php pll_esc_html_e( 'Крупнейший ТРЦ европейского класса в Кыргызстане' ); ?></h1>
-		<p class="bp-about-hero__text"><?php pll_esc_html_e( 'ТРЦ «Bishkek Park» распахнул свои двери в 2013 году, навсегда изменив представление жителей столицы о качественном досуге и шоппинге' ); ?></p>
+		<h1 class="bp-about-hero__title" data-bp-reveal><?php pll_esc_html_e( 'Крупнейший ТРЦ европейского класса в Кыргызстане' ); ?></h1>
+		<p class="bp-about-hero__text" data-bp-reveal><?php pll_esc_html_e( 'ТРЦ «Bishkek Park» распахнул свои двери в 2013 году, навсегда изменив представление жителей столицы о качественном досуге и шоппинге' ); ?></p>
 
-		<div class="bp-about-features">
+		<div class="bp-about-features" data-bp-reveal-stagger>
 			<?php foreach ( $bp_about_features as $bp_about_feature ) : ?>
 				<div class="bp-about-feature-card">
 					<span class="bp-about-feature-card__icon">
@@ -107,9 +107,9 @@ get_header();
 
 	<?php if ( $bp_leaders_query->have_posts() ) : ?>
 		<section class="bp-container bp-section bp-about-leadership">
-			<h2 class="bp-about-leadership__title"><?php pll_esc_html_e( 'Руководство ТРЦ «Bishkek Park»' ); ?></h2>
+			<h2 class="bp-about-leadership__title" data-bp-reveal><?php pll_esc_html_e( 'Руководство ТРЦ «Bishkek Park»' ); ?></h2>
 
-			<div class="bp-leaders-grid<?php echo $bp_leaders_is_slider ? ' bp-leaders-grid--slider' : ''; ?>">
+			<div class="bp-leaders-grid<?php echo $bp_leaders_is_slider ? ' bp-leaders-grid--slider' : ''; ?>" data-bp-reveal-stagger>
 				<?php
 				while ( $bp_leaders_query->have_posts() ) :
 					$bp_leaders_query->the_post();
@@ -148,10 +148,10 @@ get_header();
 
 	<?php if ( $bp_milestones_query->have_posts() ) : ?>
 		<section class="bp-container bp-section bp-about-milestones">
-			<h2 class="bp-about-leadership__title"><?php pll_esc_html_e( 'Этапы нашего развития' ); ?></h2>
-			<p class="bp-about-section-text"><?php pll_esc_html_e( 'С момента закладки фундамента и до сегодняшнего дня мы постоянно совершенствуемся, чтобы предвосхищать ваши самые смелые ожидания.' ); ?></p>
+			<h2 class="bp-about-leadership__title" data-bp-reveal><?php pll_esc_html_e( 'Этапы нашего развития' ); ?></h2>
+			<p class="bp-about-section-text" data-bp-reveal><?php pll_esc_html_e( 'С момента закладки фундамента и до сегодняшнего дня мы постоянно совершенствуемся, чтобы предвосхищать ваши самые смелые ожидания.' ); ?></p>
 
-			<div class="bp-milestones-grid">
+			<div class="bp-milestones-grid" data-bp-reveal-stagger>
 				<?php
 				while ( $bp_milestones_query->have_posts() ) :
 					$bp_milestones_query->the_post();
@@ -183,8 +183,8 @@ get_header();
 		</section>
 	<?php endif; ?>
 
-	<section class="bp-funcity-cta">
-		<div class="bp-container bp-funcity-cta__inner">
+	<section class="bp-funcity-cta bp-pattern">
+		<div class="bp-container bp-funcity-cta__inner" data-bp-reveal>
 			<h2 class="bp-funcity-cta__title"><?php pll_esc_html_e( 'Остались вопросы?' ); ?></h2>
 			<p class="bp-funcity-cta__subtitle"><?php pll_esc_html_e( 'Свяжитесь с нами' ); ?></p>
 			<p class="bp-funcity-cta__text"><?php pll_esc_html_e( 'Мы готовы ответить на любые ваши вопросы' ); ?></p>

@@ -78,7 +78,7 @@ foreach ( $bp_contacts_faq_defaults as $bp_faq_i => $bp_faq_default ) {
 get_header();
 ?>
 <main class="bp-main bp-contacts">
-	<div class="bp-container bp-contacts-heading">
+	<div class="bp-container bp-contacts-heading" data-bp-reveal>
 		<h1 class="bp-contacts-heading__title"><?php pll_esc_html_e( 'Контакты' ); ?></h1>
 		<nav class="bp-breadcrumb" aria-label="breadcrumb">
 			<a class="bp-breadcrumb__link" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php pll_esc_html_e( 'Главная' ); ?></a>
@@ -88,12 +88,26 @@ get_header();
 	</div>
 
 	<div class="bp-container bp-contacts-info">
-		<div class="bp-contacts-map">
-			<img src="<?php echo esc_url( bishkek_park_image_url( 'map.png' ) ); ?>" alt="<?php pll_esc_attr_e( 'Карта расположения Бишкек Парк' ); ?>">
+		<div class="bp-contacts-map" data-bp-reveal>
+			<?php
+			// Bishkek Park (ул. Киевская 148В) and a box around Bishkek that
+			// the map can't be panned out of — see assets/js/contacts-map.js.
+			?>
+			<div
+				class="bp-contacts-map__canvas"
+				role="region"
+				aria-label="<?php pll_esc_attr_e( 'Карта расположения Бишкек Парк' ); ?>"
+				data-bp-map
+				data-bp-map-lat="42.87450"
+				data-bp-map-lng="74.59080"
+				data-bp-map-bounds="[[42.79,74.44],[42.95,74.73]]"
+				data-bp-map-label="<?php pll_esc_attr_e( 'Бишкек Парк' ); ?>"
+				data-bp-map-icon="<?php echo esc_url( bishkek_park_icon_url( 'logo-flower.svg' ) ); ?>"
+			></div>
 		</div>
 
 		<div class="bp-contacts-details">
-			<ul class="bp-contacts-details__list">
+			<ul class="bp-contacts-details__list" data-bp-reveal-stagger>
 				<li class="bp-contacts-details__item">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-map-pin-outline.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
 					<span>
@@ -116,11 +130,17 @@ get_header();
 				</li>
 				<li class="bp-contacts-details__item">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone-outline.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
-					<a href="<?php echo esc_attr( bishkek_park_get_tel_href( $bp_contacts_phone ) ); ?>"><?php echo esc_html( $bp_contacts_phone ); ?></a>
+					<a href="<?php echo esc_attr( bishkek_park_get_tel_href( $bp_contacts_phone ) ); ?>"><?php pll_esc_html_e( 'Связь' ); ?>: <?php echo esc_html( $bp_contacts_phone ); ?></a>
 				</li>
+				<?php foreach ( bishkek_park_get_whatsapp_contacts() as $bp_contacts_whatsapp ) : ?>
+					<li class="bp-contacts-details__item">
+						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-whatsapp-dark.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
+						<a href="<?php echo esc_url( $bp_contacts_whatsapp['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php pll_esc_html_e( $bp_contacts_whatsapp['label'] ); ?>: <?php echo esc_html( $bp_contacts_whatsapp['number'] ); ?></a>
+					</li>
+				<?php endforeach; ?>
 			</ul>
 
-			<div class="bp-contacts-tenants">
+			<div class="bp-contacts-tenants" data-bp-reveal>
 				<h2 class="bp-contacts-tenants__title"><?php pll_esc_html_e( 'Арендаторам' ); ?></h2>
 
 				<div class="bp-contacts-tenants__card">
@@ -155,9 +175,9 @@ get_header();
 	</div>
 
 	<section class="bp-container bp-section bp-contacts-faq">
-		<h2 class="bp-contacts-faq__title"><?php pll_esc_html_e( 'Часто задаваемые вопросы' ); ?></h2>
+		<h2 class="bp-contacts-faq__title" data-bp-reveal><?php pll_esc_html_e( 'Часто задаваемые вопросы' ); ?></h2>
 
-		<div class="bp-faq">
+		<div class="bp-faq" data-bp-reveal-stagger>
 			<?php foreach ( $bp_contacts_faq as $bp_faq_index => $bp_faq_item ) : ?>
 				<?php $bp_faq_default = $bp_contacts_faq_defaults[ $bp_faq_index ]; ?>
 				<details class="bp-faq__item">

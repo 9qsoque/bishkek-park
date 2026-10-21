@@ -35,7 +35,7 @@ if ( ! $bp_shops_query->have_posts() ) {
 $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 ?>
 <section class="bp-container bp-section">
-	<div class="bp-section__header">
+	<div class="bp-section__header" data-bp-reveal>
 		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Магазины' ); ?></h2>
 		<div class="bp-section__header-actions">
 			<a class="bp-section__view-all" href="<?php echo esc_url( get_post_type_archive_link( 'bp_shop' ) ); ?>">
@@ -58,6 +58,7 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 	<div
 		class="bp-shops-grid<?php echo $bp_shops_is_slider ? ' bp-shops-grid--slider' : ''; ?>"
 		<?php echo $bp_shops_is_slider ? 'id="bp-shops-track"' : ''; ?>
+		data-bp-reveal-stagger
 	>
 		<?php
 		while ( $bp_shops_query->have_posts() ) :
@@ -74,7 +75,7 @@ $bp_shops_is_slider = $bp_shops_query->post_count > BISHKEK_PARK_SHOPS_PER_ROW;
 			$floor    = get_post_meta( get_the_ID(), '_bp_floor', true );
 			?>
 			<a href="<?php the_permalink(); ?>" class="bp-shop-card">
-				<span class="bp-shop-card__image">
+				<span class="bp-shop-card__image bp-pattern bp-pattern--sm">
 					<?php if ( has_post_thumbnail() ) : ?>
 						<?php the_post_thumbnail( 'medium', array( 'class' => 'bp-shop-card__photo' ) ); ?>
 					<?php else : ?>

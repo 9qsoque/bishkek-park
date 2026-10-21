@@ -52,7 +52,7 @@ body {
 
 .bp-main {
 	flex: 1 0 auto;
-	background: #ffffff;
+	background: #fafafa;
 	color: var(--bp-text);
 	font-family: var(--bp-font-family);
 }
@@ -63,9 +63,13 @@ body {
 
 .bp-container {
 	max-width: var(--bp-container);
-	min-width: 375px;
 	margin-inline: auto;
 	padding-inline: 24px;
+}
+
+/* Desktop/mobile-only content; flipped in the max-width: 782px query. */
+.mobile {
+	display: none;
 }
 
 img {
@@ -390,32 +394,38 @@ body.admin-bar .bp-mobile-menu {
 
 .bp-site-footer {
 	font-family: var(--bp-font-family);
-	margin-top: 64px;
+	/* The gap above the footer is a border rather than a margin so it can be
+	   tinted; background-clip keeps the navy (and the pattern) below it. */
+	border-top: 64px solid #fafafa;
 	background: var(--bp-navy);
+	background-clip: padding-box;
 	color: #fff;
 }
 
+/*
+ * Desktop footer grid: logo + Instagram on the first row, then three
+ * columns (address/phones, opening hours, links) spread across the width.
+ */
 .bp-site-footer__top {
 	display: grid;
-	grid-template-columns: auto 1fr auto;
+	grid-template-columns: repeat(3, auto);
+	justify-content: space-between;
 	align-items: start;
-	column-gap: 24px;
-	row-gap: 16px;
-	padding: 32px 24px 24px;
+	column-gap: 48px;
+	row-gap: 36px;
+	padding: 36px 24px 44px;
 }
 
 .bp-site-footer__top .bp-logo--footer {
-	grid-column: 1;
+	grid-column: 1 / span 2;
 	grid-row: 1;
+	align-self: center;
 }
 
 .bp-site-footer__address {
-	grid-column: 1 / span 2;
-	grid-row: 2;
 	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 32px;
+	flex-direction: column;
+	gap: 18px;
 	font-size: 13px;
 	font-style: normal;
 	line-height: 1.4;
@@ -425,6 +435,26 @@ body.admin-bar .bp-mobile-menu {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
+	color: inherit;
+	text-decoration: none;
+}
+
+.bp-site-footer__address-item:hover,
+.bp-site-footer__phone:hover,
+.bp-site-footer__mobile-text a:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.bp-site-footer__phones {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.bp-site-footer__phone-label {
+	font-weight: 400;
+	opacity: 0.85;
 }
 
 .bp-site-footer__phone {
@@ -437,39 +467,40 @@ body.admin-bar .bp-mobile-menu {
 	text-decoration: none;
 }
 
-.bp-site-footer__top .bp-site-footer__social {
+.bp-site-footer__top .bp-site-footer__instagram {
 	grid-column: 3;
-	grid-row: 2;
+	grid-row: 1;
+	align-self: center;
 	justify-self: end;
 }
 
-.bp-site-footer__social {
-	display: flex;
-	gap: 10px;
-}
-
-.bp-site-footer__social a {
-	color: #fff;
+.bp-site-footer__instagram {
 	display: inline-flex;
 	align-items: center;
-	justify-content: center;
-	width: 36px;
-	height: 36px;
-	border-radius: 10px;
+	gap: 8px;
+	padding: 9px 16px 9px 12px;
+	border-radius: 999px;
 	background: rgba(0, 0, 0, 0.2);
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: background-color 0.2s ease;
 }
 
-.bp-site-footer__bottom {
+.bp-site-footer__instagram:hover {
+	background: rgba(0, 0, 0, 0.32);
+}
+
+.bp-site-footer__top .bp-footer-hours,
+.bp-site-footer__top .bp-footer-links {
 	color: #c7cad6;
+	font-size: 13px;
 }
 
-.bp-site-footer__bottom-inner {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 40px;
-	justify-content: space-between;
-	padding: 0 24px 40px;
-	font-size: 13px;
+.bp-site-footer__top .bp-footer-links {
+	justify-self: end;
 }
 
 .bp-footer-hours__label {
@@ -529,10 +560,14 @@ body.admin-bar .bp-mobile-menu {
 .bp-site-footer__mobile {
 	display: none;
 	padding: 24px;
-	background: var(--bp-navy);
 }
 
-.bp-site-footer__mobile-logo {
+.bp-site-footer__mobile-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
 	margin-bottom: 28px;
 }
 
@@ -554,6 +589,17 @@ body.admin-bar .bp-mobile-menu {
 	line-height: 1.5;
 	color: #f1f2f6;
 	text-decoration: none;
+}
+
+.bp-site-footer__mobile-text a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.bp-site-footer__mobile-phone {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 }
 
 .bp-site-footer__divider {
@@ -585,9 +631,24 @@ body.admin-bar .bp-mobile-menu {
 	text-decoration: underline;
 }
 
-.bp-site-footer__social--mobile a {
-	width: 40px;
-	height: 40px;
+/* Not enough width for three columns: links drop to their own row. */
+@media (min-width: 783px) and (max-width: 1100px) {
+	.bp-site-footer__top {
+		grid-template-columns: repeat(2, auto);
+	}
+
+	.bp-site-footer__top .bp-logo--footer {
+		grid-column: 1;
+	}
+
+	.bp-site-footer__top .bp-site-footer__instagram {
+		grid-column: 2;
+	}
+
+	.bp-site-footer__top .bp-footer-links {
+		grid-column: 1 / -1;
+		justify-self: start;
+	}
 }
 
 @media (max-width: 782px) {
@@ -677,8 +738,7 @@ body.admin-bar .bp-mobile-menu {
 		display: block;
 	}
 
-	.bp-site-footer__top,
-	.bp-site-footer__bottom {
+	.bp-site-footer__top {
 		display: none;
 	}
 
@@ -711,7 +771,7 @@ body.admin-bar .bp-mobile-menu {
 	}
 
 	.bp-site-footer {
-		margin-top: 32px;
+		border-top-width: 32px;
 	}
 }
 
@@ -722,8 +782,8 @@ body.admin-bar .bp-mobile-menu {
 		column-gap: 20px;
 	}
 
-	.bp-site-footer__mobile-logo {
-		grid-column: 1;
+	.bp-site-footer__mobile-head {
+		grid-column: 1 / -1;
 		grid-row: 1;
 	}
 
@@ -731,11 +791,11 @@ body.admin-bar .bp-mobile-menu {
 		grid-column: 1;
 	}
 
-	.bp-site-footer__mobile-logo + .bp-site-footer__mobile-group {
+	.bp-site-footer__mobile-head + .bp-site-footer__mobile-group {
 		grid-row: 2;
 	}
 
-	.bp-site-footer__mobile-logo + .bp-site-footer__mobile-group + .bp-site-footer__mobile-group {
+	.bp-site-footer__mobile-head + .bp-site-footer__mobile-group + .bp-site-footer__mobile-group {
 		grid-row: 3;
 	}
 
@@ -761,11 +821,6 @@ body.admin-bar .bp-mobile-menu {
 		margin-bottom: 0;
 	}
 
-	.bp-site-footer__social--mobile {
-		grid-column: 2;
-		grid-row: 3;
-		align-self: end;
-	}
 	.bp-logo {
 		justify-self: left;
 	}
@@ -815,4 +870,250 @@ body.admin-bar .bp-mobile-menu {
 	/* .bp-site-footer {
 		margin-top: 0;
 	} */
+}
+
+/* ==========================================================================
+   Brand pattern (assets/images/pattern-flower.svg)
+   ========================================================================== */
+
+/*
+ * Outlined logo-flower pattern for large empty blocks. Add the `bp-pattern`
+ * class to any block with its own background; the tile is applied as a mask
+ * so its color follows --bp-pattern-color (override per block, e.g.
+ * `bp-pattern--light` on dark backgrounds). `isolation: isolate` lets the
+ * z-index: -1 layer sit between the block's background and its content
+ * without touching the children's positioning.
+ */
+.bp-pattern {
+	--bp-pattern-color: rgba(131, 142, 174, 0.22);
+	--bp-pattern-size: 320px;
+	isolation: isolate;
+}
+
+/* Zero specificity so a block's own positioning (e.g. the fixed
+   .bp-mobile-menu) always wins over this default. */
+:where(.bp-pattern) {
+	position: relative;
+}
+
+.bp-pattern::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border-radius: inherit;
+	background-color: var(--bp-pattern-color);
+	-webkit-mask: url('assets/images/pattern-flower.svg') 0 0 / var(--bp-pattern-size) repeat;
+	mask: url('assets/images/pattern-flower.svg') 0 0 / var(--bp-pattern-size) repeat;
+	pointer-events: none;
+}
+
+.bp-pattern--light {
+	--bp-pattern-color: rgba(255, 255, 255, 0.14);
+}
+
+.bp-pattern--sm {
+	--bp-pattern-size: 200px;
+}
+
+/* ==========================================================================
+   Scroll-reveal animations (see assets/js/reveal.js)
+   ========================================================================== */
+
+@keyframes bp-reveal-up {
+	from {
+		opacity: 0;
+		transform: translateY(32px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.bp-reveal [data-bp-reveal]:not(.is-revealed),
+.bp-reveal [data-bp-reveal-stagger] > :not(.is-revealed) {
+	opacity: 0;
+}
+
+.bp-reveal .is-revealed:not(.is-reveal-done) {
+	animation: bp-reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--bp-reveal-delay, 0ms) both;
+}
+
+/* ==========================================================================
+   Loading screen (template-parts/preloader/preloader.php)
+   ========================================================================== */
+
+.bp-preloader {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 36px;
+	padding: 16px;
+	background: #fafafa;
+	color: #2e3a42;
+}
+
+.bp-preloading,
+.bp-preloading body {
+	overflow: hidden;
+}
+
+.bp-preloading .bp-preloader,
+.bp-preloaded .bp-preloader {
+	display: flex;
+}
+
+.bp-preloaded .bp-preloader {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition:
+		opacity 0.6s ease,
+		visibility 0s linear 0.6s;
+}
+
+.bp-preloader__logo .bp-logo__img {
+	height: 72px;
+	max-width: 100%;
+	overflow: visible;
+}
+
+/* The logo's first five <path>s are the flower mark's petals; the rest are
+   the "Bishkek Park" wordmark. */
+.bp-preloader__logo path {
+	transform-box: fill-box;
+	transform-origin: center;
+}
+
+.bp-preloader__logo path:nth-child(-n + 5) {
+	animation:
+		bp-preloader-petal-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+		bp-preloader-petal-pulse 1.5s ease-in-out 0.9s infinite;
+}
+
+.bp-preloader__logo path:nth-child(2) {
+	animation-delay: 0.08s, 1.08s;
+}
+
+.bp-preloader__logo path:nth-child(3) {
+	animation-delay: 0.16s, 1.26s;
+}
+
+.bp-preloader__logo path:nth-child(4) {
+	animation-delay: 0.24s, 1.44s;
+}
+
+.bp-preloader__logo path:nth-child(5) {
+	animation-delay: 0.32s, 1.62s;
+}
+
+.bp-preloader__logo path:nth-child(n + 6) {
+	animation: bp-preloader-wordmark-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+.bp-preloader__bar {
+	position: relative;
+	width: 160px;
+	height: 3px;
+	overflow: hidden;
+	border-radius: 3px;
+	background: var(--bp-border);
+}
+
+.bp-preloader__bar::after {
+	content: '';
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 40%;
+	border-radius: inherit;
+	background: var(--bp-pink);
+	animation: bp-preloader-bar 1.2s ease-in-out infinite;
+}
+
+.bp-preloader__label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+@keyframes bp-preloader-petal-in {
+	from {
+		opacity: 0;
+		transform: scale(0.3) rotate(-30deg);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes bp-preloader-petal-pulse {
+	0%,
+	60%,
+	100% {
+		opacity: 1;
+		transform: none;
+	}
+
+	30% {
+		opacity: 0.45;
+		transform: scale(0.85);
+	}
+}
+
+@keyframes bp-preloader-wordmark-in {
+	from {
+		opacity: 0;
+		transform: translateX(-12px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes bp-preloader-bar {
+	from {
+		transform: translateX(-100%);
+	}
+
+	to {
+		transform: translateX(250%);
+	}
+}
+
+@media (max-width: 600px) {
+	.bp-preloader__logo .bp-logo__img {
+		height: 52px;
+	}
+}
+
+/* Narrowest phones (320px): shrink the header logo so the menu toggle,
+   logo and language switcher still fit on one row. */
+@media (max-width: 359px) {
+	.bp-logo__img {
+		height: 32px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bp-preloader__logo path,
+	.bp-preloader__bar::after {
+		animation: none !important;
+	}
+
+	.bp-preloader__bar::after {
+		width: 100%;
+	}
 }

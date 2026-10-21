@@ -26,9 +26,9 @@ $bp_banners_query = new WP_Query(
 
 $bp_banner_count = $bp_banners_query->post_count;
 ?>
-<section class="bp-container bp-hero-wrap">
+<section class="bp-container bp-hero-wrap" data-bp-reveal>
 	<?php if ( $bp_banner_count > 0 ) : ?>
-		<div class="bp-hero" data-bp-hero-slider>
+		<div class="bp-hero bp-pattern" data-bp-hero-slider>
 			<?php
 			$bp_banner_index = 0;
 			while ( $bp_banners_query->have_posts() ) :
@@ -84,7 +84,7 @@ $bp_banner_count = $bp_banners_query->post_count;
 			</div>
 		<?php endif; ?>
 	<?php else : ?>
-		<div class="bp-hero">
+		<div class="bp-hero bp-pattern">
 			<div class="bp-hero__slide is-active">
 				<div class="bp-hero__content">
 					<span class="bp-badge"><?php pll_esc_html_e( 'СЕЗОННАЯ РАСПРОДАЖА' ); ?></span>

@@ -18,4 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<?php get_template_part( 'template-parts/preloader/preloader' ); ?>
+
 <?php get_template_part( 'template-parts/header/site-header' ); ?>

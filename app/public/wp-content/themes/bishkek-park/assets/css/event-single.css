@@ -81,3 +81,10 @@
 		max-width: 280px;
 	}
 }
+
+/* Related events: half-width cards get too narrow on phones. */
+@media (max-width: 640px) {
+	.bp-event-related .bp-events-grid {
+		grid-template-columns: 1fr;
+	}
+}

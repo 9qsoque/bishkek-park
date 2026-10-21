@@ -8,11 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <section class="bp-container">
-	<div class="bp-leasing">
+	<div class="bp-leasing bp-pattern" data-bp-reveal>
 		<h2><?php pll_esc_html_e( 'Аренда помещений в торговом центре' ); ?></h2>
 		<p><?php pll_esc_html_e( 'Откройте свой магазин в одном из лучших ТЦ города. Мы предлагаем помещения под любой формат бизнеса.' ); ?></p>
 
-		<div class="bp-leasing__features">
+		<div class="bp-leasing__features" data-bp-reveal-stagger>
 			<div class="bp-leasing__feature">
 				<span class="bp-leasing__icon">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-area.svg' ) ); ?>" width="20" height="20" alt="">
@@ -43,7 +43,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 
 		<div class="bp-leasing__actions">
-			<a href="#" class="bp-btn bp-btn--primary"><?php pll_esc_html_e( 'Оставить заявку' ); ?></a>
+			<?php $bp_leasing_whatsapp = bishkek_park_get_whatsapp_contacts()['leasing']; ?>
+			<a href="<?php echo esc_url( $bp_leasing_whatsapp['url'] ); ?>" class="bp-btn bp-btn--primary" target="_blank" rel="noopener noreferrer"><?php pll_esc_html_e( 'Оставить заявку' ); ?></a>
 			<!-- <a href="#" class="bp-btn bp-btn--outline">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-download.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
 				<?php pll_esc_html_e( 'Скачать медиакит' ); ?>

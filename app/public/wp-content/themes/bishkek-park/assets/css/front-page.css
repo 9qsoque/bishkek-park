@@ -452,6 +452,9 @@
 	scroll-snap-type: x mandatory;
 	scroll-behavior: smooth;
 	scrollbar-width: none;
+	/* overflow-x: auto also clips vertically, so leave room for the card's hover lift */
+	padding-top: 8px;
+	margin-top: -8px;
 	padding-bottom: 2px;
 }
 
@@ -474,7 +477,7 @@
 	gap: 16px;
 	text-decoration: none;
 	color: inherit;
-	border: 1px solid var(--bp-border);
+	border: 2px solid var(--bp-border);
 	border-radius: var(--bp-radius-md);
 	padding: 18px;
 	transition:
@@ -617,6 +620,7 @@
 	background: #fff;
 	border-radius: var(--bp-radius-md);
 	overflow: hidden;
+	padding: 10px;
 	transition:
 		transform 0.25s ease,
 		box-shadow 0.25s ease;
@@ -629,6 +633,7 @@
 
 .bp-event-card__image {
 	display: block;
+	border-radius: var(--bp-radius-md);
 	aspect-ratio: 16 / 10;
 	overflow: hidden;
 }
@@ -682,13 +687,16 @@
 }
 
 .bp-event-card__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 	color: var(--bp-pink);
 	font-size: 14px;
 	font-weight: 700;
 }
 
 .bp-event-card__link span {
-	display: inline-block;
+	display: inline-flex;
 	transition: transform 0.2s ease;
 }
 
@@ -858,37 +866,11 @@
 		font-size: 26px;
 	}
 
+	/* Below this width the three category cards no longer fit in a row, and
+	   on the homepage they only repeat the Магазины/Синематика sections
+	   further down, so the block is hidden on phones/tablets. */
 	.bp-categories {
-		margin-left: 24px;
-		min-width: 0;
-		display: flex;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		scroll-behavior: smooth;
-		scrollbar-width: none;
-		padding-bottom: 2px;
-	}
-
-	.bp-category-card {
-		background: #fff;
-		border: 1px solid var(--bp-border);
-		box-shadow: none;
-		border-radius: 24px;
-		padding: 20px;
-	}
-
-	.bp-categories::-webkit-scrollbar {
 		display: none;
-	}
-
-	.bp-categories > .bp-category-card {
-		flex: 0 0 40%;
-		scroll-snap-align: start;
-	}
-
-	.bp-category-card__icon {
-		width: 80px;
-		height: 80px;
 	}
 
 	.bp-parking {
@@ -961,7 +943,7 @@
 		flex-direction: column;
 		gap: 0;
 		background: #fff;
-		border: 1px solid var(--bp-border);
+		border: 2px solid var(--bp-border);
 		border-radius: var(--bp-radius-md);
 		padding: 0;
 		overflow: hidden;
@@ -1034,14 +1016,6 @@
 }
 
 @media (max-width: 480px) {
-	.bp-category-card {
-		padding: 10px;
-	}
-	.bp-category-card__icon {
-		width: 55px;
-		height: 55px;
-	}
-
 	.bp-hero__slide {
 		padding: 20px 20px 120px;
 	}

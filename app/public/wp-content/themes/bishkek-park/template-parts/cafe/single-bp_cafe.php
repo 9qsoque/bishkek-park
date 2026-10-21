@@ -30,7 +30,7 @@ while ( have_posts() ) :
 	$bp_cafe_website     = get_post_meta( $bp_cafe_id, '_bp_website', true );
 	?>
 	<main class="bp-main">
-		<div class="bp-container bp-back-link-wrap">
+		<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 			<a class="bp-back-link" href="<?php echo esc_url( get_post_type_archive_link( 'bp_cafe' ) ); ?>">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 				<?php pll_esc_html_e( 'Назад в каталог' ); ?>
@@ -38,7 +38,7 @@ while ( have_posts() ) :
 		</div>
 
 		<div class="bp-container bp-section bp-shop-detail">
-			<div class="bp-shop-detail__image">
+			<div class="bp-shop-detail__image bp-pattern" data-bp-reveal>
 				<?php if ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'medium', array( 'class' => 'bp-shop-detail__photo' ) ); ?>
 				<?php else : ?>
@@ -46,7 +46,7 @@ while ( have_posts() ) :
 				<?php endif; ?>
 			</div>
 
-			<div class="bp-shop-detail__content">
+			<div class="bp-shop-detail__content" data-bp-reveal-stagger>
 				<h1 class="bp-shop-detail__title"><?php the_title(); ?></h1>
 
 				<span class="bp-shop-card__meta">
@@ -120,11 +120,11 @@ while ( have_posts() ) :
 		if ( $bp_related_cafes_query && $bp_related_cafes_query->have_posts() ) :
 			?>
 			<div class="bp-container bp-section">
-				<div class="bp-section__header">
+				<div class="bp-section__header" data-bp-reveal>
 					<h2 class="bp-section__title"><?php pll_esc_html_e( 'Кафе и рестораны на этаже' ); ?></h2>
 				</div>
 
-				<div class="bp-shops-grid">
+				<div class="bp-shops-grid" data-bp-reveal-stagger>
 					<?php
 					while ( $bp_related_cafes_query->have_posts() ) :
 						$bp_related_cafes_query->the_post();
@@ -140,7 +140,7 @@ while ( have_posts() ) :
 						$bp_related_floor    = get_post_meta( get_the_ID(), '_bp_floor', true );
 						?>
 						<a href="<?php the_permalink(); ?>" class="bp-shop-card">
-							<span class="bp-shop-card__image">
+							<span class="bp-shop-card__image bp-pattern bp-pattern--sm">
 								<?php if ( has_post_thumbnail() ) : ?>
 									<?php the_post_thumbnail( 'medium', array( 'class' => 'bp-shop-card__photo' ) ); ?>
 								<?php else : ?>

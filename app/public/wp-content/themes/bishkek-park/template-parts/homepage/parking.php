@@ -11,7 +11,7 @@ $bp_parking_total = bishkek_park_get_parking_total();
 $bp_parking_free  = bishkek_park_get_parking_free();
 ?>
 <section class="bp-container">
-	<div class="bp-parking">
+	<div class="bp-parking bp-pattern" data-bp-reveal>
 		<div class="bp-parking__text">
 			<h2><?php pll_esc_html_e( 'Паркинг в ТЦ' ); ?></h2>
 			<p><?php pll_esc_html_e( 'Зарегистрируйтесь и совершите покупку в любом магазине-партнёре.' ); ?></p>

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<section class="bp-container bp-categories">
+<section class="bp-container bp-categories" data-bp-reveal-stagger>
 	<a href="<?php echo esc_url( get_post_type_archive_link( 'bp_shop' ) ); ?>" class="bp-category-card">
 		<span class="bp-category-card__icon">
 			<img src="<?php echo esc_url( bishkek_park_image_url( 'shops.png' ) ); ?>" width="110" height="110" alt="">

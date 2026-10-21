@@ -39,7 +39,7 @@ $bp_cinema_link_url  = bishkek_park_get_cinematica_link_url();
 $bp_now = ( new DateTime( 'now', new DateTimeZone( '+06:00' ) ) )->format( 'H:i' );
 ?>
 <section class="bp-container bp-section bp-cinema-section">
-	<div class="bp-section__header">
+	<div class="bp-section__header" data-bp-reveal>
 		<h2 class="bp-section__title"><?php pll_esc_html_e( 'Синематика' ); ?></h2>
 		<?php if ( $bp_movies_is_slider ) : ?>
 			<div class="bp-slider-nav" data-bp-slider-nav="bp-movies-track">
@@ -56,6 +56,7 @@ $bp_now = ( new DateTime( 'now', new DateTimeZone( '+06:00' ) ) )->format( 'H:i'
 	<div
 		class="bp-movies-grid<?php echo $bp_movies_is_slider ? ' bp-movies-grid--slider' : ''; ?>"
 		<?php echo $bp_movies_is_slider ? 'id="bp-movies-track"' : ''; ?>
+		data-bp-reveal-stagger
 	>
 		<?php
 		$bp_movie_index = 0;
@@ -72,7 +73,7 @@ $bp_now = ( new DateTime( 'now', new DateTimeZone( '+06:00' ) ) )->format( 'H:i'
 						<img src="<?php echo esc_url( $bp_movie['poster'] ); ?>" alt="<?php echo esc_attr( $bp_movie['title'] ); ?>" loading="lazy">
 					</div>
 				<?php else : ?>
-					<div class="bp-movie-card__poster" aria-hidden="true">
+					<div class="bp-movie-card__poster bp-pattern bp-pattern--light bp-pattern--sm" aria-hidden="true">
 						<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-movie-placeholder.svg' ) ); ?>" width="26" height="26" alt="">
 					</div>
 				<?php endif; ?>

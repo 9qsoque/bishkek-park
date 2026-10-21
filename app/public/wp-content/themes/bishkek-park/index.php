@@ -13,7 +13,7 @@ get_header();
 ?>
 
 <main class="bp-main">
-	<div class="bp-container" style="padding-block: 48px;">
+	<div class="bp-container" style="padding-block: 48px;" data-bp-reveal>
 		<?php if ( have_posts() ) : ?>
 			<?php
 			while ( have_posts() ) :

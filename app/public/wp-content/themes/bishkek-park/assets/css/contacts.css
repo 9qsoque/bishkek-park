@@ -48,11 +48,68 @@
 	margin-top: 40px;
 }
 
-.bp-contacts-map img {
-	display: block;
+.bp-contacts-map__canvas {
 	width: 100%;
 	aspect-ratio: 1 / 1;
-	object-fit: contain;
+	border-radius: var(--bp-radius-lg);
+	overflow: hidden;
+	background: var(--bp-lavender);
+	border: 1px solid var(--bp-border);
+	z-index: 0;
+}
+
+.bp-contacts-map__canvas .leaflet-tile-pane {
+	filter: grayscale(0.5) brightness(1.03) contrast(0.95);
+}
+
+.bp-contacts-map__canvas .leaflet-control-attribution {
+	margin: 0 24px 14px 0;
+	border-radius: 6px;
+	font-size: 10px;
+}
+
+.bp-contacts-map__canvas .leaflet-control-zoom {
+	margin: 24px 0 0 24px;
+	border: 0;
+	box-shadow: 0 6px 16px -8px rgba(18, 21, 28, 0.35);
+}
+
+.bp-map-marker__pin {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 50% 50% 50% 0;
+	background: #fff;
+	border: 3px solid var(--bp-pink);
+	box-shadow: 0 10px 20px -8px rgba(18, 21, 28, 0.45);
+	transform: rotate(-45deg);
+	box-sizing: border-box;
+}
+
+/* Needs the extra class to beat Leaflet's `.leaflet-container
+   .leaflet-marker-pane img { width: auto }`. */
+.bp-contacts-map__canvas .bp-map-marker__pin img {
+	width: 30px;
+	height: auto;
+	transform: rotate(45deg);
+}
+
+.bp-map-tooltip {
+	padding: 6px 12px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--bp-pink);
+	color: #fff;
+	font-family: var(--bp-font-family);
+	font-size: 12px;
+	font-weight: 700;
+	box-shadow: 0 6px 16px -8px rgba(18, 21, 28, 0.45);
+}
+
+.bp-map-tooltip.leaflet-tooltip-top::before {
+	border-top-color: var(--bp-pink);
 }
 .bp-contacts-details {
 	margin: auto 0;
@@ -247,9 +304,9 @@
 		margin-top: 24px;
 	}
 
-	.bp-contacts-map img {
-		max-width: 320px;
-		margin: 0 auto;
+	.bp-contacts-map__canvas {
+		aspect-ratio: 4 / 3;
+		border-radius: var(--bp-radius-md);
 	}
 
 	.bp-contacts-tenants__card {

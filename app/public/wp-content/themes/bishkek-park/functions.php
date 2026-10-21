@@ -11,6 +11,11 @@ define( 'BISHKEK_PARK_VERSION', wp_get_theme()->get( 'Version' ) );
 define( 'BISHKEK_PARK_DIR', get_stylesheet_directory() );
 define( 'BISHKEK_PARK_URI', get_stylesheet_directory_uri() );
 
+// How long (ms) the loading screen stays up on the first page of a browser
+// session, so its logo animation is actually seen; see
+// bishkek_park_preloader_head_script().
+define( 'BISHKEK_PARK_PRELOADER_MIN_MS', 1400 );
+
 require BISHKEK_PARK_DIR . '/inc/post-types.php';
 require BISHKEK_PARK_DIR . '/inc/meta-boxes.php';
 require BISHKEK_PARK_DIR . '/inc/translatable-strings.php';
@@ -194,6 +199,33 @@ function bishkek_park_get_tel_href( $phone ) {
 }
 
 /**
+ * The leasing/sales WhatsApp numbers shown in the footer and on the contacts
+ * page (plus the leasing CTA button, which uses the 'leasing' entry), keyed
+ * by purpose. `label` is a Polylang-registered string (inc/translatable-strings.php)
+ * to print with pll_esc_html_e(); `url` opens a WhatsApp chat (wa.me takes
+ * the number as bare digits).
+ */
+function bishkek_park_get_whatsapp_contacts() {
+	$contacts = array(
+		'leasing' => array(
+			'label'  => 'Аренда',
+			'number' => '+996 555 777 945',
+		),
+		'sales'   => array(
+			'label'  => 'Продажи',
+			'number' => '+996 998 111 333',
+		),
+	);
+
+	foreach ( $contacts as &$contact ) {
+		$contact['url'] = 'https://wa.me/' . preg_replace( '/\D/', '', $contact['number'] );
+	}
+	unset( $contact );
+
+	return $contacts;
+}
+
+/**
  * URL of the page the Контакты (contacts) template is assigned to, for nav
  * links. Same pattern as bishkek_park_get_funcity_page_url() above.
  */
@@ -310,6 +342,14 @@ function bishkek_park_enqueue_assets() {
 		BISHKEK_PARK_URI . '/assets/js/header.js',
 		array(),
 		filemtime( BISHKEK_PARK_DIR . '/assets/js/header.js' ),
+		true
+	);
+
+	wp_enqueue_script(
+		'bishkek-park-reveal',
+		BISHKEK_PARK_URI . '/assets/js/reveal.js',
+		array(),
+		filemtime( BISHKEK_PARK_DIR . '/assets/js/reveal.js' ),
 		true
 	);
 
@@ -438,12 +478,38 @@ function bishkek_park_enqueue_assets() {
 	}
 
 	// contacts.css's .bp-contacts-*/.bp-faq-* classes are contacts-page-only.
+	// Leaflet (the contacts map, see assets/js/contacts-map.js) is vendored in
+	// assets/vendor/leaflet rather than pulled from a CDN; contacts.css depends
+	// on its stylesheet so the theme's map overrides load after Leaflet's own.
 	if ( $bp_is_contacts ) {
+		wp_enqueue_style(
+			'bishkek-park-leaflet',
+			BISHKEK_PARK_URI . '/assets/vendor/leaflet/leaflet.css',
+			array(),
+			'1.9.4'
+		);
+
 		wp_enqueue_style(
 			'bishkek-park-contacts',
 			BISHKEK_PARK_URI . '/assets/css/contacts.css',
-			array( 'bishkek-park-front-page' ),
+			array( 'bishkek-park-front-page', 'bishkek-park-leaflet' ),
 			filemtime( BISHKEK_PARK_DIR . '/assets/css/contacts.css' )
+		);
+
+		wp_enqueue_script(
+			'bishkek-park-leaflet',
+			BISHKEK_PARK_URI . '/assets/vendor/leaflet/leaflet.js',
+			array(),
+			'1.9.4',
+			true
+		);
+
+		wp_enqueue_script(
+			'bishkek-park-contacts-map',
+			BISHKEK_PARK_URI . '/assets/js/contacts-map.js',
+			array( 'bishkek-park-leaflet' ),
+			filemtime( BISHKEK_PARK_DIR . '/assets/js/contacts-map.js' ),
+			true
 		);
 	}
 
@@ -468,3 +534,81 @@ function bishkek_park_enqueue_assets() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'bishkek_park_enqueue_assets' );
+
+/**
+ * Turn on the scroll-reveal hidden state (html.bp-reveal) before first paint,
+ * so [data-bp-reveal] blocks don't flash visible and then vanish while
+ * assets/js/reveal.js loads in the footer. Skipped for reduced-motion users;
+ * if reveal.js hasn't marked itself ready within a few seconds (failed or
+ * slow load) the class is removed again so content is never stuck hidden.
+ */
+function bishkek_park_reveal_head_script() {
+	?>
+	<script>
+	( function () {
+		var root = document.documentElement;
+		if ( ! window.matchMedia || window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
+			return;
+		}
+		root.classList.add( 'bp-reveal' );
+		window.setTimeout( function () {
+			if ( ! root.classList.contains( 'bp-reveal-ready' ) ) {
+				root.classList.remove( 'bp-reveal' );
+			}
+		}, 4000 );
+	}() );
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'bishkek_park_reveal_head_script', 1 );
+
+/**
+ * Drives the loading screen (template-parts/preloader/preloader.php): adds
+ * html.bp-preloading before first paint, then on window `load` swaps it for
+ * html.bp-preloaded (which fades the overlay out) and fires a `bp:preloaded`
+ * event that assets/js/reveal.js waits for, so scroll-reveal animations play
+ * as the overlay fades instead of hidden behind it.
+ *
+ * The first page of a browser session keeps the screen up for at least
+ * BISHKEK_PARK_PRELOADER_MIN_MS so the logo animation is seen; later pages
+ * hide it as soon as they've loaded. A hard timeout guarantees the overlay
+ * never sticks if `load` is held up by a slow third-party resource.
+ */
+function bishkek_park_preloader_head_script() {
+	?>
+	<script>
+	( function () {
+		var root = document.documentElement;
+		var minDuration = 0;
+		var maxDuration = 8000;
+		var start = Date.now();
+		var hidden = false;
+
+		try {
+			if ( ! window.sessionStorage.getItem( 'bpPreloaderSeen' ) ) {
+				window.sessionStorage.setItem( 'bpPreloaderSeen', '1' );
+				minDuration = <?php echo (int) BISHKEK_PARK_PRELOADER_MIN_MS; ?>;
+			}
+		} catch ( e ) {}
+
+		root.classList.add( 'bp-preloading' );
+
+		var hide = function () {
+			if ( hidden ) {
+				return;
+			}
+			hidden = true;
+			root.classList.remove( 'bp-preloading' );
+			root.classList.add( 'bp-preloaded' );
+			document.dispatchEvent( new CustomEvent( 'bp:preloaded' ) );
+		};
+
+		window.addEventListener( 'load', function () {
+			window.setTimeout( hide, Math.max( 0, minDuration - ( Date.now() - start ) ) );
+		} );
+		window.setTimeout( hide, maxDuration );
+	}() );
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'bishkek_park_preloader_head_script', 1 );

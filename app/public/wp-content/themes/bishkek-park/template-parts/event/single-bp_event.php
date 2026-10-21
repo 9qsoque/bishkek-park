@@ -30,7 +30,7 @@ while ( have_posts() ) :
 	$bp_event_description = get_post_meta( $bp_event_id, '_bp_description', true );
 	?>
 	<main class="bp-main">
-		<div class="bp-container bp-back-link-wrap">
+		<div class="bp-container bp-back-link-wrap" data-bp-reveal>
 			<a class="bp-back-link" href="<?php echo esc_url( get_post_type_archive_link( 'bp_event' ) ); ?>">
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-arrow-left.svg' ) ); ?>" width="7" height="12" alt="">
 				<?php pll_esc_html_e( 'Назад в каталог' ); ?>
@@ -38,7 +38,7 @@ while ( have_posts() ) :
 		</div>
 
 		<div class="bp-container bp-section bp-event-detail">
-			<div class="bp-event-detail__image">
+			<div class="bp-event-detail__image" data-bp-reveal>
 				<?php if ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'medium', array( 'class' => 'bp-event-detail__photo' ) ); ?>
 				<?php else : ?>
@@ -46,7 +46,7 @@ while ( have_posts() ) :
 				<?php endif; ?>
 			</div>
 
-			<div class="bp-event-detail__content">
+			<div class="bp-event-detail__content" data-bp-reveal-stagger>
 				<?php if ( $bp_event_category || $bp_event_date ) : ?>
 					<span class="bp-event-detail__badge">
 						<?php if ( $bp_event_category ) : ?>
@@ -89,12 +89,12 @@ while ( have_posts() ) :
 
 		if ( $bp_related_events_query->have_posts() ) :
 			?>
-			<div class="bp-container bp-section">
-				<div class="bp-section__header">
+			<div class="bp-container bp-section bp-event-related">
+				<div class="bp-section__header" data-bp-reveal>
 					<h2 class="bp-section__title"><?php pll_esc_html_e( 'Мероприятия' ); ?></h2>
 				</div>
 
-				<div class="bp-events-grid">
+				<div class="bp-events-grid" data-bp-reveal-stagger>
 					<?php
 					$bp_related_event_index = 0;
 
