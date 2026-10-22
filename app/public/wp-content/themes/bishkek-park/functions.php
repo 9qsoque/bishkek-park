@@ -16,6 +16,7 @@ define( 'BISHKEK_PARK_URI', get_stylesheet_directory_uri() );
 // bishkek_park_preloader_head_script().
 define( 'BISHKEK_PARK_PRELOADER_MIN_MS', 1400 );
 
+require BISHKEK_PARK_DIR . '/inc/capabilities.php';
 require BISHKEK_PARK_DIR . '/inc/post-types.php';
 require BISHKEK_PARK_DIR . '/inc/meta-boxes.php';
 require BISHKEK_PARK_DIR . '/inc/translatable-strings.php';

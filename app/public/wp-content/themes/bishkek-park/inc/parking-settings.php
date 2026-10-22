@@ -44,7 +44,7 @@ function bishkek_park_register_parking_settings_page() {
 	add_menu_page(
 		__( 'Паркинг', 'bishkek-park' ),
 		__( 'Паркинг', 'bishkek-park' ),
-		'manage_options',
+		BISHKEK_PARK_PARKING_CAPABILITY,
 		'bishkek-park-parking',
 		'bishkek_park_render_parking_settings_page',
 		'dashicons-car',
@@ -83,7 +83,7 @@ add_action( 'admin_init', 'bishkek_park_register_parking_settings' );
  * getters above fall back to the current defaults.
  */
 function bishkek_park_render_parking_settings_page() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( BISHKEK_PARK_PARKING_CAPABILITY ) ) {
 		return;
 	}
 	?>

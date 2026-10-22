@@ -530,7 +530,7 @@ function bishkek_park_register_map_settings_page() {
 	$hook = add_menu_page(
 		__( 'Карта ТЦ', 'bishkek-park' ),
 		__( 'Карта ТЦ', 'bishkek-park' ),
-		'manage_options',
+		BISHKEK_PARK_MAP_CAPABILITY,
 		'bishkek-park-mall-map',
 		'bishkek_park_render_map_settings_page',
 		'dashicons-location-alt',
@@ -797,7 +797,7 @@ function bishkek_park_render_map_admin_floor( $floor ) {
 }
 
 function bishkek_park_render_map_settings_page() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( BISHKEK_PARK_MAP_CAPABILITY ) ) {
 		return;
 	}
 

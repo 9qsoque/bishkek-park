@@ -46,7 +46,7 @@ function bishkek_park_register_cinematica_settings_page() {
 	add_menu_page(
 		__( 'Синематика', 'bishkek-park' ),
 		__( 'Синематика', 'bishkek-park' ),
-		'manage_options',
+		BISHKEK_PARK_CINEMATICA_CAPABILITY,
 		'bishkek-park-cinematica',
 		'bishkek_park_render_cinematica_settings_page',
 		'dashicons-tickets-alt',
@@ -85,7 +85,7 @@ add_action( 'admin_init', 'bishkek_park_register_cinematica_settings' );
  * getters above fall back to the current hall-ID-3 defaults.
  */
 function bishkek_park_render_cinematica_settings_page() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( BISHKEK_PARK_CINEMATICA_CAPABILITY ) ) {
 		return;
 	}
 	?>
