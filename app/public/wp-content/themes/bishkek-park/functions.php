@@ -335,7 +335,7 @@ function bishkek_park_enqueue_assets() {
 		'bishkek-park-style',
 		get_stylesheet_uri(),
 		array( 'bishkek-park-fonts' ),
-		BISHKEK_PARK_VERSION
+		filemtime( BISHKEK_PARK_DIR . '/style.css' )
 	);
 
 	wp_enqueue_script(
@@ -351,6 +351,15 @@ function bishkek_park_enqueue_assets() {
 		BISHKEK_PARK_URI . '/assets/js/reveal.js',
 		array(),
 		filemtime( BISHKEK_PARK_DIR . '/assets/js/reveal.js' ),
+		true
+	);
+
+	// Header language switcher without a page reload; see the file's header.
+	wp_enqueue_script(
+		'bishkek-park-lang-switch',
+		BISHKEK_PARK_URI . '/assets/js/lang-switch.js',
+		array(),
+		filemtime( BISHKEK_PARK_DIR . '/assets/js/lang-switch.js' ),
 		true
 	);
 

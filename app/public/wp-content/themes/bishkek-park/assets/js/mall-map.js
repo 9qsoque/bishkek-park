@@ -188,6 +188,31 @@
 		}
 	}
 
+	// After a no-reload language switch (lang-switch.js) the unit names and
+	// floor titles in the markup are in the new language, but the fitted
+	// label sizes, the compact-unit legend and the floor title were all
+	// derived from the old text — so drop that and fit again.
+	document.addEventListener( 'bp:languagechange', function () {
+		floors.forEach( function ( floor ) {
+			floor.removeAttribute( 'data-bp-mall-map-fitted' );
+
+			Array.prototype.slice.call( floor.querySelectorAll( '.bp-mall-map-unit-label-group' ) ).forEach( function ( group ) {
+				group.classList.remove( 'is-compact' );
+				Array.prototype.slice.call( group.querySelectorAll( 'text' ) ).forEach( function ( text ) {
+					text.style.fontSize = '';
+				} );
+			} );
+
+			var legend = floor.querySelector( '[data-bp-mall-map-legend]' );
+			if ( legend ) {
+				legend.textContent = '';
+				legend.hidden = true;
+			}
+		} );
+
+		showFloor( currentIndex );
+	} );
+
 	prevBtns.forEach( function ( btn ) {
 		btn.addEventListener( 'click', function () {
 			showFloor( currentIndex - 1 );

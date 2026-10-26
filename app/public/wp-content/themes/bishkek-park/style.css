@@ -1119,3 +1119,18 @@ body.admin-bar .bp-mobile-menu {
 		width: 100%;
 	}
 }
+
+/* No-reload language switch (assets/js/lang-switch.js): only shown when the
+   other language's page hasn't finished loading yet ~150ms after the click,
+   so the visitor can tell the switch registered. */
+.bp-main {
+	transition: opacity 0.2s ease;
+}
+
+.bp-lang-switching .bp-main {
+	opacity: 0.5;
+}
+
+.bp-lang-switching body {
+	cursor: progress;
+}

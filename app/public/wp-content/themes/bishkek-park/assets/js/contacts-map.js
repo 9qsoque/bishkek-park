@@ -41,13 +41,23 @@
 		tooltipAnchor: [ 0, -66 ],
 	} );
 
-	L.marker( [ lat, lng ], { icon: icon, title: el.getAttribute( 'data-bp-map-label' ) } )
+	var marker = L.marker( [ lat, lng ], { icon: icon, title: el.getAttribute( 'data-bp-map-label' ) } )
 		.addTo( map )
 		.bindTooltip( el.getAttribute( 'data-bp-map-label' ), {
 			permanent: true,
 			direction: 'top',
 			className: 'bp-map-tooltip',
 		} );
+
+	// Leaflet builds the marker's DOM itself, so lang-switch.js leaves it
+	// alone and only updates data-bp-map-label; re-read it after a switch.
+	document.addEventListener( 'bp:languagechange', function () {
+		var label = el.getAttribute( 'data-bp-map-label' );
+		marker.setTooltipContent( label );
+		if ( marker.getElement() ) {
+			marker.getElement().setAttribute( 'title', label );
+		}
+	} );
 
 	// The block fades in via reveal.js; recompute size once it is visible so
 	// tiles aren't laid out against a stale container size.

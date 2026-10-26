@@ -1,0 +1,6 @@
+Oct 22 2026 09:24:07
+{"Number":2,"Message":"rmdir(C:\\Users\\krlle\\Local Sites\\bishkek-park\\app\\public\\wp-content\\plugins\\all-in-one-wp-migration\\storage\\y7t2ok8b6cak): Directory not empty","File":"C:\\Users\\krlle\\Local Sites\\bishkek-park\\app\\public\\wp-content\\plugins\\all-in-one-wp-migration\\lib\\vendor\\servmask\\filesystem\\class-ai1wm-directory.php","Line":74}
+
+Oct 22 2026 09:24:08
+{"Number":2,"Message":"filesize(): stat failed for C:\\Users\\krlle\\Local Sites\\bishkek-park\\app\\public\\wp-content\\plugins\\all-in-one-wp-migration\\storage\\y7t2ok8b6cak\\bishkek-park-local-20261022-122406-8lwlv4l5q581.wpress","File":"C:\\Users\\krlle\\Local Sites\\bishkek-park\\app\\public\\wp-content\\plugins\\all-in-one-wp-migration\\lib\\vendor\\servmask\\archiver\\class-ai1wm-archiver.php","Line":283}
+
