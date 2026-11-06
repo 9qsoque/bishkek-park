@@ -1,7 +1,7 @@
 <?php
 /**
  * Per-page capabilities for the theme's own settings screens ("Карта ТЦ",
- * "Паркинг", "Синематика") instead of `manage_options`, so a non-admin role
+ * "Паркинг", "Синематика", "Номера для связи") instead of `manage_options`, so a non-admin role
  * (e.g. Editor) can be allowed onto just one of them without also getting
  * every other Settings screen. Not granted to anyone in code except
  * administrators — give them to other roles from wp-admin (User Role Editor
@@ -15,6 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'BISHKEK_PARK_MAP_CAPABILITY', 'bishkek_park_edit_map' );
 define( 'BISHKEK_PARK_PARKING_CAPABILITY', 'bishkek_park_edit_parking' );
 define( 'BISHKEK_PARK_CINEMATICA_CAPABILITY', 'bishkek_park_edit_cinematica' );
+define( 'BISHKEK_PARK_PHONES_CAPABILITY', 'bishkek_park_edit_phones' );
+// Инструменты → Импорт магазинов и кафе (inc/content-import.php). Not a
+// Settings API page, so it has no option group below — only the admin grant.
+define( 'BISHKEK_PARK_IMPORT_CAPABILITY', 'bishkek_park_import_content' );
 
 /**
  * Each settings page's `settings_fields()` group => the capability that
@@ -25,6 +29,7 @@ function bishkek_park_settings_page_capabilities() {
 		'bishkek_park_map_settings'        => BISHKEK_PARK_MAP_CAPABILITY,
 		'bishkek_park_parking_settings'    => BISHKEK_PARK_PARKING_CAPABILITY,
 		'bishkek_park_cinematica_settings' => BISHKEK_PARK_CINEMATICA_CAPABILITY,
+		'bishkek_park_phones_settings'     => BISHKEK_PARK_PHONES_CAPABILITY,
 	);
 }
 
@@ -39,7 +44,9 @@ function bishkek_park_grant_admin_capabilities() {
 		return;
 	}
 
-	foreach ( bishkek_park_settings_page_capabilities() as $capability ) {
+	$capabilities = array_merge( array_values( bishkek_park_settings_page_capabilities() ), array( BISHKEK_PARK_IMPORT_CAPABILITY ) );
+
+	foreach ( $capabilities as $capability ) {
 		if ( ! $role->has_cap( $capability ) ) {
 			$role->add_cap( $capability );
 		}

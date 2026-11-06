@@ -25,7 +25,6 @@ function bishkek_park_contacts_meta_fields() {
 	$fields = array(
 		'_bp_contacts_address'                => array( 'label' => __( 'Адрес', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается "148В, ул. Киевская, 720001 Бишкек / Кыргызстан"', 'bishkek-park' ) ),
 		'_bp_contacts_hours'                   => array( 'label' => __( 'Часы работы ТЦ', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается "Ежедневно: 10:00 — 22:00"', 'bishkek-park' ) ),
-		'_bp_contacts_phone'                   => array( 'label' => __( 'Телефон', 'bishkek-park' ), 'description' => __( 'Например: +996 (312) 312 031. Используется и как ссылка для звонка', 'bishkek-park' ) ),
 		'_bp_contacts_tenants_text'            => array( 'label' => __( 'Арендаторам: текст', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается стандартный текст с адресом info@bishkekpark.kg', 'bishkek-park' ), 'type' => 'textarea' ),
 		'_bp_contacts_tenants_download_label'  => array( 'label' => __( 'Арендаторам: текст ссылки на заявку', 'bishkek-park' ), 'description' => __( 'Если не заполнено, показывается "Скачать заявку на аренду помещения"', 'bishkek-park' ) ),
 		'_bp_contacts_tenants_download_url'    => array( 'label' => __( 'Арендаторам: ссылка на файл заявки', 'bishkek-park' ), 'description' => __( 'Куда ведёт ссылка "Скачать заявку". Если не заполнено, ссылка никуда не ведёт (#)', 'bishkek-park' ) ),
@@ -45,6 +44,73 @@ function bishkek_park_contacts_meta_fields() {
 			'type'        => 'textarea',
 		);
 	}
+
+	return $fields;
+}
+
+/**
+ * Editable fields for the Funcity page template only — merged into the 'page'
+ * entry below the same way as bishkek_park_contacts_meta_fields(). Every text
+ * field's `default` is the text the template shows while the field is empty
+ * (shown greyed out as the field's placeholder); those defaults are the
+ * Polylang-registered strings in inc/translatable-strings.php, so their KY
+ * versions come from Languages -> String translations. The template reads
+ * the defaults from here (template-parts/funcity/page-funcity.php), so this
+ * is the one place they're defined.
+ */
+function bishkek_park_funcity_meta_fields() {
+	$empty_hint = __( 'Пустое поле — показывается текст, видный серым. Его перевод на кыргызский — в Languages → Переводы строк.', 'bishkek-park' );
+	$image_hint = __( 'Если не выбрано, показывается стандартное фото. На кыргызской версии страницы используется фото с русской, если там не выбрано своё.', 'bishkek-park' );
+
+	$fields = array(
+		'_bp_funcity_title'       => array( 'label' => __( 'Первый экран: заголовок', 'bishkek-park' ), 'description' => $empty_hint, 'default' => 'FUNCITY' ),
+		'_bp_funcity_subtitle'    => array( 'label' => __( 'Первый экран: подзаголовок', 'bishkek-park' ), 'default' => 'Большая детская площадка в БишкекПарке' ),
+		'_bp_funcity_text'        => array( 'label' => __( 'Первый экран: текст', 'bishkek-park' ), 'type' => 'textarea', 'default' => 'Игровые зоны, батуты и аниматоры - всё для незабываемого дня в торговом центре.' ),
+		'_bp_funcity_zones_title' => array( 'label' => __( 'Игровые зоны: заголовок раздела', 'bishkek-park' ), 'default' => 'Игровые зоны' ),
+		'_bp_funcity_zones_text'  => array( 'label' => __( 'Игровые зоны: текст раздела', 'bishkek-park' ), 'type' => 'textarea', 'default' => 'Подберите зону по возрасту и интересам - для малышей, старших детей и всей семьи.' ),
+	);
+
+	$zones = array(
+		'maze'       => array(
+			'label' => 'Мягкий лабиринт',
+			'text'  => 'Специальная зона для малышей: мягкие туннели, блоки и безопасные площадки для первых шагов.',
+		),
+		'trampoline' => array(
+			'label' => 'Батутный парк',
+			'text'  => 'Прыжки, сальто и весёлая физическая нагрузка под музыку и в хорошей компании.',
+		),
+		'animators'  => array(
+			'label' => 'Аниматоры и развлечения',
+			'text'  => 'Шоу, мастер-классы и интерактивные программы для детей и взрослых вместе.',
+		),
+	);
+
+	$zone_number = 0;
+	foreach ( $zones as $zone => $defaults ) {
+		$zone_number++;
+		// translators: %d is the play zone number (1-3).
+		$prefix = sprintf( __( 'Зона %d', 'bishkek-park' ), $zone_number );
+
+		$fields[ "_bp_funcity_zone_{$zone}_label" ] = array( 'label' => $prefix . ': ' . __( 'название', 'bishkek-park' ), 'default' => $defaults['label'] );
+		$fields[ "_bp_funcity_zone_{$zone}_text" ]  = array( 'label' => $prefix . ': ' . __( 'описание', 'bishkek-park' ), 'type' => 'textarea', 'default' => $defaults['text'] );
+		$fields[ "_bp_funcity_zone_{$zone}_image" ] = array( 'label' => $prefix . ': ' . __( 'фото', 'bishkek-park' ), 'type' => 'image', 'description' => $image_hint );
+	}
+
+	$fields += array(
+		'_bp_funcity_rules_title' => array( 'label' => __( 'Правила: заголовок раздела', 'bishkek-park' ), 'default' => 'Правила посещения' ),
+		'_bp_funcity_rules_text'  => array( 'label' => __( 'Правила: текст раздела', 'bishkek-park' ), 'type' => 'textarea', 'default' => 'Чтобы всем было комфортно и безопасно, просим соблюдать простые правила.' ),
+		'_bp_funcity_rule_1'      => array( 'label' => __( 'Правило 1', 'bishkek-park' ), 'type' => 'textarea', 'default' => 'Обувь: носки обязательны. Взрослым рекомендуется сменная обувь.' ),
+		'_bp_funcity_rule_2'      => array( 'label' => __( 'Правило 2', 'bishkek-park' ), 'type' => 'textarea', 'default' => 'Возраст без сопровождения: от 12 лет. Младшие дети должны находиться под присмотром взрослого.' ),
+		'_bp_funcity_rule_3'      => array( 'label' => __( 'Правило 3', 'bishkek-park' ), 'type' => 'textarea', 'default' => 'Запрещено: еда и напитки в игровых зонах, фото со вспышкой и любые действия, создающие опасность.' ),
+		'_bp_funcity_cta_title'   => array( 'label' => __( 'Блок «Остались вопросы?»: заголовок', 'bishkek-park' ), 'default' => 'Остались вопросы?' ),
+		'_bp_funcity_cta_subtitle' => array( 'label' => __( 'Блок «Остались вопросы?»: подзаголовок', 'bishkek-park' ), 'default' => 'Свяжитесь с нами' ),
+		'_bp_funcity_cta_text'    => array( 'label' => __( 'Блок «Остались вопросы?»: текст', 'bishkek-park' ), 'default' => 'Мы готовы ответить на любые ваши вопросы' ),
+		'_bp_funcity_cta_button'  => array( 'label' => __( 'Блок «Остались вопросы?»: текст кнопки', 'bishkek-park' ), 'default' => 'Связаться с нами' ),
+		'_bp_funcity_cta_phone'   => array(
+			'label'       => __( 'Блок «Остались вопросы?»: телефон для кнопки', 'bishkek-park' ),
+			'description' => __( 'Например: +996 (312) 312 031. Если не заполнено, используется основной телефон со страницы «Номера для связи». На кыргызской версии страницы используется номер с русской, если там не указан свой.', 'bishkek-park' ),
+		),
+	);
 
 	return $fields;
 }
@@ -70,11 +136,14 @@ function bishkek_park_shop_floor_field_options() {
 
 /**
  * Field definitions per post type: meta key => [ label, description, type,
- * max_length, sanitize_callback ]. `type` is 'text' (default), 'textarea',
- * 'select' (dropdown; needs an `options` array of value => label), or 'date'
- * (native HTML5 date-picker input; stored as an ISO `Y-m-d` string — see
- * bishkek_park_format_event_date() in functions.php for turning that into
- * the displayed "15 июля 2025" string).
+ * max_length, sanitize_callback, default ]. `type` is 'text' (default),
+ * 'textarea', 'select' (dropdown; needs an `options` array of value =>
+ * label), 'date' (native HTML5 date-picker input; stored as an ISO `Y-m-d`
+ * string — see bishkek_park_format_event_date() in functions.php for turning
+ * that into the displayed "15 июля 2025" string), or 'image' (a media
+ * library picker; stores the attachment ID).
+ * `default` (optional) is shown as the text/textarea's placeholder — the text
+ * the template falls back to when the field is left empty.
  * `max_length` (optional) caps the field at N characters — enforced both as
  * the textarea's `maxlength` attribute and as a hard truncation on save, so
  * long-winded content can't break the layout it's rendered into.
@@ -145,6 +214,10 @@ function bishkek_park_meta_fields( $post_type, $post = null ) {
 		$fields['page'] = array_merge( $fields['page'], bishkek_park_contacts_meta_fields() );
 	}
 
+	if ( 'page' === $post_type && $post instanceof WP_Post && 'template-parts/funcity/page-funcity.php' === get_page_template_slug( $post ) ) {
+		$fields['page'] = array_merge( $fields['page'], bishkek_park_funcity_meta_fields() );
+	}
+
 	return isset( $fields[ $post_type ] ) ? $fields[ $post_type ] : array();
 }
 
@@ -166,6 +239,17 @@ function bishkek_park_add_meta_boxes() {
 add_action( 'add_meta_boxes', 'bishkek_park_add_meta_boxes' );
 
 /**
+ * 'image' fields open the media library (wp.media) — make sure it's loaded
+ * on edit screens even where the editor itself wouldn't load it.
+ */
+function bishkek_park_enqueue_meta_box_media( $hook ) {
+	if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+		wp_enqueue_media();
+	}
+}
+add_action( 'admin_enqueue_scripts', 'bishkek_park_enqueue_meta_box_media' );
+
+/**
  * Render the meta box fields for the current post type.
  */
 function bishkek_park_render_meta_box( $post ) {
@@ -174,9 +258,10 @@ function bishkek_park_render_meta_box( $post ) {
 	wp_nonce_field( 'bishkek_park_save_meta', 'bishkek_park_meta_nonce' );
 
 	foreach ( $fields as $key => $field ) {
-		$value      = get_post_meta( $post->ID, $key, true );
-		$type       = isset( $field['type'] ) ? $field['type'] : 'text';
-		$max_length = isset( $field['max_length'] ) ? (int) $field['max_length'] : 0;
+		$value       = get_post_meta( $post->ID, $key, true );
+		$type        = isset( $field['type'] ) ? $field['type'] : 'text';
+		$max_length  = isset( $field['max_length'] ) ? (int) $field['max_length'] : 0;
+		$placeholder = isset( $field['default'] ) ? $field['default'] : '';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( $field['label'] ); ?></strong></label><br>
@@ -186,8 +271,22 @@ function bishkek_park_render_meta_box( $post ) {
 					name="<?php echo esc_attr( $key ); ?>"
 					class="widefat"
 					rows="3"
+					placeholder="<?php echo esc_attr( $placeholder ); ?>"
 					<?php echo $max_length ? 'maxlength="' . esc_attr( $max_length ) . '"' : ''; ?>
 				><?php echo esc_textarea( $value ); ?></textarea>
+			<?php elseif ( 'image' === $type ) : ?>
+				<?php $image_url = $value ? wp_get_attachment_image_url( (int) $value, 'medium' ) : ''; ?>
+				<span class="bishkek-park-image-field" data-bishkek-park-image-field>
+					<input type="hidden" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value ); ?>">
+					<img
+						src="<?php echo esc_url( $image_url ); ?>"
+						alt=""
+						style="display:<?php echo $image_url ? 'block' : 'none'; ?>;max-width:240px;height:auto;margin:6px 0;"
+						data-bishkek-park-image-preview
+					>
+					<button type="button" class="button" data-bishkek-park-image-select><?php esc_html_e( 'Выбрать фото', 'bishkek-park' ); ?></button>
+					<button type="button" class="button-link button-link-delete" data-bishkek-park-image-remove style="margin-left:8px;<?php echo $value ? '' : 'display:none;'; ?>"><?php esc_html_e( 'Убрать', 'bishkek-park' ); ?></button>
+				</span><br>
 			<?php elseif ( 'date' === $type ) : ?>
 				<input
 					type="date"
@@ -212,6 +311,7 @@ function bishkek_park_render_meta_box( $post ) {
 					name="<?php echo esc_attr( $key ); ?>"
 					value="<?php echo esc_attr( $value ); ?>"
 					class="widefat"
+					placeholder="<?php echo esc_attr( $placeholder ); ?>"
 					<?php echo $max_length ? 'maxlength="' . esc_attr( $max_length ) . '"' : ''; ?>
 				>
 			<?php endif; ?>
@@ -237,6 +337,39 @@ function bishkek_park_render_meta_box( $post ) {
 			}
 			field.addEventListener( 'input', function () {
 				counter.textContent = field.value.length + '/' + max;
+			} );
+		} );
+
+		// 'image' fields: pick/remove an attachment from the media library.
+		document.querySelectorAll( '[data-bishkek-park-image-field]' ).forEach( function ( wrap ) {
+			var input = wrap.querySelector( 'input' );
+			var preview = wrap.querySelector( '[data-bishkek-park-image-preview]' );
+			var remove = wrap.querySelector( '[data-bishkek-park-image-remove]' );
+			var frame = null;
+
+			wrap.querySelector( '[data-bishkek-park-image-select]' ).addEventListener( 'click', function () {
+				if ( ! window.wp || ! wp.media ) {
+					return;
+				}
+				if ( ! frame ) {
+					frame = wp.media( { library: { type: 'image' }, multiple: false } );
+					frame.on( 'select', function () {
+						var attachment = frame.state().get( 'selection' ).first().toJSON();
+						var sizes = attachment.sizes || {};
+						input.value = attachment.id;
+						preview.src = ( sizes.medium || sizes.full || attachment ).url;
+						preview.style.display = 'block';
+						remove.style.display = '';
+					} );
+				}
+				frame.open();
+			} );
+
+			remove.addEventListener( 'click', function () {
+				input.value = '';
+				preview.removeAttribute( 'src' );
+				preview.style.display = 'none';
+				remove.style.display = 'none';
 			} );
 		} );
 	}() );
@@ -269,10 +402,16 @@ function bishkek_park_save_meta( $post_id ) {
 			continue;
 		}
 
-		$raw   = wp_unslash( $_POST[ $key ] );
-		$clean = ( isset( $field['type'] ) && 'textarea' === $field['type'] )
-			? sanitize_textarea_field( $raw )
-			: sanitize_text_field( $raw );
+		$raw  = wp_unslash( $_POST[ $key ] );
+		$type = isset( $field['type'] ) ? $field['type'] : 'text';
+
+		if ( 'image' === $type ) {
+			$clean = absint( $raw ) ? (string) absint( $raw ) : '';
+		} elseif ( 'textarea' === $type ) {
+			$clean = sanitize_textarea_field( $raw );
+		} else {
+			$clean = sanitize_text_field( $raw );
+		}
 
 		if ( ! empty( $field['sanitize_callback'] ) && is_callable( $field['sanitize_callback'] ) ) {
 			$clean = call_user_func( $field['sanitize_callback'], $clean );

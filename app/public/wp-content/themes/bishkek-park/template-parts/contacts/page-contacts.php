@@ -25,15 +25,14 @@ $bp_contacts_page_id = get_queried_object_id();
 
 $bp_contacts_address              = get_post_meta( $bp_contacts_page_id, '_bp_contacts_address', true );
 $bp_contacts_hours                = get_post_meta( $bp_contacts_page_id, '_bp_contacts_hours', true );
-$bp_contacts_phone                = get_post_meta( $bp_contacts_page_id, '_bp_contacts_phone', true );
-$bp_contacts_tenants_text         = get_post_meta( $bp_contacts_page_id, '_bp_contacts_tenants_text', true );
+$bp_contacts_tenants_text        = get_post_meta( $bp_contacts_page_id, '_bp_contacts_tenants_text', true );
 $bp_contacts_tenants_download_lbl = get_post_meta( $bp_contacts_page_id, '_bp_contacts_tenants_download_label', true );
 $bp_contacts_tenants_download_url = get_post_meta( $bp_contacts_page_id, '_bp_contacts_tenants_download_url', true );
 $bp_contacts_tenants_hours        = get_post_meta( $bp_contacts_page_id, '_bp_contacts_tenants_hours', true );
 
-if ( ! $bp_contacts_phone ) {
-	$bp_contacts_phone = '+996 (312) 312 031';
-}
+// Edited on the "Номера для связи" settings page (inc/contact-phones.php),
+// shared with the footer.
+$bp_contacts_phone = bishkek_park_get_contact_phone( 'main' );
 
 // Default Q/A text, used whenever the matching wp-admin field is empty —
 // registered with Polylang in inc/translatable-strings.php
@@ -130,7 +129,7 @@ get_header();
 				</li>
 				<li class="bp-contacts-details__item">
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone-outline.svg' ) ); ?>" width="16" height="16" alt="" aria-hidden="true">
-					<a href="<?php echo esc_attr( bishkek_park_get_tel_href( $bp_contacts_phone ) ); ?>"><?php pll_esc_html_e( 'Связь' ); ?>: <?php echo esc_html( $bp_contacts_phone ); ?></a>
+					<a <?php bishkek_park_contact_phone_link_attrs( 'main' ); ?>><?php pll_esc_html_e( 'Связь' ); ?>: <?php echo esc_html( $bp_contacts_phone ); ?></a>
 				</li>
 				<?php foreach ( bishkek_park_get_whatsapp_contacts() as $bp_contacts_whatsapp ) : ?>
 					<li class="bp-contacts-details__item">

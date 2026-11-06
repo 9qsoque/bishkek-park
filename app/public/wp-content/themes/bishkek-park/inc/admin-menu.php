@@ -17,7 +17,8 @@ add_filter( 'custom_menu_order', '__return_true' );
 add_filter( 'menu_order', 'bishkek_park_reorder_admin_menu' );
 
 /**
- * Puts Страницы, Магазины, Кафе и рестораны, Карта ТЦ, Паркинг, Баннеры,
+ * Puts Страницы, Магазины, Кафе и рестораны, Карта ТЦ, Паркинг, Номера для
+ * связи, Баннеры,
  * Синематика, Мероприятия, Руководство, Этапы развития, and Polylang's
  * Languages first, in that order; everything else (Dashboard, Comments,
  * Appearance, Plugins, Users, Tools, Settings, other plugins, ...) keeps its
@@ -30,6 +31,7 @@ function bishkek_park_reorder_admin_menu( $menu_order ) {
 		'edit.php?post_type=bp_cafe',
 		'bishkek-park-mall-map',
 		'bishkek-park-parking',
+		'bishkek-park-phones',
 		'edit.php?post_type=bp_banner',
 		'bishkek-park-cinematica',
 		'edit.php?post_type=bp_event',

@@ -24,8 +24,10 @@ require BISHKEK_PARK_DIR . '/inc/seo.php';
 require BISHKEK_PARK_DIR . '/inc/cinematica-settings.php';
 require BISHKEK_PARK_DIR . '/inc/cinematica-api.php';
 require BISHKEK_PARK_DIR . '/inc/parking-settings.php';
+require BISHKEK_PARK_DIR . '/inc/contact-phones.php';
 require BISHKEK_PARK_DIR . '/inc/mall-map.php';
 require BISHKEK_PARK_DIR . '/inc/admin-menu.php';
+require BISHKEK_PARK_DIR . '/inc/content-import.php';
 
 /**
  * Returns the inline logo SVG markup so its fill can follow CSS `color` (currentColor).
@@ -71,6 +73,41 @@ function bishkek_park_get_localized_post_id( $post_id ) {
 	$translated_id = pll_get_post( $post_id, pll_current_language() );
 
 	return $translated_id ? $translated_id : $post_id;
+}
+
+/**
+ * A page's text field (inc/meta-boxes.php), or — when it's left empty — the
+ * given default UI string translated into the current language. Each
+ * translation of a page has its own text fields, so the fallback is the
+ * Polylang string, never the default-language page's (Russian) text.
+ */
+function bishkek_park_get_page_text( $post_id, $key, $default ) {
+	$value = get_post_meta( $post_id, $key, true );
+
+	if ( '' !== $value ) {
+		return $value;
+	}
+
+	return function_exists( 'pll__' ) ? pll__( $default ) : $default;
+}
+
+/**
+ * A language-neutral page field (an image, a phone number): this page's
+ * value, or the default-language translation's when this one is empty — so
+ * a photo picked on the RU page also shows on the KY page without being
+ * picked again there.
+ */
+function bishkek_park_get_page_shared_meta( $post_id, $key ) {
+	$value = get_post_meta( $post_id, $key, true );
+
+	if ( '' === $value && function_exists( 'pll_get_post' ) && function_exists( 'pll_default_language' ) ) {
+		$default_id = pll_get_post( $post_id, pll_default_language() );
+		if ( $default_id && $default_id !== $post_id ) {
+			$value = get_post_meta( $default_id, $key, true );
+		}
+	}
+
+	return $value;
 }
 
 /**
@@ -203,25 +240,23 @@ function bishkek_park_get_tel_href( $phone ) {
  * The leasing/sales WhatsApp numbers shown in the footer and on the contacts
  * page (plus the leasing CTA button, which uses the 'leasing' entry), keyed
  * by purpose. `label` is a Polylang-registered string (inc/translatable-strings.php)
- * to print with pll_esc_html_e(); `url` opens a WhatsApp chat (wa.me takes
- * the number as bare digits).
+ * to print with pll_esc_html_e(); `number`/`url` come from the "Номера для
+ * связи" settings page (inc/contact-phones.php).
  */
 function bishkek_park_get_whatsapp_contacts() {
-	$contacts = array(
-		'leasing' => array(
-			'label'  => 'Аренда',
-			'number' => '+996 555 777 945',
-		),
-		'sales'   => array(
-			'label'  => 'Продажи',
-			'number' => '+996 998 111 333',
-		),
+	$labels = array(
+		'leasing' => 'Аренда',
+		'sales'   => 'Продажи',
 	);
 
-	foreach ( $contacts as &$contact ) {
-		$contact['url'] = 'https://wa.me/' . preg_replace( '/\D/', '', $contact['number'] );
+	$contacts = array();
+	foreach ( $labels as $key => $label ) {
+		$contacts[ $key ] = array(
+			'label'  => $label,
+			'number' => bishkek_park_get_contact_phone( $key ),
+			'url'    => bishkek_park_get_contact_phone_url( $key ),
+		);
 	}
-	unset( $contact );
 
 	return $contacts;
 }

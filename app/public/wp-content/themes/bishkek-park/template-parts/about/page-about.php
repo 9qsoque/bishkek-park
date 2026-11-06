@@ -188,7 +188,7 @@ get_header();
 			<h2 class="bp-funcity-cta__title"><?php pll_esc_html_e( 'Остались вопросы?' ); ?></h2>
 			<p class="bp-funcity-cta__subtitle"><?php pll_esc_html_e( 'Свяжитесь с нами' ); ?></p>
 			<p class="bp-funcity-cta__text"><?php pll_esc_html_e( 'Мы готовы ответить на любые ваши вопросы' ); ?></p>
-			<a class="bp-btn bp-btn--primary" href="tel:+996312312031"><?php pll_esc_html_e( 'Связаться с нами' ); ?></a>
+			<a class="bp-btn bp-btn--primary" <?php bishkek_park_contact_phone_link_attrs( 'main' ); ?>><?php pll_esc_html_e( 'Связаться с нами' ); ?></a>
 		</div>
 	</section>
 </main>

@@ -10,9 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // The address opens Bishkek Park in 2GIS; the leasing/sales numbers (see
-// bishkek_park_get_whatsapp_contacts()) open a WhatsApp chat.
+// bishkek_park_get_whatsapp_contacts()) open a WhatsApp chat. All numbers
+// come from the "Номера для связи" settings page (inc/contact-phones.php).
 $bp_footer_2gis_url  = 'https://2gis.kg/bishkek/firm/70000001019343641';
 $bp_footer_whatsapps = bishkek_park_get_whatsapp_contacts();
+$bp_footer_phone     = bishkek_park_get_contact_phone( 'main' );
 $bp_footer_instagram = 'https://www.instagram.com/bishkekpark/';
 ?>
 <footer class="bp-site-footer bp-pattern bp-pattern--light">
@@ -32,10 +34,10 @@ $bp_footer_instagram = 'https://www.instagram.com/bishkekpark/';
 				<span><?php pll_esc_html_e( '148В, ул. Киевская' ); ?><br><?php pll_esc_html_e( '720001 Бишкек / Кыргызстан' ); ?></span>
 			</a>
 			<div class="bp-site-footer__phones">
-				<a class="bp-site-footer__phone" href="tel:+996312312031">
+				<a class="bp-site-footer__phone" <?php bishkek_park_contact_phone_link_attrs( 'main' ); ?>>
 					<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
 					<span class="bp-site-footer__phone-label"><?php pll_esc_html_e( 'Связь' ); ?>:</span>
-					+996 (312) 312 031
+					<?php echo esc_html( $bp_footer_phone ); ?>
 				</a>
 				<?php foreach ( $bp_footer_whatsapps as $bp_footer_whatsapp ) : ?>
 					<a class="bp-site-footer__phone" href="<?php echo esc_url( $bp_footer_whatsapp['url'] ); ?>" target="_blank" rel="noopener noreferrer">
@@ -70,12 +72,12 @@ $bp_footer_instagram = 'https://www.instagram.com/bishkekpark/';
 		<div class="bp-footer-links">
 			<ul>
 				<li><a href="<?php echo esc_url( bishkek_park_get_contacts_page_url() ); ?>"><?php pll_esc_html_e( 'Контакты' ); ?></a></li>
-				<li><a href="#"><?php pll_esc_html_e( 'Обратная связь' ); ?></a></li>
+				<li><a <?php bishkek_park_contact_phone_link_attrs( 'feedback' ); ?>><?php pll_esc_html_e( 'Обратная связь' ); ?></a></li>
 				<li><a href="#"><?php pll_esc_html_e( 'Арендаторам' ); ?></a></li>
 			</ul>
 			<ul>
-				<li><a href="#"><?php pll_esc_html_e( 'Рекламные услуги' ); ?></a></li>
-				<li><a href="#"><?php pll_esc_html_e( 'Вакансии' ); ?></a></li>
+				<li><a <?php bishkek_park_contact_phone_link_attrs( 'advertising' ); ?>><?php pll_esc_html_e( 'Рекламные услуги' ); ?></a></li>
+				<li><a <?php bishkek_park_contact_phone_link_attrs( 'vacancies' ); ?>><?php pll_esc_html_e( 'Вакансии' ); ?></a></li>
 				<li><a href="#"><?php pll_esc_html_e( 'Политика конфиденциальности' ); ?></a></li>
 			</ul>
 		</div>
@@ -101,9 +103,9 @@ $bp_footer_instagram = 'https://www.instagram.com/bishkekpark/';
 
 		<div class="bp-site-footer__mobile-group">
 			<span class="bp-site-footer__mobile-title "><?php pll_esc_html_e( 'Связаться с нами' ); ?></span>
-			<a class="bp-site-footer__mobile-text bp-site-footer__mobile-phone" href="tel:+996312312031">
+			<a class="bp-site-footer__mobile-text bp-site-footer__mobile-phone" <?php bishkek_park_contact_phone_link_attrs( 'main' ); ?>>
 				<img src="<?php echo esc_url( bishkek_park_icon_url( 'icon-phone.svg' ) ); ?>" width="14" height="14" alt="" aria-hidden="true">
-				<?php pll_esc_html_e( 'Связь' ); ?>: +996 (312) 312 031
+				<?php pll_esc_html_e( 'Связь' ); ?>: <?php echo esc_html( $bp_footer_phone ); ?>
 			</a>
 			<?php foreach ( $bp_footer_whatsapps as $bp_footer_whatsapp ) : ?>
 				<a class="bp-site-footer__mobile-text bp-site-footer__mobile-phone" href="<?php echo esc_url( $bp_footer_whatsapp['url'] ); ?>" target="_blank" rel="noopener noreferrer">
@@ -140,7 +142,7 @@ $bp_footer_instagram = 'https://www.instagram.com/bishkekpark/';
 		'@type'                     => 'ShoppingCenter',
 		'name'                      => get_bloginfo( 'name' ),
 		'url'                       => home_url( '/' ),
-		'telephone'                 => '+996312312031',
+		'telephone'                 => preg_replace( '/[^0-9+]/', '', $bp_footer_phone ),
 		'address'                   => array(
 			'@type'           => 'PostalAddress',
 			'streetAddress'   => '148В, ул. Киевская',
